@@ -1,65 +1,1383 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useMemo } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Stepper from "./components/Stepper";
+import {
+  FormSection,
+  FormField,
+  TextInput,
+  SelectInput,
+  DateInput,
+  PhoneInput,
+  RadioInput,
+  SearchableSelect,
+  ReadOnlyField,
+} from "./components/FormElements";
+import { LanguageProvider, useLanguage } from "./context/LanguageContext";
+import {
+  indonesianAirports,
+  indonesianPorts,
+  worldAirlines,
+  indonesianProvinces,
+  travelPurposes,
+  airTransportTypes,
+  shipTypes,
+  accommodationTypes,
+  indonesianHotels,
+  getCitiesByProvince,
+  getImmigrationOffice,
+} from "./lib/data";
+
+function PageContent() {
+  const { t } = useLanguage();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [travelers, setTravelers] = useState([
+    {
+      passportCountry: "",
+      fullName: "",
+      birthDate: "",
+      birthCountry: "",
+      gender: "",
+      passportNo: "",
+      passportExpiry: "",
+      phoneCountryCode: "+62",
+      phone: "",
+      email: "",
+    },
+  ]);
+  const [travelDetails, setTravelDetails] = useState([
+    {
+      arrivalDate: "",
+      departureDate: "",
+      hasVisa: "",
+      visaNumber: "",
+    },
+  ]);
+
+  const handleTravelDetailChange = (index: number, field: string, value: string) => {
+    setTravelDetails((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  // Step 3: Transport & Address
+  const [transport, setTransport] = useState({
+    mode: "",
+    travelPurpose: "",
+    arrivalPlace: "",
+    airType: "",
+    airlineName: "",
+    flightCode: "",
+    flightNumber: "",
+    shipType: "",
+    shipName: "",
+  });
+
+  const [address, setAddress] = useState({
+    accommodationType: "",
+    province: "",
+    city: "",
+    fullAddress: "",
+    hotelValue: "",
+    hotelLabel: "",
+    hotelCity: "",
+    hotelProvince: "",
+    transitAccommodation: "",
+  });
+
+  const handleTransportChange = (field: string, value: string) => {
+    setTransport((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddressChange = (field: string, value: string) => {
+    setAddress((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Step 4: Declaration
+  const [declarations, setDeclarations] = useState([
+    {
+      baggageCount: "",
+      hasProhibitedGoods: "",
+      hasIMEI: "",
+      agreed: false,
+    },
+  ]);
+  const [declarationView, setDeclarationView] = useState<{ mode: "list" | "form"; index: number }>({ mode: "list", index: 0 });
+
+  const handleDeclarationChange = (index: number, field: string, value: string | boolean) => {
+    setDeclarations((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const isDeclarationComplete = (decl: typeof declarations[0]) => {
+    return decl.baggageCount !== "" && decl.hasProhibitedGoods !== "" && decl.hasIMEI !== "" && decl.agreed;
+  };
+
+  // Derived: cities filtered by province
+  const filteredCities = useMemo(
+    () => (address.province ? getCitiesByProvince(address.province) : []),
+    [address.province]
+  );
+
+  // Derived: immigration office suggestion
+  const suggestedImmigrationOffice = useMemo(() => {
+    if (address.accommodationType === "rumah" && address.city && address.province) {
+      return getImmigrationOffice(address.city, address.province);
+    }
+    if (address.accommodationType === "hotel" && address.hotelCity && address.hotelProvince) {
+      return getImmigrationOffice(address.hotelCity, address.hotelProvince);
+    }
+    return "";
+  }, [address.accommodationType, address.city, address.province, address.hotelCity, address.hotelProvince]);
+
+  // Hotel options for SearchableSelect
+  const hotelOptions = useMemo(
+    () =>
+      indonesianHotels.map((h) => ({
+        value: h.value,
+        label: h.label,
+        subtitle: `${h.city}, ${h.province}`,
+      })),
+    []
+  );
+
+  const steps = [
+    {
+      label: t("step1"),
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("step2"),
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("step3"),
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("step4"),
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+          />
+        </svg>
+      ),
+    },
+  ];
+
+  const genderOptions = [
+    { value: "laki-laki", label: t("lakiLaki") },
+    { value: "perempuan", label: t("perempuan") },
+  ];
+
+  const countryOptions = [
+    { value: "AF", label: "Afghanistan" },
+    { value: "AL", label: "Albania" },
+    { value: "DZ", label: "Algeria" },
+    { value: "AR", label: "Argentina" },
+    { value: "AU", label: "Australia" },
+    { value: "AT", label: "Austria" },
+    { value: "BD", label: "Bangladesh" },
+    { value: "BE", label: "Belgium" },
+    { value: "BR", label: "Brazil" },
+    { value: "BN", label: "Brunei Darussalam" },
+    { value: "KH", label: "Cambodia" },
+    { value: "CA", label: "Canada" },
+    { value: "CL", label: "Chile" },
+    { value: "CN", label: "China" },
+    { value: "CO", label: "Colombia" },
+    { value: "HR", label: "Croatia" },
+    { value: "CZ", label: "Czech Republic" },
+    { value: "DK", label: "Denmark" },
+    { value: "EG", label: "Egypt" },
+    { value: "FI", label: "Finland" },
+    { value: "FR", label: "France" },
+    { value: "DE", label: "Germany" },
+    { value: "GR", label: "Greece" },
+    { value: "HK", label: "Hong Kong" },
+    { value: "HU", label: "Hungary" },
+    { value: "IN", label: "India" },
+    { value: "ID", label: "Indonesia" },
+    { value: "IR", label: "Iran" },
+    { value: "IQ", label: "Iraq" },
+    { value: "IE", label: "Ireland" },
+    { value: "IL", label: "Israel" },
+    { value: "IT", label: "Italy" },
+    { value: "JP", label: "Japan" },
+    { value: "JO", label: "Jordan" },
+    { value: "KR", label: "South Korea" },
+    { value: "KW", label: "Kuwait" },
+    { value: "LA", label: "Laos" },
+    { value: "MY", label: "Malaysia" },
+    { value: "MX", label: "Mexico" },
+    { value: "MM", label: "Myanmar" },
+    { value: "NP", label: "Nepal" },
+    { value: "NL", label: "Netherlands" },
+    { value: "NZ", label: "New Zealand" },
+    { value: "NG", label: "Nigeria" },
+    { value: "NO", label: "Norway" },
+    { value: "PK", label: "Pakistan" },
+    { value: "PH", label: "Philippines" },
+    { value: "PL", label: "Poland" },
+    { value: "PT", label: "Portugal" },
+    { value: "QA", label: "Qatar" },
+    { value: "RO", label: "Romania" },
+    { value: "RU", label: "Russia" },
+    { value: "SA", label: "Saudi Arabia" },
+    { value: "SG", label: "Singapore" },
+    { value: "ZA", label: "South Africa" },
+    { value: "ES", label: "Spain" },
+    { value: "LK", label: "Sri Lanka" },
+    { value: "SE", label: "Sweden" },
+    { value: "CH", label: "Switzerland" },
+    { value: "TW", label: "Taiwan" },
+    { value: "TH", label: "Thailand" },
+    { value: "TR", label: "Turkey" },
+    { value: "AE", label: "United Arab Emirates" },
+    { value: "GB", label: "United Kingdom" },
+    { value: "US", label: "United States" },
+    { value: "VN", label: "Vietnam" },
+  ];
+
+  // Mapping ISO country code → phone dial code
+  const countryToPhoneCode: Record<string, string> = {
+    AF: "+93", AL: "+355", DZ: "+213", AR: "+54", AU: "+61",
+    AT: "+43", BD: "+880", BE: "+32", BR: "+55", BN: "+673",
+    KH: "+855", CA: "+1", CL: "+56", CN: "+86", CO: "+57",
+    HR: "+385", CZ: "+420", DK: "+45", EG: "+20", FI: "+358",
+    FR: "+33", DE: "+49", GR: "+30", HK: "+852", HU: "+36",
+    IN: "+91", ID: "+62", IR: "+98", IQ: "+964", IE: "+353",
+    IL: "+972", IT: "+39", JP: "+81", JO: "+962", KR: "+82",
+    KW: "+965", LA: "+856", MY: "+60", MX: "+52", MM: "+95",
+    NP: "+977", NL: "+31", NZ: "+64", NG: "+234", NO: "+47",
+    PK: "+92", PH: "+63", PL: "+48", PT: "+351", QA: "+974",
+    RO: "+40", RU: "+7", SA: "+966", SG: "+65", ZA: "+27",
+    ES: "+34", LK: "+94", SE: "+46", CH: "+41", TW: "+886",
+    TH: "+66", TR: "+90", AE: "+971", GB: "+44", US: "+1",
+    VN: "+84",
+  };
+
+  const handleTravelerChange = (
+    index: number,
+    field: string,
+    value: string,
+  ) => {
+    setTravelers((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const addTraveler = () => {
+    setTravelers((prev) => [
+      ...prev,
+      {
+        passportCountry: "",
+        fullName: "",
+        birthDate: "",
+        birthCountry: "",
+        gender: "",
+        passportNo: "",
+        passportExpiry: "",
+        phoneCountryCode: "+62",
+        phone: "",
+        email: "",
+      },
+    ]);
+    setTravelDetails((prev) => [
+      ...prev,
+      {
+        arrivalDate: "",
+        departureDate: "",
+        hasVisa: "",
+        visaNumber: "",
+      },
+    ]);
+    setDeclarations((prev) => [
+      ...prev,
+      {
+        baggageCount: "",
+        hasProhibitedGoods: "",
+        hasIMEI: "",
+        agreed: false,
+      },
+    ]);
+  };
+
+  const removeTraveler = (index: number) => {
+    if (travelers.length > 1) {
+      setTravelers((prev) => prev.filter((_, i) => i !== index));
+      setTravelDetails((prev) => prev.filter((_, i) => i !== index));
+      setDeclarations((prev) => prev.filter((_, i) => i !== index));
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+
+      <main className="flex-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Badge */}
+          <div className="mb-4">
+            <span className="inline-block px-5 py-2 bg-gray-200/70 text-gray-700 text-sm font-medium rounded-full">
+              Warga Negara Asing
+            </span>
+          </div>
+
+          {/* Page title */}
+          <div className="mb-6">
+            <h1 className="text-xl font-bold text-gray-900">
+              {t("pageTitle")}
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              {t("pageDescription")}{" "}
+              <span className="text-red-500 font-medium">*</span>{" "}
+              {t("pageDescriptionEnd")}
+            </p>
+          </div>
+
+          {/* Stepper */}
+          <div className="mb-8">
+            <Stepper currentStep={currentStep} steps={steps} />
+          </div>
+
+          {/* Form Card */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-navy-800 text-white px-6 py-4 flex items-center justify-between">
+              <h2 className="text-sm font-semibold">{t("pratinjau")}</h2>
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 15l7-7 7 7"
+                />
+              </svg>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* PAGE 0: Data Pribadi + Informasi Akun */}
+              {currentStep === 0 && (
+                <>
+                  {travelers.map((traveler, idx) => (
+                    <div key={idx} className="space-y-6">
+                      {/* Data Pribadi */}
+                      <FormSection
+                        title={
+                          travelers.length > 1
+                            ? `${t("dataPribadi")} — ${t("travelerLabel")} ${idx + 1}`
+                            : t("dataPribadi")
+                        }
+                        description={t("dataPribadiDesc")}
+                      >
+                        {travelers.length > 1 && idx > 0 && (
+                          <div className="flex justify-end mb-4">
+                            <button
+                              onClick={() => removeTraveler(idx)}
+                              className="flex items-center gap-1.5 text-xs font-medium text-red-500 hover:text-red-600 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-50 transition-colors"
+                            >
+                              <svg
+                                className="w-3.5 h-3.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                              {t("hapusPelaku")}
+                            </button>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("pasporNegara")} required>
+                            <SearchableSelect
+                              id={`passport-country-${idx}`}
+                              placeholder={t("phPilihNegara")}
+                              options={countryOptions}
+                              value={traveler.passportCountry}
+                              onChange={(value) => {
+                                handleTravelerChange(
+                                  idx,
+                                  "passportCountry",
+                                  value,
+                                );
+                                // Sinkronkan kode telepon dengan negara paspor
+                                const phoneCode = countryToPhoneCode[value];
+                                if (phoneCode) {
+                                  handleTravelerChange(
+                                    idx,
+                                    "phoneCountryCode",
+                                    phoneCode,
+                                  );
+                                }
+                              }}
+                            />
+                          </FormField>
+
+                          <FormField label={t("namaLengkap")} required>
+                            <TextInput
+                              id={`full-name-${idx}`}
+                              placeholder={t("phNama")}
+                              value={traveler.fullName}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "fullName",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("tanggalLahir")} required>
+                            <DateInput
+                              id={`birth-date-${idx}`}
+                              value={traveler.birthDate}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "birthDate",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("negaraTempatLahir")} required>
+                            <SearchableSelect
+                              id={`birth-country-${idx}`}
+                              placeholder={t("phPilihNegara")}
+                              options={countryOptions}
+                              value={traveler.birthCountry}
+                              onChange={(value) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "birthCountry",
+                                  value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("jenisKelamin")} required>
+                            <SelectInput
+                              id={`gender-${idx}`}
+                              placeholder={t("phKelamin")}
+                              options={genderOptions}
+                              value={traveler.gender}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "gender",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("nomorPaspor")} required>
+                            <TextInput
+                              id={`passport-no-${idx}`}
+                              placeholder={t("phNomorPaspor")}
+                              value={traveler.passportNo}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "passportNo",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("tanggalKadaluwarsa")} required>
+                            <DateInput
+                              id={`passport-expiry-${idx}`}
+                              value={traveler.passportExpiry}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "passportExpiry",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </FormSection>
+
+                      {/* Informasi Akun (same page, below Data Pribadi) */}
+                      <FormSection
+                        title={
+                          travelers.length > 1
+                            ? `${t("infoAkun")} — ${t("travelerLabel")} ${idx + 1}`
+                            : t("infoAkun")
+                        }
+                        description={t("infoAkunDesc")}
+                      >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("nomorPonsel")} required>
+                            <PhoneInput
+                              id={`phone-${idx}`}
+                              placeholder={t("phTelepon")}
+                              value={traveler.phone}
+                              selectedCountryCode={traveler.phoneCountryCode}
+                              onCountryCodeChange={(code) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "phoneCountryCode",
+                                  code,
+                                )
+                              }
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "phone",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("email")} required>
+                            <TextInput
+                              id={`email-${idx}`}
+                              type="email"
+                              placeholder={t("phEmail")}
+                              value={traveler.email}
+                              onChange={(e) =>
+                                handleTravelerChange(
+                                  idx,
+                                  "email",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </FormSection>
+                    </div>
+                  ))}
+
+                  <div className="flex justify-end">
+                    <button
+                      onClick={addTraveler}
+                      className="flex items-center gap-1.5 text-xs font-medium text-teal-600 hover:text-teal-700 border border-teal-200 rounded-lg px-4 py-2 hover:bg-teal-50 transition-colors"
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      </svg>
+                      {t("tambahPelaku")}
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* PAGE 1: Detail Perjalanan */}
+              {currentStep === 1 && (
+                <>
+                  {travelers.map((traveler, idx) => {
+                    const detail = travelDetails[idx] || { arrivalDate: "", departureDate: "", hasVisa: "", visaNumber: "" };
+                    return (
+                      <FormSection
+                        key={idx}
+                        title={
+                          travelers.length > 1
+                            ? `${t("detailPerjalanan")} — ${traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}`
+                            : t("detailPerjalanan")
+                        }
+                        description={t("detailPerjalananDesc")}
+                      >
+                        {travelers.length > 1 && (
+                          <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-teal-50 border border-teal-100 rounded-lg">
+                            <svg className="w-4 h-4 text-teal-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <p className="text-xs text-teal-700 font-medium">
+                              {traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                              {traveler.passportCountry && (
+                                <span className="text-teal-500 font-normal ml-1">
+                                  — {countryOptions.find(c => c.value === traveler.passportCountry)?.label || traveler.passportCountry}
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("tglKedatangan")} required>
+                            <SelectInput
+                              id={`arrival-date-select-${idx}`}
+                              placeholder={t("phPilih")}
+                              options={[
+                                { value: "today", label: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }) },
+                                { value: "tomorrow", label: new Date(Date.now() + 86400000).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }) },
+                                { value: "custom", label: "Tanggal Lainnya..." },
+                              ]}
+                              value={detail.arrivalDate}
+                              onChange={(e) =>
+                                handleTravelDetailChange(idx, "arrivalDate", e.target.value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("tglKeberangkatan")} required>
+                            <DateInput
+                              id={`departure-date-${idx}`}
+                              value={detail.departureDate}
+                              onChange={(e) =>
+                                handleTravelDetailChange(idx, "departureDate", e.target.value)
+                              }
+                            />
+                          </FormField>
+                        </div>
+
+                        <div className="mt-6">
+                          <FormField label={t("punyaVisa")} required>
+                            <RadioInput
+                              name={`has-visa-${idx}`}
+                              id={`has-visa-${idx}`}
+                              options={[
+                                { value: "ya", label: t("ya") },
+                                { value: "tidak", label: t("tidak") },
+                              ]}
+                              value={detail.hasVisa}
+                              onChange={(value) => {
+                                handleTravelDetailChange(idx, "hasVisa", value);
+                                if (value !== "ya") {
+                                  handleTravelDetailChange(idx, "visaNumber", "");
+                                }
+                              }}
+                            />
+                          </FormField>
+                        </div>
+
+                        {detail.hasVisa === "ya" && (
+                          <div className="mt-5 animate-in">
+                            <FormField label={t("nomorVisa")} required>
+                              <TextInput
+                                id={`visa-number-${idx}`}
+                                placeholder={t("phNomorVisa")}
+                                value={detail.visaNumber}
+                                onChange={(e) =>
+                                  handleTravelDetailChange(idx, "visaNumber", e.target.value)
+                                }
+                              />
+                            </FormField>
+                          </div>
+                        )}
+                      </FormSection>
+                    );
+                  })}
+                </>
+              )}
+
+              {/* PAGE 2: Moda Transportasi & Alamat */}
+              {currentStep === 2 && (
+                <>
+                  {/* Moda Transportasi Section */}
+                  <FormSection
+                    title={t("modaTransportasi")}
+                    description={t("modaTransportasiDesc")}
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                      <FormField label={t("pilihModa")} required>
+                        <SelectInput
+                          id="transport-mode"
+                          placeholder={t("phPilihModa")}
+                          options={[
+                            { value: "udara", label: t("udara") },
+                            { value: "laut", label: t("laut") },
+                          ]}
+                          value={transport.mode}
+                          onChange={(e) => {
+                            handleTransportChange("mode", e.target.value);
+                            handleTransportChange("arrivalPlace", "");
+                            handleTransportChange("airType", "");
+                            handleTransportChange("airlineName", "");
+                            handleTransportChange("flightCode", "");
+                            handleTransportChange("flightNumber", "");
+                            handleTransportChange("shipType", "");
+                            handleTransportChange("shipName", "");
+                          }}
+                        />
+                      </FormField>
+
+                      <FormField label={t("tujuanPerjalanan")} required>
+                        <SelectInput
+                          id="travel-purpose"
+                          placeholder={t("phTujuanPerjalanan")}
+                          options={travelPurposes}
+                          value={transport.travelPurpose}
+                          onChange={(e) =>
+                            handleTransportChange("travelPurpose", e.target.value)
+                          }
+                        />
+                      </FormField>
+                    </div>
+
+                    {/* Conditional: UDARA fields */}
+                    {transport.mode === "udara" && (
+                      <div className="mt-5 animate-in">
+                        <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p className="text-xs text-blue-600">{t("infoKolomUdara")}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("tempatKedatangan")} required>
+                            <SearchableSelect
+                              id="arrival-airport"
+                              placeholder={t("phTempatKedatangan")}
+                              options={indonesianAirports}
+                              value={transport.arrivalPlace}
+                              onChange={(value) =>
+                                handleTransportChange("arrivalPlace", value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("jenisTransportasiUdara")} required>
+                            <SelectInput
+                              id="air-transport-type"
+                              placeholder={t("phJenisTransportasiUdara")}
+                              options={airTransportTypes}
+                              value={transport.airType}
+                              onChange={(e) =>
+                                handleTransportChange("airType", e.target.value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("namaPenerbangan")} required>
+                            <SearchableSelect
+                              id="airline-name"
+                              placeholder={t("phNamaPenerbangan")}
+                              options={worldAirlines}
+                              value={transport.airlineName}
+                              onChange={(value, opt) => {
+                                handleTransportChange("airlineName", value);
+                                handleTransportChange("flightCode", opt?.value || "");
+                              }}
+                            />
+                          </FormField>
+
+                          <FormField label={t("nomorPenerbangan")} required>
+                            <div className="flex">
+                              <span className="inline-flex items-center px-3 py-2.5 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-sm text-gray-500 font-medium min-w-[60px] justify-center">
+                                {transport.flightCode || t("kode")}
+                              </span>
+                              <TextInput
+                                id="flight-number"
+                                placeholder={t("phNomorPenerbangan")}
+                                value={transport.flightNumber}
+                                onChange={(e) =>
+                                  handleTransportChange("flightNumber", e.target.value)
+                                }
+                                className="!rounded-l-none"
+                              />
+                            </div>
+                          </FormField>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Conditional: LAUT fields */}
+                    {transport.mode === "laut" && (
+                      <div className="mt-5 animate-in">
+                        <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p className="text-xs text-blue-600">{t("infoKolomLaut")}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("tempatKedatangan")} required>
+                            <SearchableSelect
+                              id="arrival-port"
+                              placeholder={t("phTempatKedatangan")}
+                              options={indonesianPorts}
+                              value={transport.arrivalPlace}
+                              onChange={(value) =>
+                                handleTransportChange("arrivalPlace", value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("jenisKapal")} required>
+                            <SelectInput
+                              id="ship-type"
+                              placeholder={t("phJenisKapal")}
+                              options={shipTypes}
+                              value={transport.shipType}
+                              onChange={(e) =>
+                                handleTransportChange("shipType", e.target.value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("namaKapal")} required className="md:col-span-2">
+                            <TextInput
+                              id="ship-name"
+                              placeholder={t("phNamaKapal")}
+                              value={transport.shipName}
+                              onChange={(e) =>
+                                handleTransportChange("shipName", e.target.value)
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </div>
+                    )}
+                  </FormSection>
+
+                  {/* Alamat di Indonesia Section */}
+                  <FormSection
+                    title={t("alamatIndonesia")}
+                    description={t("alamatIndonesiaDesc")}
+                  >
+                    <div className="grid grid-cols-1 gap-y-4">
+                      <FormField label={t("jenisTempatTinggal")} required>
+                        <SelectInput
+                          id="accommodation-type"
+                          placeholder={t("phJenisTempatTinggal")}
+                          options={accommodationTypes}
+                          value={address.accommodationType}
+                          onChange={(e) => {
+                            handleAddressChange("accommodationType", e.target.value);
+                            handleAddressChange("province", "");
+                            handleAddressChange("city", "");
+                            handleAddressChange("fullAddress", "");
+                            handleAddressChange("hotelValue", "");
+                            handleAddressChange("hotelLabel", "");
+                            handleAddressChange("hotelCity", "");
+                            handleAddressChange("hotelProvince", "");
+                            handleAddressChange("transitAccommodation", "");
+                          }}
+                        />
+                      </FormField>
+                    </div>
+
+                    {/* Conditional: RUMAH fields */}
+                    {address.accommodationType === "rumah" && (
+                      <div className="mt-5 animate-in">
+                        <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p className="text-xs text-blue-600">{t("infoKolomRumah")}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("provinsi")} required>
+                            <SearchableSelect
+                              id="province"
+                              placeholder={t("phProvinsi")}
+                              options={indonesianProvinces}
+                              value={address.province}
+                              onChange={(value) => {
+                                handleAddressChange("province", value);
+                                handleAddressChange("city", "");
+                              }}
+                            />
+                          </FormField>
+
+                          <FormField label={t("kota")} required>
+                            <SelectInput
+                              id="city"
+                              placeholder={t("phKota")}
+                              options={filteredCities}
+                              value={address.city}
+                              onChange={(e) =>
+                                handleAddressChange("city", e.target.value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("alamatLengkap")} required>
+                            <TextInput
+                              id="full-address"
+                              placeholder={t("phAlamatLengkap")}
+                              value={address.fullAddress}
+                              onChange={(e) =>
+                                handleAddressChange("fullAddress", e.target.value)
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("kantorImigrasi")}>
+                            <ReadOnlyField
+                              id="immigration-office"
+                              value={suggestedImmigrationOffice}
+                              icon={
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Conditional: HOTEL fields */}
+                    {address.accommodationType === "hotel" && (
+                      <div className="mt-5 animate-in">
+                        <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p className="text-xs text-blue-600">{t("infoKolomHotel")}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("namaHotel")} required className="md:col-span-2">
+                            <SearchableSelect
+                              id="hotel-name"
+                              placeholder={t("phNamaHotel")}
+                              options={hotelOptions}
+                              value={address.hotelValue}
+                              onChange={(value, opt) => {
+                                handleAddressChange("hotelValue", value);
+                                handleAddressChange("hotelLabel", opt?.label || "");
+                                const hotel = indonesianHotels.find((h) => h.value === value);
+                                if (hotel) {
+                                  handleAddressChange("hotelCity", hotel.city);
+                                  handleAddressChange("hotelProvince", hotel.province);
+                                }
+                              }}
+                            />
+                          </FormField>
+
+                          <FormField label={t("kantorImigrasi")} className="md:col-span-2">
+                            <ReadOnlyField
+                              id="immigration-office-hotel"
+                              value={suggestedImmigrationOffice}
+                              icon={
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Conditional: LAINNYA fields */}
+                    {address.accommodationType === "lainnya" && (
+                      <div className="mt-5 animate-in">
+                        <div className="grid grid-cols-1 gap-y-4">
+                          <FormField label={t("akomodasi")} required>
+                            <SelectInput
+                              id="transit-accommodation"
+                              placeholder={t("phAkomodasi")}
+                              options={[
+                                { value: "transit", label: t("hanyaTransit") },
+                              ]}
+                              value={address.transitAccommodation}
+                              onChange={(e) =>
+                                handleAddressChange("transitAccommodation", e.target.value)
+                              }
+                            />
+                          </FormField>
+                        </div>
+                      </div>
+                    )}
+                  </FormSection>
+                </>
+              )}
+
+              {/* PAGE 3: Deklarasi */}
+              {currentStep === 3 && (
+                <>
+                  {declarationView.mode === "list" ? (
+                    /* --- Traveler List View --- */
+                    <FormSection
+                      title={t("deklarasiAnggota")}
+                      description={t("deklarasiAnggotaDesc")}
+                    >
+                      <div className="space-y-4">
+                        {travelers.map((traveler, idx) => {
+                          const decl = declarations[idx];
+                          const complete = decl ? isDeclarationComplete(decl) : false;
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setDeclarationView({ mode: "form", index: idx })}
+                              className={`w-full text-left rounded-xl border-2 px-6 py-5 transition-all duration-200 hover:shadow-md ${
+                                complete
+                                  ? "border-teal-200 bg-teal-50/30 hover:border-teal-300"
+                                  : "border-gray-200 bg-white hover:border-gray-300"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex-1">
+                                  <p className="text-xs text-gray-400 font-medium mb-1">
+                                    {idx === 0 ? t("ketuaPelaku") : `${t("travelerLabel")} ${idx + 1}`}
+                                  </p>
+                                  <p className="text-base font-bold text-gray-900 uppercase">
+                                    {traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                                  </p>
+                                  <p className="text-sm text-gray-500 mt-0.5">
+                                    {traveler.passportNo || "—"}
+                                  </p>
+                                  <p className={`text-xs font-medium mt-2 ${
+                                    complete ? "text-teal-600" : "text-amber-500"
+                                  }`}>
+                                    {complete ? t("deklarasiSelesai") : t("isiDeklarasi")}
+                                  </p>
+                                </div>
+                                <div className="ml-4">
+                                  {complete ? (
+                                    <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center shadow-sm shadow-teal-500/30">
+                                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    </div>
+                                  ) : (
+                                    <div className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-teal-400 hover:bg-teal-50 transition-colors">
+                                      <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </FormSection>
+                  ) : (
+                    /* --- Declaration Form View --- */
+                    (() => {
+                      const idx = declarationView.index;
+                      const traveler = travelers[idx];
+                      const decl = declarations[idx] || { baggageCount: "", hasProhibitedGoods: "", hasIMEI: "", agreed: false };
+                      return (
+                        <div className="space-y-6">
+                          {/* Back to list button */}
+                          <button
+                            type="button"
+                            onClick={() => setDeclarationView({ mode: "list", index: 0 })}
+                            className="flex items-center gap-2 text-sm text-gray-500 hover:text-teal-600 transition-colors font-medium"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            </svg>
+                            {t("kembaliKeList")}
+                          </button>
+
+                          {/* Traveler badge */}
+                          <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-100 rounded-xl">
+                            <div className="w-9 h-9 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                              {idx + 1}
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-400 font-medium">
+                                {idx === 0 ? t("ketuaPelaku") : `${t("travelerLabel")} ${idx + 1}`}
+                              </p>
+                              <p className="text-sm font-bold text-gray-900 uppercase">
+                                {traveler?.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Customs Declaration BC 2.2 */}
+                          <FormSection
+                            title={t("customsTitle")}
+                            description={t("customsDesc")}
+                          >
+                            {/* Info collapsible 1 */}
+                            <div className="mb-6">
+                              <details className="group border border-gray-200 rounded-lg overflow-hidden">
+                                <summary className="flex items-center justify-between px-4 py-3 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                                  <p className="text-xs text-gray-600 italic">{t("infoDaftarBarang")}</p>
+                                  <svg className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                  </svg>
+                                </summary>
+                                <div className="px-4 py-3 text-xs text-gray-500 border-t border-gray-100 bg-white leading-relaxed">
+                                  <p className="font-medium text-gray-700 mb-2">Informasi Umum Barang Bawaan:</p>
+                                  <ul className="list-disc list-inside space-y-1">
+                                    <li>Barang bawaan pribadi yang wajar sesuai kebutuhan perjalanan</li>
+                                    <li>Barang yang dibawa harus sesuai dengan ketentuan impor Indonesia</li>
+                                    <li>Batas nilai pembebasan bea masuk: USD 500 per orang</li>
+                                  </ul>
+                                </div>
+                              </details>
+                            </div>
+
+                            {/* Baggage Count */}
+                            <div className="mb-6">
+                              <FormField label={t("jumlahBagasi")} required>
+                                <div className="flex">
+                                  <input
+                                    id={`baggage-count-${idx}`}
+                                    type="number"
+                                    min="0"
+                                    placeholder={t("phJumlahBagasi")}
+                                    value={decl.baggageCount}
+                                    onChange={(e) => handleDeclarationChange(idx, "baggageCount", e.target.value)}
+                                    className="flex-1 px-4 py-2.5 rounded-l-lg border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 hover:border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10"
+                                  />
+                                  <span className="inline-flex items-center px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-200 bg-gray-50 text-sm text-gray-500 font-medium">
+                                    {t("pcsKoli")}
+                                  </span>
+                                </div>
+                              </FormField>
+                            </div>
+
+                            {/* Prohibited Goods Question */}
+                            <div className="mb-6">
+                              <p className="text-xs font-semibold text-navy-800 mb-3">
+                                {t("barangWajib")} <span className="text-red-500 ml-0.5">*</span>
+                              </p>
+
+                              {/* Info collapsible 2 */}
+                              <div className="mb-4">
+                                <details className="group border border-gray-200 rounded-lg overflow-hidden">
+                                  <summary className="flex items-center justify-between px-4 py-3 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                                    <p className="text-xs text-gray-600 italic">{t("infoDaftarBarangWajib")}</p>
+                                    <svg className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                  </summary>
+                                  <div className="px-4 py-3 text-xs text-gray-500 border-t border-gray-100 bg-white leading-relaxed">
+                                    <p className="font-medium text-gray-700 mb-2">Daftar barang yang wajib diberitahukan:</p>
+                                    <ul className="list-disc list-inside space-y-1">
+                                      <li>Uang tunai dan/atau instrumen pembayaran lain senilai Rp100.000.000 atau lebih</li>
+                                      <li>Narkotika, psikotropika, prekursor, obat-obatan, senjata api/amunisi, bahan peledak, produk pornografi</li>
+                                      <li>Hewan, ikan, dan tumbuhan termasuk produk yang berasal dari hewan/tumbuhan yang dilindungi</li>
+                                      <li>Film sinematografi, pita video berisi rekaman, piringan video</li>
+                                      <li>Barang dagangan komersial</li>
+                                    </ul>
+                                  </div>
+                                </details>
+                              </div>
+
+                              <RadioInput
+                                name={`prohibited-goods-${idx}`}
+                                id={`prohibited-goods-${idx}`}
+                                options={[
+                                  { value: "ya", label: t("ya") },
+                                  { value: "tidak", label: t("tidak") },
+                                ]}
+                                value={decl.hasProhibitedGoods}
+                                onChange={(value) => handleDeclarationChange(idx, "hasProhibitedGoods", value)}
+                              />
+                            </div>
+
+                            {/* IMEI Question */}
+                            <div className="mb-6">
+                              <p className="text-xs font-semibold text-navy-800 mb-1">
+                                {t("imeiQuestion")} <span className="text-red-500 ml-0.5">*</span>
+                              </p>
+                              <p className="text-xs text-red-500 font-medium mb-3">
+                                {t("imeiNote")}
+                              </p>
+                              <RadioInput
+                                name={`imei-${idx}`}
+                                id={`imei-${idx}`}
+                                options={[
+                                  { value: "ya", label: t("ya") },
+                                  { value: "tidak", label: t("tidak") },
+                                ]}
+                                value={decl.hasIMEI}
+                                onChange={(value) => handleDeclarationChange(idx, "hasIMEI", value)}
+                              />
+                            </div>
+
+                            {/* Agreement Checkbox */}
+                            <div className="mt-8 pt-6 border-t border-gray-100">
+                              <label className="flex items-start gap-3 cursor-pointer group">
+                                <input
+                                  type="checkbox"
+                                  checked={decl.agreed}
+                                  onChange={(e) => handleDeclarationChange(idx, "agreed", e.target.checked)}
+                                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-teal-500 focus:ring-teal-500/20 accent-teal-500"
+                                />
+                                <span className="text-xs text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors">
+                                  {t("persetujuanDeklarasi")}{" "}
+                                  <a href="#" className="text-teal-600 underline hover:text-teal-700 font-medium">{t("deklarasiLink")}</a>{" "}
+                                  {t("dalamAplikasi")}
+                                </span>
+                              </label>
+                            </div>
+
+                            {/* Submit / Back to list */}
+                            <div className="mt-6 flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() => setDeclarationView({ mode: "list", index: 0 })}
+                                className="flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={!isDeclarationComplete(decl)}
+                              >
+                                {t("kirim")}
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                              </button>
+                            </div>
+                          </FormSection>
+                        </div>
+                      );
+                    })()
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Navigation buttons */}
+          <div className="flex items-center justify-between mt-6 mb-8">
+            <button
+              onClick={() => {
+                setCurrentStep(Math.max(0, currentStep - 1));
+                setDeclarationView({ mode: "list", index: 0 });
+              }}
+              className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              {t("back")}
+            </button>
+            {currentStep < steps.length - 1 ? (
+              <button
+                onClick={() => {
+                  setCurrentStep(Math.min(steps.length - 1, currentStep + 1));
+                  setDeclarationView({ mode: "list", index: 0 });
+                }}
+                className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
+              >
+                {t("next")}
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <div />
+            )}
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <LanguageProvider>
+      <PageContent />
+    </LanguageProvider>
   );
 }
