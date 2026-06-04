@@ -83,15 +83,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Moda Transportasi & Alamat (Step 3)
     modaTransportasi: "Moda Transportasi",
-    modaTransportasiDesc: "Silakan pilih moda transportasi yang akan Anda gunakan untuk memasuki Indonesia.",
+    modaTransportasiDesc:
+      "Silakan pilih moda transportasi yang akan Anda gunakan untuk memasuki Indonesia.",
     pilihModa: "Moda Transportasi",
     tujuanPerjalanan: "Tujuan Perjalanan",
     phTujuanPerjalanan: "Pilih Tujuan Perjalanan",
     udara: "Udara",
     laut: "Laut",
     phPilihModa: "Pilih Moda Transportasi",
-    infoKolomUdara: "Kolom-kolom di bawah ini ditampilkan pada moda transportasi UDARA yang dipilih di atas.",
-    infoKolomLaut: "Kolom-kolom di bawah ini ditampilkan pada moda transportasi LAUT yang dipilih di atas.",
+    infoKolomUdara:
+      "Kolom-kolom di bawah ini ditampilkan pada moda transportasi UDARA yang dipilih di atas.",
+    infoKolomLaut:
+      "Kolom-kolom di bawah ini ditampilkan pada moda transportasi LAUT yang dipilih di atas.",
     tempatKedatangan: "Tempat Kedatangan",
     phTempatKedatangan: "Pilih Tempat Kedatangan",
     jenisTransportasiUdara: "Jenis Transportasi Udara",
@@ -106,11 +109,14 @@ export const translations: Record<Language, Record<string, string>> = {
     phNamaKapal: "Masukkan Nama Kapal",
     kode: "Kode",
     alamatIndonesia: "Alamat di Indonesia",
-    alamatIndonesiaDesc: "Mohon berikan alamat tempat Anda akan menginap di Indonesia.",
+    alamatIndonesiaDesc:
+      "Mohon berikan alamat tempat Anda akan menginap di Indonesia.",
     jenisTempatTinggal: "Jenis Tempat Tinggal",
     phJenisTempatTinggal: "Pilih Jenis Tempat Tinggal",
-    infoKolomRumah: "Kolom-kolom di bawah ini ditampilkan pada jenis tempat tinggal RUMAH yang dipilih di atas.",
-    infoKolomHotel: "Kolom-kolom di bawah ini ditampilkan pada jenis tempat tinggal HOTEL yang dipilih di atas.",
+    infoKolomRumah:
+      "Kolom-kolom di bawah ini ditampilkan pada jenis tempat tinggal RUMAH yang dipilih di atas.",
+    infoKolomHotel:
+      "Kolom-kolom di bawah ini ditampilkan pada jenis tempat tinggal HOTEL yang dipilih di atas.",
     provinsi: "Provinsi",
     phProvinsi: "Pilih Provinsi",
     kota: "Kota",
@@ -126,14 +132,17 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Deklarasi (Step 4)
     deklarasiAnggota: "Deklarasi Anggota Grup",
-    deklarasiAnggotaDesc: "Mohon lengkapi Kartu Kedatangan Anda sebelum memasuki Indonesia dengan mengisi informasi yang diperlukan.",
+    deklarasiAnggotaDesc:
+      "Mohon lengkapi Kartu Kedatangan Anda sebelum memasuki Indonesia dengan mengisi informasi yang diperlukan.",
     ketuaPelaku: "Ketua Pelaku Perjalanan",
     deklarasiSelesai: "Pertanyaan Deklarasi Selesai",
     isiDeklarasi: "Isi pertanyaan deklarasi",
     // Deklarasi Kesehatan
     dekKesehatanTitle: "Deklarasi Kesehatan",
-    dekKesehatanDesc: "Sesuai dengan protokol kesehatan nasional Indonesia, mohon lengkapi formulir deklarasi kesehatan untuk mendukung pemantauan kesehatan masyarakat dan mencegah penyebaran penyakit menular.",
-    dekKesehatanQ1: "Apakah Anda memiliki gejala berikut: demam, batuk, pilek, sesak napas, sakit tenggorokan, atau lesi kulit/ruam?",
+    dekKesehatanDesc:
+      "Sesuai dengan protokol kesehatan nasional Indonesia, mohon lengkapi formulir deklarasi kesehatan untuk mendukung pemantauan kesehatan masyarakat dan mencegah penyebaran penyakit menular.",
+    dekKesehatanQ1:
+      "Apakah Anda memiliki gejala berikut: demam, batuk, pilek, sesak napas, sakit tenggorokan, atau lesi kulit/ruam?",
     dekKesehatanPilihGejala: "Pilih gejala Anda (Bisa memilih lebih dari satu)",
     dekKesehatanBatuk: "BATUK",
     dekKesehatanDemam: "DEMAM",
@@ -143,31 +152,44 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SESAK NAPAS",
     dekKesehatanTidakAda: "TIDAK ADA GEJALA",
     dekKesehatanGejalaTerpilih: "Gejala Terpilih:",
-    dekKesehatanQ2: "Negara asal keberangkatan, transit, dan negara lain yang Anda kunjungi dalam waktu 21 hari sebelum keberangkatan ke Indonesia (Bisa memilih lebih dari satu)",
+    dekKesehatanQ2:
+      "Negara asal keberangkatan, transit, dan negara lain yang Anda kunjungi dalam waktu 21 hari sebelum keberangkatan ke Indonesia (Bisa memilih lebih dari satu)",
     // Deklarasi Karantina
     dekKarantinaTitle: "Deklarasi Karantina",
-    dekKarantinaDesc: "Mohon isi deklarasi karantina sesuai dengan kondisi Anda saat ini, yang nantinya akan diverifikasi oleh petugas karantina.",
-    dekKarantinaQ1: "Apakah Anda membawa hewan, ikan, tumbuhan, dan/atau produk olahannya?",
+    dekKarantinaDesc:
+      "Mohon isi deklarasi karantina sesuai dengan kondisi Anda saat ini, yang nantinya akan diverifikasi oleh petugas karantina.",
+    dekKarantinaQ1:
+      "Apakah Anda membawa hewan, ikan, tumbuhan, dan/atau produk olahannya?",
     dekKarantinaDescKomoditas: "Deskripsi komoditas yang dibawa",
     dekKarantinaKategori: "Kategori",
     dekKarantinaSubKategori: "Sub-kategori",
     dekKarantinaKomoditasTerpilih: "Komoditas terpilih:",
     dekKarantinaBentukJenis: "Sebutkan bentuk atau jenis komoditas",
     dekKarantinaJumlah: "Jumlah komoditas yang dibawa",
-    dekKarantinaQ2: "Apakah komoditas disertai dengan sertifikat karantina (Sertifikat Fitosanitasi/Sertifikat Kesehatan Hewan)?",
-    dekKarantinaDariNegara: "Dari negara mana Anda memperoleh komoditas tersebut?",
+    dekKarantinaQ2:
+      "Apakah komoditas disertai dengan sertifikat karantina (Sertifikat Fitosanitasi/Sertifikat Kesehatan Hewan)?",
+    dekKarantinaDariNegara:
+      "Dari negara mana Anda memperoleh komoditas tersebut?",
     dekKarantinaPhDariNegara: "Pilih negara",
-    customsTitle: "Customs Declaration (BC 2.2) - Pemberitahuan Pabean Barang yang Dibawa oleh Penumpang dan Awak Sarana Pengangkut",
-    customsDesc: "Halaman ini merupakan bagian untuk memberitahukan barang bawaan Anda kepada Petugas Bea dan Cukai.",
-    infoDaftarBarang: "Silakan tekan tombol ini untuk membuka halaman informasi sebelum menjawab pertanyaan di bawah.",
-    infoDaftarBarangWajib: "Silakan tekan tombol ini untuk mengetahui daftar barang yang wajib diberitahukan.",
+    customsTitle:
+      "Customs Declaration (BC 2.2) - Pemberitahuan Pabean Barang yang Dibawa oleh Penumpang dan Awak Sarana Pengangkut",
+    customsDesc:
+      "Halaman ini merupakan bagian untuk memberitahukan barang bawaan Anda kepada Petugas Bea dan Cukai.",
+    infoDaftarBarang:
+      "Silakan tekan tombol ini untuk membuka halaman informasi sebelum menjawab pertanyaan di bawah.",
+    infoDaftarBarangWajib:
+      "Silakan tekan tombol ini untuk mengetahui daftar barang yang wajib diberitahukan.",
     jumlahBagasi: "Jumlah Bagasi Yang Tiba Bersama Anda",
     phJumlahBagasi: "Masukkan Jumlah Bagasi Yang Tiba Bersama Anda",
     pcsKoli: "Pcs/Koli",
-    barangWajib: "Apakah Anda membawa barang yang wajib diberitahukan kepada Bea dan Cukai?",
-    imeiQuestion: "Apakah anda membawa Telepon Seluler, Komputer Genggam, dan Komputer Tablet yang dibeli/diperoleh di luar negeri dan akan digunakan di Indonesia dengan menggunakan jaringan seluler Indonesia? (Registrasi IMEI)",
-    imeiNote: "(WNA yang mengunjungi Indonesia tidak lebih dari 90 hari, tidak perlu melakukan registrasi IMEI pada Bea Cukai di tempat kedatangan.)",
-    persetujuanDeklarasi: "Saya, Pemohon, dengan ini menyatakan bahwa saya memahami dan menyetujui semua Informasi dan",
+    barangWajib:
+      "Apakah Anda membawa barang yang wajib diberitahukan kepada Bea dan Cukai?",
+    imeiQuestion:
+      "Apakah anda membawa Telepon Seluler, Komputer Genggam, dan Komputer Tablet yang dibeli/diperoleh di luar negeri dan akan digunakan di Indonesia dengan menggunakan jaringan seluler Indonesia? (Registrasi IMEI)",
+    imeiNote:
+      "(WNA yang mengunjungi Indonesia tidak lebih dari 90 hari, tidak perlu melakukan registrasi IMEI pada Bea Cukai di tempat kedatangan.)",
+    persetujuanDeklarasi:
+      "Saya, Pemohon, dengan ini menyatakan bahwa saya memahami dan menyetujui semua Informasi dan",
     deklarasiLink: "Deklarasi",
     dalamAplikasi: "dalam aplikasi ini.",
     kirim: "Kirim",
@@ -180,8 +202,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Footer
     dirjenImigrasi: "Direktorat Jenderal Imigrasi",
     republikIndonesia: "Republik Indonesia",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "Selatan, DKI Jakarta, Indonesia",
   },
 
@@ -247,15 +268,18 @@ export const translations: Record<Language, Record<string, string>> = {
     phNomorVisa: "Enter Visa or KITAS/KITAP Number",
 
     modaTransportasi: "Mode of Transport",
-    modaTransportasiDesc: "Please select the mode of transport you will use to enter Indonesia.",
+    modaTransportasiDesc:
+      "Please select the mode of transport you will use to enter Indonesia.",
     pilihModa: "Mode of Transport",
     tujuanPerjalanan: "Travel Purpose",
     phTujuanPerjalanan: "Select Travel Purpose",
     udara: "Air",
     laut: "Sea",
     phPilihModa: "Select Mode of Transport",
-    infoKolomUdara: "The fields below are displayed for the AIR mode of transport selected above.",
-    infoKolomLaut: "The fields below are displayed for the SEA mode of transport selected above.",
+    infoKolomUdara:
+      "The fields below are displayed for the AIR mode of transport selected above.",
+    infoKolomLaut:
+      "The fields below are displayed for the SEA mode of transport selected above.",
     tempatKedatangan: "Place of Arrival",
     phTempatKedatangan: "Select Place of Arrival",
     jenisTransportasiUdara: "Air Transport Type",
@@ -270,11 +294,14 @@ export const translations: Record<Language, Record<string, string>> = {
     phNamaKapal: "Enter Ship Name",
     kode: "Code",
     alamatIndonesia: "Address in Indonesia",
-    alamatIndonesiaDesc: "Please provide the address where you will be staying in Indonesia.",
+    alamatIndonesiaDesc:
+      "Please provide the address where you will be staying in Indonesia.",
     jenisTempatTinggal: "Type of Accommodation",
     phJenisTempatTinggal: "Select Accommodation Type",
-    infoKolomRumah: "The fields below are displayed for the HOUSE accommodation type selected above.",
-    infoKolomHotel: "The fields below are displayed for the HOTEL accommodation type selected above.",
+    infoKolomRumah:
+      "The fields below are displayed for the HOUSE accommodation type selected above.",
+    infoKolomHotel:
+      "The fields below are displayed for the HOTEL accommodation type selected above.",
     provinsi: "Province",
     phProvinsi: "Select Province",
     kota: "City",
@@ -290,15 +317,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Declaration (Step 4)
     deklarasiAnggota: "Group Member Declaration",
-    deklarasiAnggotaDesc: "Please complete your Arrival Card before entering Indonesia by filling in the required information.",
+    deklarasiAnggotaDesc:
+      "Please complete your Arrival Card before entering Indonesia by filling in the required information.",
     ketuaPelaku: "Lead Traveler",
     deklarasiSelesai: "Declaration Questions Completed",
     isiDeklarasi: "Fill in declaration questions",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -307,32 +338,44 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
-    dekKarantinaQ1: "Are you carrying animals, fish, plants, and/or processed products?",
+    dekKarantinaDesc:
+      "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
+    dekKarantinaQ1:
+      "Are you carrying animals, fish, plants, and/or processed products?",
     dekKarantinaDescKomoditas: "Description of commodities carried",
     dekKarantinaKategori: "Category",
     dekKarantinaSubKategori: "Sub-category",
     dekKarantinaKomoditasTerpilih: "Selected commodities:",
     dekKarantinaBentukJenis: "Specify the form or type of commodity",
     dekKarantinaJumlah: "Quantity of commodities carried",
-    dekKarantinaQ2: "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
+    dekKarantinaQ2:
+      "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
     dekKarantinaDariNegara: "From which country did you obtain the commodity?",
     dekKarantinaPhDariNegara: "Select country",
-    customsTitle: "Customs Declaration (BC 2.2) - Customs Notification of Goods Carried by Passengers and Crew",
-    customsDesc: "This page is for declaring your carried goods to the Customs and Excise Officer.",
-    infoDaftarBarang: "Press this button to open information page before answering the questions below.",
-    infoDaftarBarangWajib: "Press this button to see the list of goods that must be declared.",
+    customsTitle:
+      "Customs Declaration (BC 2.2) - Customs Notification of Goods Carried by Passengers and Crew",
+    customsDesc:
+      "This page is for declaring your carried goods to the Customs and Excise Officer.",
+    infoDaftarBarang:
+      "Press this button to open information page before answering the questions below.",
+    infoDaftarBarangWajib:
+      "Press this button to see the list of goods that must be declared.",
     jumlahBagasi: "Number of Baggage Arriving With You",
     phJumlahBagasi: "Enter Number of Baggage Arriving With You",
     pcsKoli: "Pcs",
-    barangWajib: "Are you carrying goods that must be declared to Customs and Excise?",
-    imeiQuestion: "Are you carrying Mobile Phones, Handheld Computers, and Tablet Computers purchased/obtained abroad that will be used in Indonesia using the Indonesian cellular network? (IMEI Registration)",
-    imeiNote: "(Foreigners visiting Indonesia for no more than 90 days do not need to register IMEI at Customs at the place of arrival.)",
-    persetujuanDeklarasi: "I, the Applicant, hereby declare that I understand and agree to all Information and",
+    barangWajib:
+      "Are you carrying goods that must be declared to Customs and Excise?",
+    imeiQuestion:
+      "Are you carrying Mobile Phones, Handheld Computers, and Tablet Computers purchased/obtained abroad that will be used in Indonesia using the Indonesian cellular network? (IMEI Registration)",
+    imeiNote:
+      "(Foreigners visiting Indonesia for no more than 90 days do not need to register IMEI at Customs at the place of arrival.)",
+    persetujuanDeklarasi:
+      "I, the Applicant, hereby declare that I understand and agree to all Information and",
     deklarasiLink: "Declaration",
     dalamAplikasi: "in this application.",
     kirim: "Submit",
@@ -343,8 +386,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "Directorate General of Immigration",
     republikIndonesia: "Republic of Indonesia",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 
@@ -355,8 +397,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     beranda: "ホーム",
     pageTitle: "到着カード申請",
-    pageDescription:
-      "以下のフォームに正確かつ完全に記入してください。",
+    pageDescription: "以下のフォームに正確かつ完全に記入してください。",
     pageDescriptionEnd: "が付いた項目は必須です。",
 
     step1: "個人情報",
@@ -411,7 +452,8 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Moda Transportasi & Alamat (Step 3)
     modaTransportasi: "交通手段",
-    modaTransportasiDesc: "インドネシアに入国する際の交通手段を選択してください。",
+    modaTransportasiDesc:
+      "インドネシアに入国する際の交通手段を選択してください。",
     pilihModa: "交通手段",
     tujuanPerjalanan: "渡航目的",
     phTujuanPerjalanan: "渡航目的を選択",
@@ -454,15 +496,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // 申告 (Step 4)
     deklarasiAnggota: "グループメンバー申告",
-    deklarasiAnggotaDesc: "インドネシア入国前に、必要な情報を入力して到着カードを完成させてください。",
+    deklarasiAnggotaDesc:
+      "インドネシア入国前に、必要な情報を入力して到着カードを完成させてください。",
     ketuaPelaku: "リーダー旅行者",
     deklarasiSelesai: "申告質問完了",
     isiDeklarasi: "申告質問に記入",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -471,30 +517,38 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
-    dekKarantinaQ1: "Are you carrying animals, fish, plants, and/or processed products?",
+    dekKarantinaDesc:
+      "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
+    dekKarantinaQ1:
+      "Are you carrying animals, fish, plants, and/or processed products?",
     dekKarantinaDescKomoditas: "Description of commodities carried",
     dekKarantinaKategori: "Category",
     dekKarantinaSubKategori: "Sub-category",
     dekKarantinaKomoditasTerpilih: "Selected commodities:",
     dekKarantinaBentukJenis: "Specify the form or type of commodity",
     dekKarantinaJumlah: "Quantity of commodities carried",
-    dekKarantinaQ2: "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
+    dekKarantinaQ2:
+      "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
     dekKarantinaDariNegara: "From which country did you obtain the commodity?",
     dekKarantinaPhDariNegara: "Select country",
     customsTitle: "税関申告 (BC 2.2) - 旅客・乗務員の持込品に関する税関通知",
     customsDesc: "このページは、税関職員に所持品を申告するためのものです。",
-    infoDaftarBarang: "以下の質問に答える前に、情報ページを開くにはこのボタンを押してください。",
-    infoDaftarBarangWajib: "申告が必要な物品のリストを確認するにはこのボタンを押してください。",
+    infoDaftarBarang:
+      "以下の質問に答える前に、情報ページを開くにはこのボタンを押してください。",
+    infoDaftarBarangWajib:
+      "申告が必要な物品のリストを確認するにはこのボタンを押してください。",
     jumlahBagasi: "同伴手荷物の数",
     phJumlahBagasi: "同伴手荷物の数を入力",
     pcsKoli: "個",
     barangWajib: "税関に申告が必要な物品を携帯していますか？",
-    imeiQuestion: "海外で購入・取得した携帯電話、ハンドヘルドコンピュータ、タブレットで、インドネシアの携帯ネットワークを使用するものを持っていますか？（IMEI登録）",
-    imeiNote: "（90日以内の訪問外国人は到着地の税関でIMEI登録を行う必要はありません。）",
+    imeiQuestion:
+      "海外で購入・取得した携帯電話、ハンドヘルドコンピュータ、タブレットで、インドネシアの携帯ネットワークを使用するものを持っていますか？（IMEI登録）",
+    imeiNote:
+      "（90日以内の訪問外国人は到着地の税関でIMEI登録を行う必要はありません。）",
     persetujuanDeklarasi: "私、申請者は、すべての情報と",
     deklarasiLink: "申告",
     dalamAplikasi: "を理解し同意することをここに宣言します。",
@@ -506,8 +560,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "入国管理総局",
     republikIndonesia: "インドネシア共和国",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 
@@ -518,8 +571,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     beranda: "首页",
     pageTitle: "到达卡申请",
-    pageDescription:
-      "请正确完整地填写以下表格。标有",
+    pageDescription: "请正确完整地填写以下表格。标有",
     pageDescriptionEnd: "的信息为必填项，不可留空。",
 
     step1: "个人信息",
@@ -530,8 +582,7 @@ export const translations: Record<Language, Record<string, string>> = {
     pratinjau: "申请预览",
 
     dataPribadi: "个人资料",
-    dataPribadiDesc:
-      "请确保您的个人资料与护照一致。如有变更，请在下方编辑。",
+    dataPribadiDesc: "请确保您的个人资料与护照一致。如有变更，请在下方编辑。",
     muatProfil: "加载资料",
     pasporNegara: "护照/国家/地区",
     namaLengkap: "全名",
@@ -552,8 +603,7 @@ export const translations: Record<Language, Record<string, string>> = {
     perempuan: "女",
 
     infoAkun: "账户信息",
-    infoAkunDesc:
-      "请输入您可联系的联系方式。数据将用于确认。",
+    infoAkunDesc: "请输入您可联系的联系方式。数据将用于确认。",
     nomorPonsel: "手机号码",
     email: "电子邮件",
     tambahPelaku: "添加旅行者",
@@ -617,15 +667,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // 申报 (Step 4)
     deklarasiAnggota: "团体成员申报",
-    deklarasiAnggotaDesc: "请在进入印度尼西亚之前填写所需信息以完成您的到达卡。",
+    deklarasiAnggotaDesc:
+      "请在进入印度尼西亚之前填写所需信息以完成您的到达卡。",
     ketuaPelaku: "领队旅客",
     deklarasiSelesai: "申报问题已完成",
     isiDeklarasi: "填写申报问题",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -634,18 +688,22 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
-    dekKarantinaQ1: "Are you carrying animals, fish, plants, and/or processed products?",
+    dekKarantinaDesc:
+      "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
+    dekKarantinaQ1:
+      "Are you carrying animals, fish, plants, and/or processed products?",
     dekKarantinaDescKomoditas: "Description of commodities carried",
     dekKarantinaKategori: "Category",
     dekKarantinaSubKategori: "Sub-category",
     dekKarantinaKomoditasTerpilih: "Selected commodities:",
     dekKarantinaBentukJenis: "Specify the form or type of commodity",
     dekKarantinaJumlah: "Quantity of commodities carried",
-    dekKarantinaQ2: "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
+    dekKarantinaQ2:
+      "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
     dekKarantinaDariNegara: "From which country did you obtain the commodity?",
     dekKarantinaPhDariNegara: "Select country",
     customsTitle: "海关申报 (BC 2.2) - 旅客和机组人员携带物品的海关通知",
@@ -656,7 +714,8 @@ export const translations: Record<Language, Record<string, string>> = {
     phJumlahBagasi: "输入随身行李数量",
     pcsKoli: "件",
     barangWajib: "您是否携带了必须向海关申报的物品？",
-    imeiQuestion: "您是否携带在国外购买/获得的手机、掌上电脑和平板电脑，并将在印度尼西亚使用印度尼西亚蜂窝网络？（IMEI注册）",
+    imeiQuestion:
+      "您是否携带在国外购买/获得的手机、掌上电脑和平板电脑，并将在印度尼西亚使用印度尼西亚蜂窝网络？（IMEI注册）",
     imeiNote: "（访问印度尼西亚不超过90天的外国人无需在到达地海关注册IMEI。）",
     persetujuanDeklarasi: "我，申请人，特此声明我理解并同意所有信息和",
     deklarasiLink: "申报",
@@ -669,8 +728,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "移民总局",
     republikIndonesia: "印度尼西亚共和国",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 
@@ -737,7 +795,8 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Moda Transportasi & Alamat (Step 3)
     modaTransportasi: "وسيلة النقل",
-    modaTransportasiDesc: "يرجى اختيار وسيلة النقل التي ستستخدمها لدخول إندونيسيا.",
+    modaTransportasiDesc:
+      "يرجى اختيار وسيلة النقل التي ستستخدمها لدخول إندونيسيا.",
     pilihModa: "وسيلة النقل",
     tujuanPerjalanan: "غرض السفر",
     phTujuanPerjalanan: "اختر غرض السفر",
@@ -780,15 +839,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // الإقرار (Step 4)
     deklarasiAnggota: "إقرار أعضاء المجموعة",
-    deklarasiAnggotaDesc: "يرجى إكمال بطاقة الوصول الخاصة بك قبل دخول إندونيسيا عن طريق ملء المعلومات المطلوبة.",
+    deklarasiAnggotaDesc:
+      "يرجى إكمال بطاقة الوصول الخاصة بك قبل دخول إندونيسيا عن طريق ملء المعلومات المطلوبة.",
     ketuaPelaku: "قائد المسافرين",
     deklarasiSelesai: "أسئلة الإقرار مكتملة",
     isiDeklarasi: "املأ أسئلة الإقرار",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -797,31 +860,41 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
-    dekKarantinaQ1: "Are you carrying animals, fish, plants, and/or processed products?",
+    dekKarantinaDesc:
+      "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
+    dekKarantinaQ1:
+      "Are you carrying animals, fish, plants, and/or processed products?",
     dekKarantinaDescKomoditas: "Description of commodities carried",
     dekKarantinaKategori: "Category",
     dekKarantinaSubKategori: "Sub-category",
     dekKarantinaKomoditasTerpilih: "Selected commodities:",
     dekKarantinaBentukJenis: "Specify the form or type of commodity",
     dekKarantinaJumlah: "Quantity of commodities carried",
-    dekKarantinaQ2: "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
+    dekKarantinaQ2:
+      "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
     dekKarantinaDariNegara: "From which country did you obtain the commodity?",
     dekKarantinaPhDariNegara: "Select country",
-    customsTitle: "الإقرار الجمركي (BC 2.2) - إخطار جمركي بالبضائع المحمولة من قبل الركاب والطاقم",
+    customsTitle:
+      "الإقرار الجمركي (BC 2.2) - إخطار جمركي بالبضائع المحمولة من قبل الركاب والطاقم",
     customsDesc: "هذه الصفحة لإعلان البضائع المحمولة لموظف الجمارك والضرائب.",
-    infoDaftarBarang: "اضغط على هذا الزر لفتح صفحة المعلومات قبل الإجابة على الأسئلة أدناه.",
-    infoDaftarBarangWajib: "اضغط على هذا الزر لمعرفة قائمة البضائع التي يجب الإقرار عنها.",
+    infoDaftarBarang:
+      "اضغط على هذا الزر لفتح صفحة المعلومات قبل الإجابة على الأسئلة أدناه.",
+    infoDaftarBarangWajib:
+      "اضغط على هذا الزر لمعرفة قائمة البضائع التي يجب الإقرار عنها.",
     jumlahBagasi: "عدد الأمتعة المصاحبة لك",
     phJumlahBagasi: "أدخل عدد الأمتعة",
     pcsKoli: "قطعة",
     barangWajib: "هل تحمل بضائع يجب الإقرار عنها للجمارك؟",
-    imeiQuestion: "هل تحمل هواتف محمولة أو أجهزة كمبيوتر محمولة أو أجهزة لوحية تم شراؤها من الخارج وستُستخدم في إندونيسيا؟ (تسجيل IMEI)",
-    imeiNote: "(الأجانب الذين يزورون إندونيسيا لمدة لا تزيد عن 90 يومًا لا يحتاجون إلى تسجيل IMEI في الجمارك.)",
-    persetujuanDeklarasi: "أنا، مقدم الطلب، أصرح بموجب هذا أنني أفهم وأوافق على جميع المعلومات و",
+    imeiQuestion:
+      "هل تحمل هواتف محمولة أو أجهزة كمبيوتر محمولة أو أجهزة لوحية تم شراؤها من الخارج وستُستخدم في إندونيسيا؟ (تسجيل IMEI)",
+    imeiNote:
+      "(الأجانب الذين يزورون إندونيسيا لمدة لا تزيد عن 90 يومًا لا يحتاجون إلى تسجيل IMEI في الجمارك.)",
+    persetujuanDeklarasi:
+      "أنا، مقدم الطلب، أصرح بموجب هذا أنني أفهم وأوافق على جميع المعلومات و",
     deklarasiLink: "الإقرار",
     dalamAplikasi: "في هذا التطبيق.",
     kirim: "إرسال",
@@ -832,8 +905,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "المديرية العامة للهجرة",
     republikIndonesia: "جمهورية إندونيسيا",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 
@@ -900,15 +972,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Moda Transportasi & Alamat (Step 3)
     modaTransportasi: "Вид транспорта",
-    modaTransportasiDesc: "Пожалуйста, выберите вид транспорта для въезда в Индонезию.",
+    modaTransportasiDesc:
+      "Пожалуйста, выберите вид транспорта для въезда в Индонезию.",
     pilihModa: "Вид транспорта",
     tujuanPerjalanan: "Цель поездки",
     phTujuanPerjalanan: "Выберите цель поездки",
     udara: "Воздушный",
     laut: "Морской",
     phPilihModa: "Выберите вид транспорта",
-    infoKolomUdara: "Поля ниже отображаются для выбранного выше воздушного транспорта.",
-    infoKolomLaut: "Поля ниже отображаются для выбранного выше морского транспорта.",
+    infoKolomUdara:
+      "Поля ниже отображаются для выбранного выше воздушного транспорта.",
+    infoKolomLaut:
+      "Поля ниже отображаются для выбранного выше морского транспорта.",
     tempatKedatangan: "Место прибытия",
     phTempatKedatangan: "Выберите место прибытия",
     jenisTransportasiUdara: "Тип воздушного транспорта",
@@ -943,15 +1018,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Декларация (Step 4)
     deklarasiAnggota: "Декларация членов группы",
-    deklarasiAnggotaDesc: "Пожалуйста, заполните карту прибытия перед въездом в Индонезию, указав необходимую информацию.",
+    deklarasiAnggotaDesc:
+      "Пожалуйста, заполните карту прибытия перед въездом в Индонезию, указав необходимую информацию.",
     ketuaPelaku: "Руководитель группы",
     deklarasiSelesai: "Вопросы декларации заполнены",
     isiDeklarasi: "Заполните вопросы декларации",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -960,31 +1039,42 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
-    dekKarantinaQ1: "Are you carrying animals, fish, plants, and/or processed products?",
+    dekKarantinaDesc:
+      "Please fill in the quarantine declaration according to your current condition, which will be verified by quarantine officers.",
+    dekKarantinaQ1:
+      "Are you carrying animals, fish, plants, and/or processed products?",
     dekKarantinaDescKomoditas: "Description of commodities carried",
     dekKarantinaKategori: "Category",
     dekKarantinaSubKategori: "Sub-category",
     dekKarantinaKomoditasTerpilih: "Selected commodities:",
     dekKarantinaBentukJenis: "Specify the form or type of commodity",
     dekKarantinaJumlah: "Quantity of commodities carried",
-    dekKarantinaQ2: "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
+    dekKarantinaQ2:
+      "Is the commodity accompanied by a quarantine certificate (Phytosanitary Certificate/Animal Health Certificate)?",
     dekKarantinaDariNegara: "From which country did you obtain the commodity?",
     dekKarantinaPhDariNegara: "Select country",
-    customsTitle: "Таможенная декларация (BC 2.2) - Уведомление о товарах, перевозимых пассажирами и экипажем",
-    customsDesc: "Эта страница предназначена для декларирования ваших товаров таможенному органу.",
-    infoDaftarBarang: "Нажмите эту кнопку, чтобы открыть информационную страницу перед ответом на вопросы ниже.",
-    infoDaftarBarangWajib: "Нажмите эту кнопку, чтобы увидеть список товаров, подлежащих декларированию.",
+    customsTitle:
+      "Таможенная декларация (BC 2.2) - Уведомление о товарах, перевозимых пассажирами и экипажем",
+    customsDesc:
+      "Эта страница предназначена для декларирования ваших товаров таможенному органу.",
+    infoDaftarBarang:
+      "Нажмите эту кнопку, чтобы открыть информационную страницу перед ответом на вопросы ниже.",
+    infoDaftarBarangWajib:
+      "Нажмите эту кнопку, чтобы увидеть список товаров, подлежащих декларированию.",
     jumlahBagasi: "Количество багажа, прибывающего с вами",
     phJumlahBagasi: "Введите количество багажа",
     pcsKoli: "шт",
     barangWajib: "Перевозите ли вы товары, подлежащие декларированию?",
-    imeiQuestion: "Перевозите ли вы мобильные телефоны, карманные компьютеры и планшеты, приобретённые за рубежом, которые будут использоваться в Индонезии? (Регистрация IMEI)",
-    imeiNote: "(Иностранцам, посещающим Индонезию на срок не более 90 дней, не нужно регистрировать IMEI на таможне.)",
-    persetujuanDeklarasi: "Я, Заявитель, настоящим заявляю, что понимаю и соглашаюсь со всей Информацией и",
+    imeiQuestion:
+      "Перевозите ли вы мобильные телефоны, карманные компьютеры и планшеты, приобретённые за рубежом, которые будут использоваться в Индонезии? (Регистрация IMEI)",
+    imeiNote:
+      "(Иностранцам, посещающим Индонезию на срок не более 90 дней, не нужно регистрировать IMEI на таможне.)",
+    persetujuanDeklarasi:
+      "Я, Заявитель, настоящим заявляю, что понимаю и соглашаюсь со всей Информацией и",
     deklarasiLink: "Декларацией",
     dalamAplikasi: "в этом приложении.",
     kirim: "Отправить",
@@ -995,8 +1085,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "Генеральный директорат иммиграции",
     republikIndonesia: "Республика Индонезия",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 
@@ -1007,8 +1096,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     beranda: "홈",
     pageTitle: "도착 카드 신청",
-    pageDescription:
-      "아래 양식을 정확하고 완전하게 작성하십시오.",
+    pageDescription: "아래 양식을 정확하고 완전하게 작성하십시오.",
     pageDescriptionEnd: "표시된 정보는 필수 입력 항목입니다.",
 
     step1: "개인 정보",
@@ -1063,15 +1151,19 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // 신고 (Step 4)
     deklarasiAnggota: "그룹 구성원 신고",
-    deklarasiAnggotaDesc: "인도네시아에 입국하기 전에 필요한 정보를 입력하여 도착 카드를 작성해 주세요.",
+    deklarasiAnggotaDesc:
+      "인도네시아에 입국하기 전에 필요한 정보를 입력하여 도착 카드를 작성해 주세요.",
     ketuaPelaku: "대표 여행자",
     deklarasiSelesai: "신고 질문 완료",
     isiDeklarasi: "신고 질문 작성",
     // Health Declaration
     dekKesehatanTitle: "Health Declaration",
-    dekKesehatanDesc: "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
-    dekKesehatanQ1: "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
-    dekKesehatanPilihGejala: "Select your symptoms (You can select more than one)",
+    dekKesehatanDesc:
+      "In accordance with Indonesia's national health protocol, please complete the health declaration form to support public health monitoring and prevent the spread of infectious diseases.",
+    dekKesehatanQ1:
+      "Do you have the following symptoms: fever, cough, cold, shortness of breath, sore throat, or skin lesions/rash?",
+    dekKesehatanPilihGejala:
+      "Select your symptoms (You can select more than one)",
     dekKesehatanBatuk: "COUGH",
     dekKesehatanDemam: "FEVER",
     dekKesehatanLesi: "LESION / RASH / SKIN SPOTS",
@@ -1080,11 +1172,14 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKesehatanSesak: "SHORTNESS OF BREATH",
     dekKesehatanTidakAda: "NO SYMPTOMS",
     dekKesehatanGejalaTerpilih: "Selected Symptoms:",
-    dekKesehatanQ2: "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
+    dekKesehatanQ2:
+      "Country of departure, transit, and other countries you visited within 21 days before departure to Indonesia (You can select more than one)",
     // Quarantine Declaration
     dekKarantinaTitle: "Quarantine Declaration",
-    dekKarantinaDesc: "To prevent the spread of epidemic viruses and diseases that spread through animals and plants from and outside Indonesia.",
-    dekKarantinaQ1: "Are you carrying Animals, Fish, Certifications, and/or processed products?",
+    dekKarantinaDesc:
+      "To prevent the spread of epidemic viruses and diseases that spread through animals and plants from and outside Indonesia.",
+    dekKarantinaQ1:
+      "Are you carrying Animals, Fish, Certifications, and/or processed products?",
     dekKarantinaJenisHewan: "Description of Commodities Carried",
     dekKarantinaPhHewan: "Enter commodity description",
     dekKarantinaJumlah: "Quantity",
@@ -1097,19 +1192,26 @@ export const translations: Record<Language, Record<string, string>> = {
     dekKarantinaPhHasilKomoditas: "Enter commodity description",
     dekKarantinaJenisKomoditas: "Quantity of Commodities Carried",
     dekKarantinaPhJenisKomoditas: "Enter commodity quantity",
-    dekKarantinaQ3: "Is the commodity accompanied by a Phytosanitary/Plant Quarantine Permit certificate?",
-    dekKarantinaDariNegara: "From which country are you importing commodities to Indonesia?",
+    dekKarantinaQ3:
+      "Is the commodity accompanied by a Phytosanitary/Plant Quarantine Permit certificate?",
+    dekKarantinaDariNegara:
+      "From which country are you importing commodities to Indonesia?",
     dekKarantinaPhDariNegara: "Select country",
-    customsTitle: "세관 신고 (BC 2.2) - 여객 및 승무원의 휴대물품에 대한 세관 통지",
-    customsDesc: "이 페이지는 세관 직원에게 휴대 물품을 신고하기 위한 것입니다.",
-    infoDaftarBarang: "아래 질문에 답하기 전에 이 버튼을 눌러 정보 페이지를 열어주세요.",
+    customsTitle:
+      "세관 신고 (BC 2.2) - 여객 및 승무원의 휴대물품에 대한 세관 통지",
+    customsDesc:
+      "이 페이지는 세관 직원에게 휴대 물품을 신고하기 위한 것입니다.",
+    infoDaftarBarang:
+      "아래 질문에 답하기 전에 이 버튼을 눌러 정보 페이지를 열어주세요.",
     infoDaftarBarangWajib: "이 버튼을 눌러 신고해야 할 물품 목록을 확인하세요.",
     jumlahBagasi: "동반 수하물 수량",
     phJumlahBagasi: "동반 수하물 수량을 입력하세요",
     pcsKoli: "개",
     barangWajib: "세관에 신고해야 할 물품을 휴대하고 있습니까?",
-    imeiQuestion: "해외에서 구입/취득한 휴대전화, 핸드헬드 컴퓨터, 태블릿을 인도네시아에서 인도네시아 이동통신망을 이용하여 사용할 예정입니까? (IMEI 등록)",
-    imeiNote: "(90일 이하 방문 외국인은 도착지 세관에서 IMEI를 등록할 필요가 없습니다.)",
+    imeiQuestion:
+      "해외에서 구입/취득한 휴대전화, 핸드헬드 컴퓨터, 태블릿을 인도네시아에서 인도네시아 이동통신망을 이용하여 사용할 예정입니까? (IMEI 등록)",
+    imeiNote:
+      "(90일 이하 방문 외국인은 도착지 세관에서 IMEI를 등록할 필요가 없습니다.)",
     persetujuanDeklarasi: "본인, 신청자는 모든 정보와",
     deklarasiLink: "신고",
     dalamAplikasi: "를 이해하고 동의함을 선언합니다.",
@@ -1121,8 +1223,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     dirjenImigrasi: "이민총국",
     republikIndonesia: "인도네시아 공화국",
-    alamatKantor:
-      "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
+    alamatKantor: "Jl. H.R. Rasuna Said Kav. X-6 No. 8, Kuningan, Jakarta",
     alamatKantor2: "South, DKI Jakarta, Indonesia",
   },
 };
