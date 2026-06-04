@@ -106,6 +106,30 @@ function PageContent() {
       agreed: false,
     },
   ]);
+
+  // Step 4: Health Declaration
+  const [healthDecl, setHealthDecl] = useState([
+    {
+      hasSymptoms: "",
+      symptoms: [] as string[],
+      countriesVisited: [] as string[],
+    },
+  ]);
+
+  // Step 4: Quarantine Declaration
+  const [quarantineDecl, setQuarantineDecl] = useState([
+    {
+      hasAnimalProducts: "",
+      commodityCategory: "",
+      commoditySubCategory: "",
+      selectedCommodities: [] as string[],
+      commodityForm: "",
+      commodityQuantity: "",
+      hasCertificate: "",
+      originCountry: "",
+    },
+  ]);
+
   const [declarationView, setDeclarationView] = useState<{ mode: "list" | "form"; index: number }>({ mode: "list", index: 0 });
 
   const handleDeclarationChange = (index: number, field: string, value: string | boolean) => {
@@ -118,6 +142,68 @@ function PageContent() {
 
   const isDeclarationComplete = (decl: typeof declarations[0]) => {
     return decl.baggageCount !== "" && decl.hasProhibitedGoods !== "" && decl.hasIMEI !== "" && decl.agreed;
+  };
+
+  const handleHealthDeclChange = (index: number, field: string, value: string | string[]) => {
+    setHealthDecl((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const handleSymptomToggle = (index: number, symptom: string) => {
+    setHealthDecl((prev) => {
+      const updated = [...prev];
+      const current = updated[index].symptoms;
+      if (current.includes(symptom)) {
+        updated[index] = { ...updated[index], symptoms: current.filter(s => s !== symptom) };
+      } else {
+        updated[index] = { ...updated[index], symptoms: [...current, symptom] };
+      }
+      return updated;
+    });
+  };
+
+  const handleCountryVisitedToggle = (index: number, country: string) => {
+    setHealthDecl((prev) => {
+      const updated = [...prev];
+      const current = updated[index].countriesVisited;
+      if (current.includes(country)) {
+        updated[index] = { ...updated[index], countriesVisited: current.filter(c => c !== country) };
+      } else {
+        updated[index] = { ...updated[index], countriesVisited: [...current, country] };
+      }
+      return updated;
+    });
+  };
+
+  const handleQuarantineDeclChange = (index: number, field: string, value: string | string[]) => {
+    setQuarantineDecl((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const handleCommodityAdd = (index: number, commodity: string) => {
+    if (!commodity) return;
+    setQuarantineDecl((prev) => {
+      const updated = [...prev];
+      const current = updated[index].selectedCommodities;
+      if (!current.includes(commodity)) {
+        updated[index] = { ...updated[index], selectedCommodities: [...current, commodity], commoditySubCategory: "" };
+      }
+      return updated;
+    });
+  };
+
+  const handleCommodityRemove = (index: number, commodity: string) => {
+    setQuarantineDecl((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], selectedCommodities: updated[index].selectedCommodities.filter(c => c !== commodity) };
+      return updated;
+    });
   };
 
   // Derived: cities filtered by province
@@ -361,6 +447,27 @@ function PageContent() {
         agreed: false,
       },
     ]);
+    setHealthDecl((prev) => [
+      ...prev,
+      {
+        hasSymptoms: "",
+        symptoms: [],
+        countriesVisited: [],
+      },
+    ]);
+    setQuarantineDecl((prev) => [
+      ...prev,
+      {
+        hasAnimalProducts: "",
+        commodityCategory: "",
+        commoditySubCategory: "",
+        selectedCommodities: [],
+        commodityForm: "",
+        commodityQuantity: "",
+        hasCertificate: "",
+        originCountry: "",
+      },
+    ]);
   };
 
   const removeTraveler = (index: number) => {
@@ -368,6 +475,8 @@ function PageContent() {
       setTravelers((prev) => prev.filter((_, i) => i !== index));
       setTravelDetails((prev) => prev.filter((_, i) => i !== index));
       setDeclarations((prev) => prev.filter((_, i) => i !== index));
+      setHealthDecl((prev) => prev.filter((_, i) => i !== index));
+      setQuarantineDecl((prev) => prev.filter((_, i) => i !== index));
     }
   };
 
@@ -1168,6 +1277,331 @@ function PageContent() {
                               </p>
                             </div>
                           </div>
+
+                          {/* ===== Deklarasi Kesehatan ===== */}
+                          <FormSection
+                            title={t("dekKesehatanTitle")}
+                            description={t("dekKesehatanDesc")}
+                          >
+                            {/* Q1: Symptoms */}
+                            <div className="mb-6 animate-in">
+                              <p className="text-xs font-semibold text-navy-800 mb-3">
+                                {t("dekKesehatanQ1")} <span className="text-red-500 ml-0.5">*</span>
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {[
+                                  { key: "TIDAK_ADA", label: t("dekKesehatanTidakAda") },
+                                  { key: "BATUK", label: t("dekKesehatanBatuk") },
+                                  { key: "DEMAM", label: t("dekKesehatanDemam") },
+                                  { key: "LESI", label: t("dekKesehatanLesi") },
+                                  { key: "PILEK", label: t("dekKesehatanPilek") },
+                                  { key: "TENGGOROKAN", label: t("dekKesehatanTenggorokan") },
+                                  { key: "SESAK", label: t("dekKesehatanSesak") },
+                                ].map((symptom) => {
+                                  const checked = symptom.key === "TIDAK_ADA"
+                                    ? ((healthDecl[idx] || { hasSymptoms: "" }).hasSymptoms === "tidak")
+                                    : (((healthDecl[idx] || { hasSymptoms: "" }).hasSymptoms === "ya") && (healthDecl[idx]?.symptoms || []).includes(symptom.key));
+
+                                  return (
+                                    <button
+                                      key={symptom.key}
+                                      type="button"
+                                      onClick={() => {
+                                        if (symptom.key === "TIDAK_ADA") {
+                                          handleHealthDeclChange(idx, "hasSymptoms", "tidak");
+                                          handleHealthDeclChange(idx, "symptoms", []);
+                                        } else {
+                                          handleHealthDeclChange(idx, "hasSymptoms", "ya");
+                                          handleSymptomToggle(idx, symptom.key);
+                                          
+                                          // If unchecking the last symptom, maybe we don't automatically set "tidak" 
+                                          // because the user might just be correcting a mistake.
+                                        }
+                                      }}
+                                      className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
+                                        checked
+                                          ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+                                          : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                                      }`}
+                                    >
+                                      {symptom.label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+
+                              {/* Selected Symptoms Bar */}
+                              {healthDecl[idx]?.hasSymptoms === "ya" && (healthDecl[idx]?.symptoms || []).length > 0 && (
+                                <div className="mt-4 p-3 bg-red-50/50 border border-red-100 rounded-lg animate-in slide-in-from-top-2 fade-in duration-200">
+                                  <p className="text-xs font-medium text-red-800 mb-2 flex items-center gap-1.5">
+                                    <svg className="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    {t("dekKesehatanGejalaTerpilih") || "Gejala Terpilih:"}
+                                  </p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {(healthDecl[idx]?.symptoms || []).map((symptomKey: string) => {
+                                      const symptomLabel = [
+                                        { key: "BATUK", label: t("dekKesehatanBatuk") },
+                                        { key: "DEMAM", label: t("dekKesehatanDemam") },
+                                        { key: "LESI", label: t("dekKesehatanLesi") },
+                                        { key: "PILEK", label: t("dekKesehatanPilek") },
+                                        { key: "TENGGOROKAN", label: t("dekKesehatanTenggorokan") },
+                                        { key: "SESAK", label: t("dekKesehatanSesak") },
+                                      ].find(s => s.key === symptomKey)?.label || symptomKey;
+
+                                      return (
+                                        <span key={symptomKey} className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-white border border-red-200 text-red-700 rounded-md shadow-sm">
+                                          {symptomLabel}
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              handleSymptomToggle(idx, symptomKey);
+                                              // If it's the last one being removed, set to tidak
+                                              const currentSymptoms = healthDecl[idx]?.symptoms || [];
+                                              if (currentSymptoms.length === 1 && currentSymptoms[0] === symptomKey) {
+                                                handleHealthDeclChange(idx, "hasSymptoms", "tidak");
+                                              }
+                                            }}
+                                            className="text-red-400 hover:text-red-600 transition-colors"
+                                          >
+                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                          </button>
+                                        </span>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Q2: Countries visited in past 21 days */}
+                            <div className="mb-2">
+                              <p className="text-xs font-semibold text-navy-800 mb-3">
+                                {t("dekKesehatanQ2")}
+                              </p>
+                              <SelectInput
+                                id={`health-countries-${idx}`}
+                                placeholder={t("phPilih")}
+                                options={countryOptions}
+                                value=""
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (val && !(healthDecl[idx]?.countriesVisited || []).includes(val)) {
+                                    handleCountryVisitedToggle(idx, val);
+                                  }
+                                }}
+                              />
+                              {(healthDecl[idx]?.countriesVisited || []).length > 0 && (
+                                <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                  <div className="flex flex-wrap gap-2">
+                                    {(healthDecl[idx]?.countriesVisited || []).map((countryCode: string) => {
+                                      const countryLabel = countryOptions.find(c => c.value === countryCode)?.label || countryCode;
+                                      return (
+                                        <span
+                                          key={countryCode}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-lg text-gray-700"
+                                        >
+                                          {countryLabel}
+                                          <button
+                                            type="button"
+                                            onClick={() => handleCountryVisitedToggle(idx, countryCode)}
+                                            className="text-gray-400 hover:text-red-500 transition-colors"
+                                          >
+                                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                          </button>
+                                        </span>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </FormSection>
+
+                          {/* ===== Deklarasi Karantina ===== */}
+                          <FormSection
+                            title={t("dekKarantinaTitle")}
+                            description={t("dekKarantinaDesc")}
+                          >
+                            {/* Q1: Animal/Fish/Plant products */}
+                            <div className="mb-6">
+                              <p className="text-xs font-semibold text-navy-800 mb-3">
+                                {t("dekKarantinaQ1")} <span className="text-red-500 ml-0.5">*</span>
+                              </p>
+                              <RadioInput
+                                name={`quar-animal-${idx}`}
+                                id={`quar-animal-${idx}`}
+                                options={[
+                                  { value: "ya", label: t("ya") },
+                                  { value: "tidak", label: t("tidak") },
+                                ]}
+                                value={(quarantineDecl[idx] || { hasAnimalProducts: "" }).hasAnimalProducts}
+                                onChange={(value) => handleQuarantineDeclChange(idx, "hasAnimalProducts", value)}
+                              />
+                            </div>
+
+                            {/* Conditional: Commodity details when "Ya" */}
+                            {(quarantineDecl[idx] || { hasAnimalProducts: "" }).hasAnimalProducts === "ya" && (
+                              <div className="mb-6 animate-in space-y-4">
+                                {/* Category & Sub-category */}
+                                <p className="text-xs font-semibold text-navy-800">
+                                  {t("dekKarantinaDescKomoditas")}
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                  <SelectInput
+                                    id={`quar-category-${idx}`}
+                                    placeholder={t("phPilih")}
+                                    options={[
+                                      { value: "HEWAN", label: "HEWAN" },
+                                      { value: "IKAN", label: "IKAN" },
+                                      { value: "TUMBUHAN", label: "TUMBUHAN" },
+                                    ]}
+                                    value={(quarantineDecl[idx] || { commodityCategory: "" }).commodityCategory}
+                                    onChange={(e) => {
+                                      handleQuarantineDeclChange(idx, "commodityCategory", e.target.value);
+                                      handleQuarantineDeclChange(idx, "commoditySubCategory", "");
+                                    }}
+                                  />
+
+                                  <SelectInput
+                                    id={`quar-subcategory-${idx}`}
+                                    placeholder={t("phPilih")}
+                                    options={
+                                      (quarantineDecl[idx]?.commodityCategory === "HEWAN"
+                                        ? [
+                                            { value: "ANJING", label: "ANJING" },
+                                            { value: "KUCING", label: "KUCING" },
+                                            { value: "KELINCI", label: "KELINCI" },
+                                            { value: "BURUNG", label: "BURUNG" },
+                                            { value: "REPTIL", label: "REPTIL" },
+                                            { value: "HEWAN_LAINNYA", label: "HEWAN LAINNYA" },
+                                          ]
+                                        : quarantineDecl[idx]?.commodityCategory === "IKAN"
+                                        ? [
+                                            { value: "IKAN_HIAS", label: "IKAN HIAS" },
+                                            { value: "IKAN_KONSUMSI", label: "IKAN KONSUMSI" },
+                                            { value: "UDANG", label: "UDANG" },
+                                            { value: "KERANG", label: "KERANG" },
+                                            { value: "IKAN_LAINNYA", label: "IKAN LAINNYA" },
+                                          ]
+                                        : quarantineDecl[idx]?.commodityCategory === "TUMBUHAN"
+                                        ? [
+                                            { value: "BUAH", label: "BUAH" },
+                                            { value: "SAYUR", label: "SAYUR" },
+                                            { value: "BENIH", label: "BENIH" },
+                                            { value: "TANAMAN_HIAS", label: "TANAMAN HIAS" },
+                                            { value: "KAYU", label: "KAYU" },
+                                            { value: "TUMBUHAN_LAINNYA", label: "TUMBUHAN LAINNYA" },
+                                          ]
+                                        : [])
+                                    }
+                                    value={(quarantineDecl[idx] || { commoditySubCategory: "" }).commoditySubCategory}
+                                    onChange={(e) => {
+                                      handleQuarantineDeclChange(idx, "commoditySubCategory", e.target.value);
+                                      if (e.target.value) {
+                                        handleCommodityAdd(idx, e.target.value);
+                                      }
+                                    }}
+                                  />
+                                </div>
+
+                                {/* Selected commodities tags */}
+                                {(quarantineDecl[idx]?.selectedCommodities || []).length > 0 && (
+                                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                    <p className="text-xs text-gray-500 mb-2">{t("dekKarantinaKomoditasTerpilih")}</p>
+                                    <div className="flex flex-wrap gap-2">
+                                      {(quarantineDecl[idx]?.selectedCommodities || []).map((commodity: string) => (
+                                        <span
+                                          key={commodity}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-lg text-gray-700"
+                                        >
+                                          {commodity.replace(/_/g, " ")}
+                                          <button
+                                            type="button"
+                                            onClick={() => handleCommodityRemove(idx, commodity)}
+                                            className="text-gray-400 hover:text-red-500 transition-colors"
+                                          >
+                                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                          </button>
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Commodity form/type */}
+                                <FormField label={t("dekKarantinaBentukJenis")}>
+                                  <SelectInput
+                                    id={`quar-form-${idx}`}
+                                    placeholder={t("phPilih")}
+                                    options={[
+                                      { value: "PRODUK_SEGAR", label: "PRODUK SEGAR" },
+                                      { value: "PRODUK_OLAHAN", label: "PRODUK OLAHAN" },
+                                      { value: "PRODUK_BEKU", label: "PRODUK BEKU" },
+                                      { value: "HIDUP", label: "HIDUP" },
+                                    ]}
+                                    value={(quarantineDecl[idx] || { commodityForm: "" }).commodityForm}
+                                    onChange={(e) => handleQuarantineDeclChange(idx, "commodityForm", e.target.value)}
+                                  />
+                                </FormField>
+
+                                {/* Commodity quantity */}
+                                <FormField label={t("dekKarantinaJumlah")}>
+                                  <SelectInput
+                                    id={`quar-quantity-${idx}`}
+                                    placeholder={t("phPilih")}
+                                    options={[
+                                      { value: "SAMPAI_2KG", label: "SAMPAI DENGAN 2 KG" },
+                                      { value: "LEBIH_2KG", label: "LEBIH DARI 2 KG" },
+                                      { value: "SAMPAI_2EKOR", label: "SAMPAI DENGAN 2 EKOR" },
+                                      { value: "LEBIH_2EKOR", label: "LEBIH DARI 2 EKOR" },
+                                      { value: "SAMPAI_2L", label: "SAMPAI DENGAN 2 L" },
+                                      { value: "LEBIH_2L", label: "LEBIH DARI 2 L" },
+                                    ]}
+                                    value={(quarantineDecl[idx] || { commodityQuantity: "" }).commodityQuantity}
+                                    onChange={(e) => handleQuarantineDeclChange(idx, "commodityQuantity", e.target.value)}
+                                  />
+                                </FormField>
+                              </div>
+                            )}
+
+                            {/* Q2: Certificate */}
+                            <div className="mb-6">
+                              <p className="text-xs font-semibold text-navy-800 mb-3">
+                                {t("dekKarantinaQ2")} <span className="text-red-500 ml-0.5">*</span>
+                              </p>
+                              <RadioInput
+                                name={`quar-cert-${idx}`}
+                                id={`quar-cert-${idx}`}
+                                options={[
+                                  { value: "ya", label: t("ya") },
+                                  { value: "tidak", label: t("tidak") },
+                                ]}
+                                value={(quarantineDecl[idx] || { hasCertificate: "" }).hasCertificate}
+                                onChange={(value) => handleQuarantineDeclChange(idx, "hasCertificate", value)}
+                              />
+                            </div>
+
+                            {/* Country of origin */}
+                            <div className="mb-2">
+                              <FormField label={t("dekKarantinaDariNegara")}>
+                                <SearchableSelect
+                                  id={`quar-origin-country-${idx}`}
+                                  placeholder={t("dekKarantinaPhDariNegara")}
+                                  options={countryOptions}
+                                  value={(quarantineDecl[idx] || { originCountry: "" }).originCountry}
+                                  onChange={(value) => handleQuarantineDeclChange(idx, "originCountry", value)}
+                                />
+                              </FormField>
+                            </div>
+                          </FormSection>
 
                           {/* Customs Declaration BC 2.2 */}
                           <FormSection
