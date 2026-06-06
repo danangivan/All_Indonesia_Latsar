@@ -2317,7 +2317,7 @@ function PageContent() {
                                     className="flex-1 px-4 py-2.5 rounded-l-lg border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 hover:border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10"
                                   />
                                   <span className="inline-flex items-center px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-200 bg-gray-50 text-sm text-gray-500 font-medium">
-                                    {t("pcsKg")}
+                                    {t("Pcs/Kg")}
                                   </span>
                                 </div>
                               </FormField>
