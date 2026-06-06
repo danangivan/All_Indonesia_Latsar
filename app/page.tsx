@@ -56,7 +56,11 @@ function PageContent() {
     },
   ]);
 
-  const handleTravelDetailChange = (index: number, field: string, value: string) => {
+  const handleTravelDetailChange = (
+    index: number,
+    field: string,
+    value: string,
+  ) => {
     setTravelDetails((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
@@ -130,9 +134,16 @@ function PageContent() {
     },
   ]);
 
-  const [declarationView, setDeclarationView] = useState<{ mode: "list" | "form"; index: number }>({ mode: "list", index: 0 });
+  const [declarationView, setDeclarationView] = useState<{
+    mode: "list" | "form";
+    index: number;
+  }>({ mode: "list", index: 0 });
 
-  const handleDeclarationChange = (index: number, field: string, value: string | boolean) => {
+  const handleDeclarationChange = (
+    index: number,
+    field: string,
+    value: string | boolean,
+  ) => {
     setDeclarations((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
@@ -140,11 +151,20 @@ function PageContent() {
     });
   };
 
-  const isDeclarationComplete = (decl: typeof declarations[0]) => {
-    return decl.baggageCount !== "" && decl.hasProhibitedGoods !== "" && decl.hasIMEI !== "" && decl.agreed;
+  const isDeclarationComplete = (decl: (typeof declarations)[0]) => {
+    return (
+      decl.baggageCount !== "" &&
+      decl.hasProhibitedGoods !== "" &&
+      decl.hasIMEI !== "" &&
+      decl.agreed
+    );
   };
 
-  const handleHealthDeclChange = (index: number, field: string, value: string | string[]) => {
+  const handleHealthDeclChange = (
+    index: number,
+    field: string,
+    value: string | string[],
+  ) => {
     setHealthDecl((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
@@ -157,7 +177,10 @@ function PageContent() {
       const updated = [...prev];
       const current = updated[index].symptoms;
       if (current.includes(symptom)) {
-        updated[index] = { ...updated[index], symptoms: current.filter(s => s !== symptom) };
+        updated[index] = {
+          ...updated[index],
+          symptoms: current.filter((s) => s !== symptom),
+        };
       } else {
         updated[index] = { ...updated[index], symptoms: [...current, symptom] };
       }
@@ -170,15 +193,25 @@ function PageContent() {
       const updated = [...prev];
       const current = updated[index].countriesVisited;
       if (current.includes(country)) {
-        updated[index] = { ...updated[index], countriesVisited: current.filter(c => c !== country) };
+        updated[index] = {
+          ...updated[index],
+          countriesVisited: current.filter((c) => c !== country),
+        };
       } else {
-        updated[index] = { ...updated[index], countriesVisited: [...current, country] };
+        updated[index] = {
+          ...updated[index],
+          countriesVisited: [...current, country],
+        };
       }
       return updated;
     });
   };
 
-  const handleQuarantineDeclChange = (index: number, field: string, value: string | string[]) => {
+  const handleQuarantineDeclChange = (
+    index: number,
+    field: string,
+    value: string | string[],
+  ) => {
     setQuarantineDecl((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
@@ -192,7 +225,11 @@ function PageContent() {
       const updated = [...prev];
       const current = updated[index].selectedCommodities;
       if (!current.includes(commodity)) {
-        updated[index] = { ...updated[index], selectedCommodities: [...current, commodity], commoditySubCategory: "" };
+        updated[index] = {
+          ...updated[index],
+          selectedCommodities: [...current, commodity],
+          commoditySubCategory: "",
+        };
       }
       return updated;
     });
@@ -201,7 +238,12 @@ function PageContent() {
   const handleCommodityRemove = (index: number, commodity: string) => {
     setQuarantineDecl((prev) => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], selectedCommodities: updated[index].selectedCommodities.filter(c => c !== commodity) };
+      updated[index] = {
+        ...updated[index],
+        selectedCommodities: updated[index].selectedCommodities.filter(
+          (c) => c !== commodity,
+        ),
+      };
       return updated;
     });
   };
@@ -209,19 +251,33 @@ function PageContent() {
   // Derived: cities filtered by province
   const filteredCities = useMemo(
     () => (address.province ? getCitiesByProvince(address.province) : []),
-    [address.province]
+    [address.province],
   );
 
   // Derived: immigration office suggestion
   const suggestedImmigrationOffice = useMemo(() => {
-    if (address.accommodationType === "rumah" && address.city && address.province) {
+    if (
+      address.accommodationType === "rumah" &&
+      address.city &&
+      address.province
+    ) {
       return getImmigrationOffice(address.city, address.province);
     }
-    if (address.accommodationType === "hotel" && address.hotelCity && address.hotelProvince) {
+    if (
+      address.accommodationType === "hotel" &&
+      address.hotelCity &&
+      address.hotelProvince
+    ) {
       return getImmigrationOffice(address.hotelCity, address.hotelProvince);
     }
     return "";
-  }, [address.accommodationType, address.city, address.province, address.hotelCity, address.hotelProvince]);
+  }, [
+    address.accommodationType,
+    address.city,
+    address.province,
+    address.hotelCity,
+    address.hotelProvince,
+  ]);
 
   // Hotel options for SearchableSelect
   const hotelOptions = useMemo(
@@ -231,7 +287,7 @@ function PageContent() {
         label: h.label,
         subtitle: `${h.city}, ${h.province}`,
       })),
-    []
+    [],
   );
 
   const steps = [
@@ -385,19 +441,71 @@ function PageContent() {
 
   // Mapping ISO country code → phone dial code
   const countryToPhoneCode: Record<string, string> = {
-    AF: "+93", AL: "+355", DZ: "+213", AR: "+54", AU: "+61",
-    AT: "+43", BD: "+880", BE: "+32", BR: "+55", BN: "+673",
-    KH: "+855", CA: "+1", CL: "+56", CN: "+86", CO: "+57",
-    HR: "+385", CZ: "+420", DK: "+45", EG: "+20", FI: "+358",
-    FR: "+33", DE: "+49", GR: "+30", HK: "+852", HU: "+36",
-    IN: "+91", ID: "+62", IR: "+98", IQ: "+964", IE: "+353",
-    IL: "+972", IT: "+39", JP: "+81", JO: "+962", KR: "+82",
-    KW: "+965", LA: "+856", MY: "+60", MX: "+52", MM: "+95",
-    NP: "+977", NL: "+31", NZ: "+64", NG: "+234", NO: "+47",
-    PK: "+92", PH: "+63", PL: "+48", PT: "+351", QA: "+974",
-    RO: "+40", RU: "+7", SA: "+966", SG: "+65", ZA: "+27",
-    ES: "+34", LK: "+94", SE: "+46", CH: "+41", TW: "+886",
-    TH: "+66", TR: "+90", AE: "+971", GB: "+44", US: "+1",
+    AF: "+93",
+    AL: "+355",
+    DZ: "+213",
+    AR: "+54",
+    AU: "+61",
+    AT: "+43",
+    BD: "+880",
+    BE: "+32",
+    BR: "+55",
+    BN: "+673",
+    KH: "+855",
+    CA: "+1",
+    CL: "+56",
+    CN: "+86",
+    CO: "+57",
+    HR: "+385",
+    CZ: "+420",
+    DK: "+45",
+    EG: "+20",
+    FI: "+358",
+    FR: "+33",
+    DE: "+49",
+    GR: "+30",
+    HK: "+852",
+    HU: "+36",
+    IN: "+91",
+    ID: "+62",
+    IR: "+98",
+    IQ: "+964",
+    IE: "+353",
+    IL: "+972",
+    IT: "+39",
+    JP: "+81",
+    JO: "+962",
+    KR: "+82",
+    KW: "+965",
+    LA: "+856",
+    MY: "+60",
+    MX: "+52",
+    MM: "+95",
+    NP: "+977",
+    NL: "+31",
+    NZ: "+64",
+    NG: "+234",
+    NO: "+47",
+    PK: "+92",
+    PH: "+63",
+    PL: "+48",
+    PT: "+351",
+    QA: "+974",
+    RO: "+40",
+    RU: "+7",
+    SA: "+966",
+    SG: "+65",
+    ZA: "+27",
+    ES: "+34",
+    LK: "+94",
+    SE: "+46",
+    CH: "+41",
+    TW: "+886",
+    TH: "+66",
+    TR: "+90",
+    AE: "+971",
+    GB: "+44",
+    US: "+1",
     VN: "+84",
   };
 
@@ -630,11 +738,7 @@ function PageContent() {
                               options={countryOptions}
                               value={traveler.birthCountry}
                               onChange={(value) =>
-                                handleTravelerChange(
-                                  idx,
-                                  "birthCountry",
-                                  value,
-                                )
+                                handleTravelerChange(idx, "birthCountry", value)
                               }
                             />
                           </FormField>
@@ -767,7 +871,12 @@ function PageContent() {
               {currentStep === 1 && (
                 <>
                   {travelers.map((traveler, idx) => {
-                    const detail = travelDetails[idx] || { arrivalDate: "", departureDate: "", hasVisa: "", visaNumber: "" };
+                    const detail = travelDetails[idx] || {
+                      arrivalDate: "",
+                      departureDate: "",
+                      hasVisa: "",
+                      visaNumber: "",
+                    };
                     return (
                       <FormSection
                         key={idx}
@@ -780,14 +889,28 @@ function PageContent() {
                       >
                         {travelers.length > 1 && (
                           <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-teal-50 border border-teal-100 rounded-lg">
-                            <svg className="w-4 h-4 text-teal-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <svg
+                              className="w-4 h-4 text-teal-500 shrink-0"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                              />
                             </svg>
                             <p className="text-xs text-teal-700 font-medium">
-                              {traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                              {traveler.fullName ||
+                                `${t("travelerLabel")} ${idx + 1}`}
                               {traveler.passportCountry && (
                                 <span className="text-teal-500 font-normal ml-1">
-                                  — {countryOptions.find(c => c.value === traveler.passportCountry)?.label || traveler.passportCountry}
+                                  —{" "}
+                                  {countryOptions.find(
+                                    (c) => c.value === traveler.passportCountry,
+                                  )?.label || traveler.passportCountry}
                                 </span>
                               )}
                             </p>
@@ -800,13 +923,39 @@ function PageContent() {
                               id={`arrival-date-select-${idx}`}
                               placeholder={t("phPilih")}
                               options={[
-                                { value: "today", label: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }) },
-                                { value: "tomorrow", label: new Date(Date.now() + 86400000).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }) },
-                                { value: "custom", label: "Tanggal Lainnya..." },
+                                {
+                                  value: "today",
+                                  label: new Date().toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                      day: "2-digit",
+                                      month: "long",
+                                      year: "numeric",
+                                    },
+                                  ),
+                                },
+                                {
+                                  value: "tomorrow",
+                                  label: new Date(
+                                    Date.now() + 86400000,
+                                  ).toLocaleDateString("id-ID", {
+                                    day: "2-digit",
+                                    month: "long",
+                                    year: "numeric",
+                                  }),
+                                },
+                                {
+                                  value: "custom",
+                                  label: "Tanggal Lainnya...",
+                                },
                               ]}
                               value={detail.arrivalDate}
                               onChange={(e) =>
-                                handleTravelDetailChange(idx, "arrivalDate", e.target.value)
+                                handleTravelDetailChange(
+                                  idx,
+                                  "arrivalDate",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
@@ -816,7 +965,11 @@ function PageContent() {
                               id={`departure-date-${idx}`}
                               value={detail.departureDate}
                               onChange={(e) =>
-                                handleTravelDetailChange(idx, "departureDate", e.target.value)
+                                handleTravelDetailChange(
+                                  idx,
+                                  "departureDate",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
@@ -835,7 +988,11 @@ function PageContent() {
                               onChange={(value) => {
                                 handleTravelDetailChange(idx, "hasVisa", value);
                                 if (value !== "ya") {
-                                  handleTravelDetailChange(idx, "visaNumber", "");
+                                  handleTravelDetailChange(
+                                    idx,
+                                    "visaNumber",
+                                    "",
+                                  );
                                 }
                               }}
                             />
@@ -850,7 +1007,11 @@ function PageContent() {
                                 placeholder={t("phNomorVisa")}
                                 value={detail.visaNumber}
                                 onChange={(e) =>
-                                  handleTravelDetailChange(idx, "visaNumber", e.target.value)
+                                  handleTravelDetailChange(
+                                    idx,
+                                    "visaNumber",
+                                    e.target.value,
+                                  )
                                 }
                               />
                             </FormField>
@@ -900,7 +1061,10 @@ function PageContent() {
                           options={travelPurposes}
                           value={transport.travelPurpose}
                           onChange={(e) =>
-                            handleTransportChange("travelPurpose", e.target.value)
+                            handleTransportChange(
+                              "travelPurpose",
+                              e.target.value,
+                            )
                           }
                         />
                       </FormField>
@@ -910,10 +1074,22 @@ function PageContent() {
                     {transport.mode === "udara" && (
                       <div className="mt-5 animate-in">
                         <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
-                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4 text-blue-400 shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
-                          <p className="text-xs text-blue-600">{t("infoKolomUdara")}</p>
+                          <p className="text-xs text-blue-600">
+                            {t("infoKolomUdara")}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -929,7 +1105,10 @@ function PageContent() {
                             />
                           </FormField>
 
-                          <FormField label={t("jenisTransportasiUdara")} required>
+                          <FormField
+                            label={t("jenisTransportasiUdara")}
+                            required
+                          >
                             <SelectInput
                               id="air-transport-type"
                               placeholder={t("phJenisTransportasiUdara")}
@@ -949,7 +1128,10 @@ function PageContent() {
                               value={transport.airlineName}
                               onChange={(value, opt) => {
                                 handleTransportChange("airlineName", value);
-                                handleTransportChange("flightCode", opt?.value || "");
+                                handleTransportChange(
+                                  "flightCode",
+                                  opt?.value || "",
+                                );
                               }}
                             />
                           </FormField>
@@ -964,7 +1146,10 @@ function PageContent() {
                                 placeholder={t("phNomorPenerbangan")}
                                 value={transport.flightNumber}
                                 onChange={(e) =>
-                                  handleTransportChange("flightNumber", e.target.value)
+                                  handleTransportChange(
+                                    "flightNumber",
+                                    e.target.value,
+                                  )
                                 }
                                 className="!rounded-l-none"
                               />
@@ -978,10 +1163,22 @@ function PageContent() {
                     {transport.mode === "laut" && (
                       <div className="mt-5 animate-in">
                         <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
-                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4 text-blue-400 shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
-                          <p className="text-xs text-blue-600">{t("infoKolomLaut")}</p>
+                          <p className="text-xs text-blue-600">
+                            {t("infoKolomLaut")}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -1004,18 +1201,28 @@ function PageContent() {
                               options={shipTypes}
                               value={transport.shipType}
                               onChange={(e) =>
-                                handleTransportChange("shipType", e.target.value)
+                                handleTransportChange(
+                                  "shipType",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
 
-                          <FormField label={t("namaKapal")} required className="md:col-span-2">
+                          <FormField
+                            label={t("namaKapal")}
+                            required
+                            className="md:col-span-2"
+                          >
                             <TextInput
                               id="ship-name"
                               placeholder={t("phNamaKapal")}
                               value={transport.shipName}
                               onChange={(e) =>
-                                handleTransportChange("shipName", e.target.value)
+                                handleTransportChange(
+                                  "shipName",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
@@ -1037,7 +1244,10 @@ function PageContent() {
                           options={accommodationTypes}
                           value={address.accommodationType}
                           onChange={(e) => {
-                            handleAddressChange("accommodationType", e.target.value);
+                            handleAddressChange(
+                              "accommodationType",
+                              e.target.value,
+                            );
                             handleAddressChange("province", "");
                             handleAddressChange("city", "");
                             handleAddressChange("fullAddress", "");
@@ -1055,10 +1265,22 @@ function PageContent() {
                     {address.accommodationType === "rumah" && (
                       <div className="mt-5 animate-in">
                         <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
-                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4 text-blue-400 shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
-                          <p className="text-xs text-blue-600">{t("infoKolomRumah")}</p>
+                          <p className="text-xs text-blue-600">
+                            {t("infoKolomRumah")}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -1093,7 +1315,10 @@ function PageContent() {
                               placeholder={t("phAlamatLengkap")}
                               value={address.fullAddress}
                               onChange={(e) =>
-                                handleAddressChange("fullAddress", e.target.value)
+                                handleAddressChange(
+                                  "fullAddress",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
@@ -1103,8 +1328,18 @@ function PageContent() {
                               id="immigration-office"
                               value={suggestedImmigrationOffice}
                               icon={
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                  />
                                 </svg>
                               }
                             />
@@ -1117,14 +1352,30 @@ function PageContent() {
                     {address.accommodationType === "hotel" && (
                       <div className="mt-5 animate-in">
                         <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-blue-50 border border-blue-100 rounded-lg">
-                          <svg className="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-4 h-4 text-blue-400 shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
-                          <p className="text-xs text-blue-600">{t("infoKolomHotel")}</p>
+                          <p className="text-xs text-blue-600">
+                            {t("infoKolomHotel")}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                          <FormField label={t("namaHotel")} required className="md:col-span-2">
+                          <FormField
+                            label={t("namaHotel")}
+                            required
+                            className="md:col-span-2"
+                          >
                             <SearchableSelect
                               id="hotel-name"
                               placeholder={t("phNamaHotel")}
@@ -1132,23 +1383,44 @@ function PageContent() {
                               value={address.hotelValue}
                               onChange={(value, opt) => {
                                 handleAddressChange("hotelValue", value);
-                                handleAddressChange("hotelLabel", opt?.label || "");
-                                const hotel = indonesianHotels.find((h) => h.value === value);
+                                handleAddressChange(
+                                  "hotelLabel",
+                                  opt?.label || "",
+                                );
+                                const hotel = indonesianHotels.find(
+                                  (h) => h.value === value,
+                                );
                                 if (hotel) {
                                   handleAddressChange("hotelCity", hotel.city);
-                                  handleAddressChange("hotelProvince", hotel.province);
+                                  handleAddressChange(
+                                    "hotelProvince",
+                                    hotel.province,
+                                  );
                                 }
                               }}
                             />
                           </FormField>
 
-                          <FormField label={t("kantorImigrasi")} className="md:col-span-2">
+                          <FormField
+                            label={t("kantorImigrasi")}
+                            className="md:col-span-2"
+                          >
                             <ReadOnlyField
                               id="immigration-office-hotel"
                               value={suggestedImmigrationOffice}
                               icon={
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                  />
                                 </svg>
                               }
                             />
@@ -1170,7 +1442,10 @@ function PageContent() {
                               ]}
                               value={address.transitAccommodation}
                               onChange={(e) =>
-                                handleAddressChange("transitAccommodation", e.target.value)
+                                handleAddressChange(
+                                  "transitAccommodation",
+                                  e.target.value,
+                                )
                               }
                             />
                           </FormField>
@@ -1193,12 +1468,16 @@ function PageContent() {
                       <div className="space-y-4">
                         {travelers.map((traveler, idx) => {
                           const decl = declarations[idx];
-                          const complete = decl ? isDeclarationComplete(decl) : false;
+                          const complete = decl
+                            ? isDeclarationComplete(decl)
+                            : false;
                           return (
                             <button
                               key={idx}
                               type="button"
-                              onClick={() => setDeclarationView({ mode: "form", index: idx })}
+                              onClick={() =>
+                                setDeclarationView({ mode: "form", index: idx })
+                              }
                               className={`w-full text-left rounded-xl border-2 px-6 py-5 transition-all duration-200 hover:shadow-md ${
                                 complete
                                   ? "border-teal-200 bg-teal-50/30 hover:border-teal-300"
@@ -1208,31 +1487,60 @@ function PageContent() {
                               <div className="flex items-center justify-between">
                                 <div className="flex-1">
                                   <p className="text-xs text-gray-400 font-medium mb-1">
-                                    {idx === 0 ? t("ketuaPelaku") : `${t("travelerLabel")} ${idx + 1}`}
+                                    {idx === 0
+                                      ? t("ketuaPelaku")
+                                      : `${t("travelerLabel")} ${idx + 1}`}
                                   </p>
                                   <p className="text-base font-bold text-gray-900 uppercase">
-                                    {traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                                    {traveler.fullName ||
+                                      `${t("travelerLabel")} ${idx + 1}`}
                                   </p>
                                   <p className="text-sm text-gray-500 mt-0.5">
                                     {traveler.passportNo || "—"}
                                   </p>
-                                  <p className={`text-xs font-medium mt-2 ${
-                                    complete ? "text-teal-600" : "text-amber-500"
-                                  }`}>
-                                    {complete ? t("deklarasiSelesai") : t("isiDeklarasi")}
+                                  <p
+                                    className={`text-xs font-medium mt-2 ${
+                                      complete
+                                        ? "text-teal-600"
+                                        : "text-amber-500"
+                                    }`}
+                                  >
+                                    {complete
+                                      ? t("deklarasiSelesai")
+                                      : t("isiDeklarasi")}
                                   </p>
                                 </div>
                                 <div className="ml-4">
                                   {complete ? (
                                     <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center shadow-sm shadow-teal-500/30">
-                                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                      <svg
+                                        className="w-5 h-5 text-white"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2.5}
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M5 13l4 4L19 7"
+                                        />
                                       </svg>
                                     </div>
                                   ) : (
                                     <div className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-teal-400 hover:bg-teal-50 transition-colors">
-                                      <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                      <svg
+                                        className="w-5 h-5 text-gray-400"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2}
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                        />
                                       </svg>
                                     </div>
                                   )}
@@ -1248,17 +1556,34 @@ function PageContent() {
                     (() => {
                       const idx = declarationView.index;
                       const traveler = travelers[idx];
-                      const decl = declarations[idx] || { baggageCount: "", hasProhibitedGoods: "", hasIMEI: "", agreed: false };
+                      const decl = declarations[idx] || {
+                        baggageCount: "",
+                        hasProhibitedGoods: "",
+                        hasIMEI: "",
+                        agreed: false,
+                      };
                       return (
                         <div className="space-y-6">
                           {/* Back to list button */}
                           <button
                             type="button"
-                            onClick={() => setDeclarationView({ mode: "list", index: 0 })}
+                            onClick={() =>
+                              setDeclarationView({ mode: "list", index: 0 })
+                            }
                             className="flex items-center gap-2 text-sm text-gray-500 hover:text-teal-600 transition-colors font-medium"
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                              />
                             </svg>
                             {t("kembaliKeList")}
                           </button>
@@ -1270,10 +1595,13 @@ function PageContent() {
                             </div>
                             <div>
                               <p className="text-xs text-gray-400 font-medium">
-                                {idx === 0 ? t("ketuaPelaku") : `${t("travelerLabel")} ${idx + 1}`}
+                                {idx === 0
+                                  ? t("ketuaPelaku")
+                                  : `${t("travelerLabel")} ${idx + 1}`}
                               </p>
                               <p className="text-sm font-bold text-gray-900 uppercase">
-                                {traveler?.fullName || `${t("travelerLabel")} ${idx + 1}`}
+                                {traveler?.fullName ||
+                                  `${t("travelerLabel")} ${idx + 1}`}
                               </p>
                             </div>
                           </div>
@@ -1286,21 +1614,46 @@ function PageContent() {
                             {/* Q1: Symptoms */}
                             <div className="mb-6 animate-in">
                               <p className="text-xs font-semibold text-navy-800 mb-3">
-                                {t("dekKesehatanQ1")} <span className="text-red-500 ml-0.5">*</span>
+                                {t("dekKesehatanQ1")}{" "}
+                                <span className="text-red-500 ml-0.5">*</span>
                               </p>
                               <div className="flex flex-wrap gap-2">
                                 {[
-                                  { key: "TIDAK_ADA", label: t("dekKesehatanTidakAda") },
-                                  { key: "BATUK", label: t("dekKesehatanBatuk") },
-                                  { key: "DEMAM", label: t("dekKesehatanDemam") },
+                                  {
+                                    key: "TIDAK_ADA",
+                                    label: t("dekKesehatanTidakAda"),
+                                  },
+                                  {
+                                    key: "BATUK",
+                                    label: t("dekKesehatanBatuk"),
+                                  },
+                                  {
+                                    key: "DEMAM",
+                                    label: t("dekKesehatanDemam"),
+                                  },
                                   { key: "LESI", label: t("dekKesehatanLesi") },
-                                  { key: "PILEK", label: t("dekKesehatanPilek") },
-                                  { key: "TENGGOROKAN", label: t("dekKesehatanTenggorokan") },
-                                  { key: "SESAK", label: t("dekKesehatanSesak") },
+                                  {
+                                    key: "PILEK",
+                                    label: t("dekKesehatanPilek"),
+                                  },
+                                  {
+                                    key: "TENGGOROKAN",
+                                    label: t("dekKesehatanTenggorokan"),
+                                  },
+                                  {
+                                    key: "SESAK",
+                                    label: t("dekKesehatanSesak"),
+                                  },
                                 ].map((symptom) => {
-                                  const checked = symptom.key === "TIDAK_ADA"
-                                    ? ((healthDecl[idx] || { hasSymptoms: "" }).hasSymptoms === "tidak")
-                                    : (((healthDecl[idx] || { hasSymptoms: "" }).hasSymptoms === "ya") && (healthDecl[idx]?.symptoms || []).includes(symptom.key));
+                                  const checked =
+                                    symptom.key === "TIDAK_ADA"
+                                      ? (healthDecl[idx] || { hasSymptoms: "" })
+                                          .hasSymptoms === "tidak"
+                                      : (healthDecl[idx] || { hasSymptoms: "" })
+                                          .hasSymptoms === "ya" &&
+                                        (
+                                          healthDecl[idx]?.symptoms || []
+                                        ).includes(symptom.key);
 
                                   return (
                                     <button
@@ -1308,13 +1661,25 @@ function PageContent() {
                                       type="button"
                                       onClick={() => {
                                         if (symptom.key === "TIDAK_ADA") {
-                                          handleHealthDeclChange(idx, "hasSymptoms", "tidak");
-                                          handleHealthDeclChange(idx, "symptoms", []);
+                                          handleHealthDeclChange(
+                                            idx,
+                                            "hasSymptoms",
+                                            "tidak",
+                                          );
+                                          handleHealthDeclChange(
+                                            idx,
+                                            "symptoms",
+                                            [],
+                                          );
                                         } else {
-                                          handleHealthDeclChange(idx, "hasSymptoms", "ya");
+                                          handleHealthDeclChange(
+                                            idx,
+                                            "hasSymptoms",
+                                            "ya",
+                                          );
                                           handleSymptomToggle(idx, symptom.key);
-                                          
-                                          // If unchecking the last symptom, maybe we don't automatically set "tidak" 
+
+                                          // If unchecking the last symptom, maybe we don't automatically set "tidak"
                                           // because the user might just be correcting a mistake.
                                         }
                                       }}
@@ -1331,50 +1696,114 @@ function PageContent() {
                               </div>
 
                               {/* Selected Symptoms Bar */}
-                              {healthDecl[idx]?.hasSymptoms === "ya" && (healthDecl[idx]?.symptoms || []).length > 0 && (
-                                <div className="mt-4 p-3 bg-red-50/50 border border-red-100 rounded-lg animate-in slide-in-from-top-2 fade-in duration-200">
-                                  <p className="text-xs font-medium text-red-800 mb-2 flex items-center gap-1.5">
-                                    <svg className="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    {t("dekKesehatanGejalaTerpilih") || "Gejala Terpilih:"}
-                                  </p>
-                                  <div className="flex flex-wrap gap-2">
-                                    {(healthDecl[idx]?.symptoms || []).map((symptomKey: string) => {
-                                      const symptomLabel = [
-                                        { key: "BATUK", label: t("dekKesehatanBatuk") },
-                                        { key: "DEMAM", label: t("dekKesehatanDemam") },
-                                        { key: "LESI", label: t("dekKesehatanLesi") },
-                                        { key: "PILEK", label: t("dekKesehatanPilek") },
-                                        { key: "TENGGOROKAN", label: t("dekKesehatanTenggorokan") },
-                                        { key: "SESAK", label: t("dekKesehatanSesak") },
-                                      ].find(s => s.key === symptomKey)?.label || symptomKey;
+                              {healthDecl[idx]?.hasSymptoms === "ya" &&
+                                (healthDecl[idx]?.symptoms || []).length >
+                                  0 && (
+                                  <div className="mt-4 p-3 bg-red-50/50 border border-red-100 rounded-lg animate-in slide-in-from-top-2 fade-in duration-200">
+                                    <p className="text-xs font-medium text-red-800 mb-2 flex items-center gap-1.5">
+                                      <svg
+                                        className="w-3.5 h-3.5 text-red-500"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2.5}
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                        />
+                                      </svg>
+                                      {t("dekKesehatanGejalaTerpilih") ||
+                                        "Gejala Terpilih:"}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                      {(healthDecl[idx]?.symptoms || []).map(
+                                        (symptomKey: string) => {
+                                          const symptomLabel =
+                                            [
+                                              {
+                                                key: "BATUK",
+                                                label: t("dekKesehatanBatuk"),
+                                              },
+                                              {
+                                                key: "DEMAM",
+                                                label: t("dekKesehatanDemam"),
+                                              },
+                                              {
+                                                key: "LESI",
+                                                label: t("dekKesehatanLesi"),
+                                              },
+                                              {
+                                                key: "PILEK",
+                                                label: t("dekKesehatanPilek"),
+                                              },
+                                              {
+                                                key: "TENGGOROKAN",
+                                                label: t(
+                                                  "dekKesehatanTenggorokan",
+                                                ),
+                                              },
+                                              {
+                                                key: "SESAK",
+                                                label: t("dekKesehatanSesak"),
+                                              },
+                                            ].find((s) => s.key === symptomKey)
+                                              ?.label || symptomKey;
 
-                                      return (
-                                        <span key={symptomKey} className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-white border border-red-200 text-red-700 rounded-md shadow-sm">
-                                          {symptomLabel}
-                                          <button
-                                            type="button"
-                                            onClick={() => {
-                                              handleSymptomToggle(idx, symptomKey);
-                                              // If it's the last one being removed, set to tidak
-                                              const currentSymptoms = healthDecl[idx]?.symptoms || [];
-                                              if (currentSymptoms.length === 1 && currentSymptoms[0] === symptomKey) {
-                                                handleHealthDeclChange(idx, "hasSymptoms", "tidak");
-                                              }
-                                            }}
-                                            className="text-red-400 hover:text-red-600 transition-colors"
-                                          >
-                                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                          </button>
-                                        </span>
-                                      );
-                                    })}
+                                          return (
+                                            <span
+                                              key={symptomKey}
+                                              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-white border border-red-200 text-red-700 rounded-md shadow-sm"
+                                            >
+                                              {symptomLabel}
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  handleSymptomToggle(
+                                                    idx,
+                                                    symptomKey,
+                                                  );
+                                                  // If it's the last one being removed, set to tidak
+                                                  const currentSymptoms =
+                                                    healthDecl[idx]?.symptoms ||
+                                                    [];
+                                                  if (
+                                                    currentSymptoms.length ===
+                                                      1 &&
+                                                    currentSymptoms[0] ===
+                                                      symptomKey
+                                                  ) {
+                                                    handleHealthDeclChange(
+                                                      idx,
+                                                      "hasSymptoms",
+                                                      "tidak",
+                                                    );
+                                                  }
+                                                }}
+                                                className="text-red-400 hover:text-red-600 transition-colors"
+                                              >
+                                                <svg
+                                                  className="w-3 h-3"
+                                                  fill="none"
+                                                  viewBox="0 0 24 24"
+                                                  stroke="currentColor"
+                                                  strokeWidth={2.5}
+                                                >
+                                                  <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                  />
+                                                </svg>
+                                              </button>
+                                            </span>
+                                          );
+                                        },
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
                             </div>
 
                             {/* Q2: Countries visited in past 21 days */}
@@ -1389,16 +1818,27 @@ function PageContent() {
                                 value=""
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  if (val && !(healthDecl[idx]?.countriesVisited || []).includes(val)) {
+                                  if (
+                                    val &&
+                                    !(
+                                      healthDecl[idx]?.countriesVisited || []
+                                    ).includes(val)
+                                  ) {
                                     handleCountryVisitedToggle(idx, val);
                                   }
                                 }}
                               />
-                              {(healthDecl[idx]?.countriesVisited || []).length > 0 && (
+                              {(healthDecl[idx]?.countriesVisited || [])
+                                .length > 0 && (
                                 <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
                                   <div className="flex flex-wrap gap-2">
-                                    {(healthDecl[idx]?.countriesVisited || []).map((countryCode: string) => {
-                                      const countryLabel = countryOptions.find(c => c.value === countryCode)?.label || countryCode;
+                                    {(
+                                      healthDecl[idx]?.countriesVisited || []
+                                    ).map((countryCode: string) => {
+                                      const countryLabel =
+                                        countryOptions.find(
+                                          (c) => c.value === countryCode,
+                                        )?.label || countryCode;
                                       return (
                                         <span
                                           key={countryCode}
@@ -1407,11 +1847,26 @@ function PageContent() {
                                           {countryLabel}
                                           <button
                                             type="button"
-                                            onClick={() => handleCountryVisitedToggle(idx, countryCode)}
+                                            onClick={() =>
+                                              handleCountryVisitedToggle(
+                                                idx,
+                                                countryCode,
+                                              )
+                                            }
                                             className="text-gray-400 hover:text-red-500 transition-colors"
                                           >
-                                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            <svg
+                                              className="w-3.5 h-3.5"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                              strokeWidth={2}
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M6 18L18 6M6 6l12 12"
+                                              />
                                             </svg>
                                           </button>
                                         </span>
@@ -1431,7 +1886,8 @@ function PageContent() {
                             {/* Q1: Animal/Fish/Plant products */}
                             <div className="mb-6">
                               <p className="text-xs font-semibold text-navy-800 mb-3">
-                                {t("dekKarantinaQ1")} <span className="text-red-500 ml-0.5">*</span>
+                                {t("dekKarantinaQ1")}{" "}
+                                <span className="text-red-500 ml-0.5">*</span>
                               </p>
                               <RadioInput
                                 name={`quar-animal-${idx}`}
@@ -1440,13 +1896,26 @@ function PageContent() {
                                   { value: "ya", label: t("ya") },
                                   { value: "tidak", label: t("tidak") },
                                 ]}
-                                value={(quarantineDecl[idx] || { hasAnimalProducts: "" }).hasAnimalProducts}
-                                onChange={(value) => handleQuarantineDeclChange(idx, "hasAnimalProducts", value)}
+                                value={
+                                  (
+                                    quarantineDecl[idx] || {
+                                      hasAnimalProducts: "",
+                                    }
+                                  ).hasAnimalProducts
+                                }
+                                onChange={(value) =>
+                                  handleQuarantineDeclChange(
+                                    idx,
+                                    "hasAnimalProducts",
+                                    value,
+                                  )
+                                }
                               />
                             </div>
 
                             {/* Conditional: Commodity details when "Ya" */}
-                            {(quarantineDecl[idx] || { hasAnimalProducts: "" }).hasAnimalProducts === "ya" && (
+                            {(quarantineDecl[idx] || { hasAnimalProducts: "" })
+                              .hasAnimalProducts === "ya" && (
                               <div className="mb-6 animate-in space-y-4">
                                 {/* Category & Sub-category */}
                                 <p className="text-xs font-semibold text-navy-800">
@@ -1461,10 +1930,24 @@ function PageContent() {
                                       { value: "IKAN", label: "IKAN" },
                                       { value: "TUMBUHAN", label: "TUMBUHAN" },
                                     ]}
-                                    value={(quarantineDecl[idx] || { commodityCategory: "" }).commodityCategory}
+                                    value={
+                                      (
+                                        quarantineDecl[idx] || {
+                                          commodityCategory: "",
+                                        }
+                                      ).commodityCategory
+                                    }
                                     onChange={(e) => {
-                                      handleQuarantineDeclChange(idx, "commodityCategory", e.target.value);
-                                      handleQuarantineDeclChange(idx, "commoditySubCategory", "");
+                                      handleQuarantineDeclChange(
+                                        idx,
+                                        "commodityCategory",
+                                        e.target.value,
+                                      );
+                                      handleQuarantineDeclChange(
+                                        idx,
+                                        "commoditySubCategory",
+                                        "",
+                                      );
                                     }}
                                   />
 
@@ -1472,37 +1955,102 @@ function PageContent() {
                                     id={`quar-subcategory-${idx}`}
                                     placeholder={t("phPilih")}
                                     options={
-                                      (quarantineDecl[idx]?.commodityCategory === "HEWAN"
+                                      quarantineDecl[idx]?.commodityCategory ===
+                                      "HEWAN"
                                         ? [
-                                            { value: "ANJING", label: "ANJING" },
-                                            { value: "KUCING", label: "KUCING" },
-                                            { value: "KELINCI", label: "KELINCI" },
-                                            { value: "BURUNG", label: "BURUNG" },
-                                            { value: "REPTIL", label: "REPTIL" },
-                                            { value: "HEWAN_LAINNYA", label: "HEWAN LAINNYA" },
+                                            {
+                                              value: "ANJING",
+                                              label: "ANJING",
+                                            },
+                                            {
+                                              value: "KUCING",
+                                              label: "KUCING",
+                                            },
+                                            {
+                                              value: "KELINCI",
+                                              label: "KELINCI",
+                                            },
+                                            {
+                                              value: "BURUNG",
+                                              label: "BURUNG",
+                                            },
+                                            {
+                                              value: "REPTIL",
+                                              label: "REPTIL",
+                                            },
+                                            {
+                                              value: "HEWAN_LAINNYA",
+                                              label: "HEWAN LAINNYA",
+                                            },
                                           ]
-                                        : quarantineDecl[idx]?.commodityCategory === "IKAN"
-                                        ? [
-                                            { value: "IKAN_HIAS", label: "IKAN HIAS" },
-                                            { value: "IKAN_KONSUMSI", label: "IKAN KONSUMSI" },
-                                            { value: "UDANG", label: "UDANG" },
-                                            { value: "KERANG", label: "KERANG" },
-                                            { value: "IKAN_LAINNYA", label: "IKAN LAINNYA" },
-                                          ]
-                                        : quarantineDecl[idx]?.commodityCategory === "TUMBUHAN"
-                                        ? [
-                                            { value: "BUAH", label: "BUAH" },
-                                            { value: "SAYUR", label: "SAYUR" },
-                                            { value: "BENIH", label: "BENIH" },
-                                            { value: "TANAMAN_HIAS", label: "TANAMAN HIAS" },
-                                            { value: "KAYU", label: "KAYU" },
-                                            { value: "TUMBUHAN_LAINNYA", label: "TUMBUHAN LAINNYA" },
-                                          ]
-                                        : [])
+                                        : quarantineDecl[idx]
+                                              ?.commodityCategory === "IKAN"
+                                          ? [
+                                              {
+                                                value: "IKAN_HIAS",
+                                                label: "IKAN HIAS",
+                                              },
+                                              {
+                                                value: "IKAN_KONSUMSI",
+                                                label: "IKAN KONSUMSI",
+                                              },
+                                              {
+                                                value: "UDANG",
+                                                label: "UDANG",
+                                              },
+                                              {
+                                                value: "KERANG",
+                                                label: "KERANG",
+                                              },
+                                              {
+                                                value: "IKAN_LAINNYA",
+                                                label: "IKAN LAINNYA",
+                                              },
+                                            ]
+                                          : quarantineDecl[idx]
+                                                ?.commodityCategory ===
+                                              "TUMBUHAN"
+                                            ? [
+                                                {
+                                                  value: "BUAH",
+                                                  label: "BUAH",
+                                                },
+                                                {
+                                                  value: "SAYUR",
+                                                  label: "SAYUR",
+                                                },
+                                                {
+                                                  value: "BENIH",
+                                                  label: "BENIH",
+                                                },
+                                                {
+                                                  value: "TANAMAN_HIAS",
+                                                  label: "TANAMAN HIAS",
+                                                },
+                                                {
+                                                  value: "KAYU",
+                                                  label: "KAYU",
+                                                },
+                                                {
+                                                  value: "TUMBUHAN_LAINNYA",
+                                                  label: "TUMBUHAN LAINNYA",
+                                                },
+                                              ]
+                                            : []
                                     }
-                                    value={(quarantineDecl[idx] || { commoditySubCategory: "" }).commoditySubCategory}
+                                    value={
+                                      (
+                                        quarantineDecl[idx] || {
+                                          commoditySubCategory: "",
+                                        }
+                                      ).commoditySubCategory
+                                    }
                                     onChange={(e) => {
-                                      handleQuarantineDeclChange(idx, "commoditySubCategory", e.target.value);
+                                      handleQuarantineDeclChange(
+                                        idx,
+                                        "commoditySubCategory",
+                                        e.target.value,
+                                      );
                                       if (e.target.value) {
                                         handleCommodityAdd(idx, e.target.value);
                                       }
@@ -1511,11 +2059,18 @@ function PageContent() {
                                 </div>
 
                                 {/* Selected commodities tags */}
-                                {(quarantineDecl[idx]?.selectedCommodities || []).length > 0 && (
+                                {(
+                                  quarantineDecl[idx]?.selectedCommodities || []
+                                ).length > 0 && (
                                   <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                    <p className="text-xs text-gray-500 mb-2">{t("dekKarantinaKomoditasTerpilih")}</p>
+                                    <p className="text-xs text-gray-500 mb-2">
+                                      {t("dekKarantinaKomoditasTerpilih")}
+                                    </p>
                                     <div className="flex flex-wrap gap-2">
-                                      {(quarantineDecl[idx]?.selectedCommodities || []).map((commodity: string) => (
+                                      {(
+                                        quarantineDecl[idx]
+                                          ?.selectedCommodities || []
+                                      ).map((commodity: string) => (
                                         <span
                                           key={commodity}
                                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 rounded-lg text-gray-700"
@@ -1523,11 +2078,26 @@ function PageContent() {
                                           {commodity.replace(/_/g, " ")}
                                           <button
                                             type="button"
-                                            onClick={() => handleCommodityRemove(idx, commodity)}
+                                            onClick={() =>
+                                              handleCommodityRemove(
+                                                idx,
+                                                commodity,
+                                              )
+                                            }
                                             className="text-gray-400 hover:text-red-500 transition-colors"
                                           >
-                                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            <svg
+                                              className="w-3.5 h-3.5"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                              strokeWidth={2}
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M6 18L18 6M6 6l12 12"
+                                              />
                                             </svg>
                                           </button>
                                         </span>
@@ -1542,13 +2112,34 @@ function PageContent() {
                                     id={`quar-form-${idx}`}
                                     placeholder={t("phPilih")}
                                     options={[
-                                      { value: "PRODUK_SEGAR", label: "PRODUK SEGAR" },
-                                      { value: "PRODUK_OLAHAN", label: "PRODUK OLAHAN" },
-                                      { value: "PRODUK_BEKU", label: "PRODUK BEKU" },
+                                      {
+                                        value: "PRODUK_SEGAR",
+                                        label: "PRODUK SEGAR",
+                                      },
+                                      {
+                                        value: "PRODUK_OLAHAN",
+                                        label: "PRODUK OLAHAN",
+                                      },
+                                      {
+                                        value: "PRODUK_BEKU",
+                                        label: "PRODUK BEKU",
+                                      },
                                       { value: "HIDUP", label: "HIDUP" },
                                     ]}
-                                    value={(quarantineDecl[idx] || { commodityForm: "" }).commodityForm}
-                                    onChange={(e) => handleQuarantineDeclChange(idx, "commodityForm", e.target.value)}
+                                    value={
+                                      (
+                                        quarantineDecl[idx] || {
+                                          commodityForm: "",
+                                        }
+                                      ).commodityForm
+                                    }
+                                    onChange={(e) =>
+                                      handleQuarantineDeclChange(
+                                        idx,
+                                        "commodityForm",
+                                        e.target.value,
+                                      )
+                                    }
                                   />
                                 </FormField>
 
@@ -1558,15 +2149,45 @@ function PageContent() {
                                     id={`quar-quantity-${idx}`}
                                     placeholder={t("phPilih")}
                                     options={[
-                                      { value: "SAMPAI_2KG", label: "SAMPAI DENGAN 2 KG" },
-                                      { value: "LEBIH_2KG", label: "LEBIH DARI 2 KG" },
-                                      { value: "SAMPAI_2EKOR", label: "SAMPAI DENGAN 2 EKOR" },
-                                      { value: "LEBIH_2EKOR", label: "LEBIH DARI 2 EKOR" },
-                                      { value: "SAMPAI_2L", label: "SAMPAI DENGAN 2 L" },
-                                      { value: "LEBIH_2L", label: "LEBIH DARI 2 L" },
+                                      {
+                                        value: "SAMPAI_2KG",
+                                        label: "SAMPAI DENGAN 2 KG",
+                                      },
+                                      {
+                                        value: "LEBIH_2KG",
+                                        label: "LEBIH DARI 2 KG",
+                                      },
+                                      {
+                                        value: "SAMPAI_2EKOR",
+                                        label: "SAMPAI DENGAN 2 EKOR",
+                                      },
+                                      {
+                                        value: "LEBIH_2EKOR",
+                                        label: "LEBIH DARI 2 EKOR",
+                                      },
+                                      {
+                                        value: "SAMPAI_2L",
+                                        label: "SAMPAI DENGAN 2 L",
+                                      },
+                                      {
+                                        value: "LEBIH_2L",
+                                        label: "LEBIH DARI 2 L",
+                                      },
                                     ]}
-                                    value={(quarantineDecl[idx] || { commodityQuantity: "" }).commodityQuantity}
-                                    onChange={(e) => handleQuarantineDeclChange(idx, "commodityQuantity", e.target.value)}
+                                    value={
+                                      (
+                                        quarantineDecl[idx] || {
+                                          commodityQuantity: "",
+                                        }
+                                      ).commodityQuantity
+                                    }
+                                    onChange={(e) =>
+                                      handleQuarantineDeclChange(
+                                        idx,
+                                        "commodityQuantity",
+                                        e.target.value,
+                                      )
+                                    }
                                   />
                                 </FormField>
                               </div>
@@ -1575,7 +2196,8 @@ function PageContent() {
                             {/* Q2: Certificate */}
                             <div className="mb-6">
                               <p className="text-xs font-semibold text-navy-800 mb-3">
-                                {t("dekKarantinaQ2")} <span className="text-red-500 ml-0.5">*</span>
+                                {t("dekKarantinaQ2")}{" "}
+                                <span className="text-red-500 ml-0.5">*</span>
                               </p>
                               <RadioInput
                                 name={`quar-cert-${idx}`}
@@ -1584,8 +2206,20 @@ function PageContent() {
                                   { value: "ya", label: t("ya") },
                                   { value: "tidak", label: t("tidak") },
                                 ]}
-                                value={(quarantineDecl[idx] || { hasCertificate: "" }).hasCertificate}
-                                onChange={(value) => handleQuarantineDeclChange(idx, "hasCertificate", value)}
+                                value={
+                                  (
+                                    quarantineDecl[idx] || {
+                                      hasCertificate: "",
+                                    }
+                                  ).hasCertificate
+                                }
+                                onChange={(value) =>
+                                  handleQuarantineDeclChange(
+                                    idx,
+                                    "hasCertificate",
+                                    value,
+                                  )
+                                }
                               />
                             </div>
 
@@ -1596,8 +2230,20 @@ function PageContent() {
                                   id={`quar-origin-country-${idx}`}
                                   placeholder={t("dekKarantinaPhDariNegara")}
                                   options={countryOptions}
-                                  value={(quarantineDecl[idx] || { originCountry: "" }).originCountry}
-                                  onChange={(value) => handleQuarantineDeclChange(idx, "originCountry", value)}
+                                  value={
+                                    (
+                                      quarantineDecl[idx] || {
+                                        originCountry: "",
+                                      }
+                                    ).originCountry
+                                  }
+                                  onChange={(value) =>
+                                    handleQuarantineDeclChange(
+                                      idx,
+                                      "originCountry",
+                                      value,
+                                    )
+                                  }
                                 />
                               </FormField>
                             </div>
@@ -1612,17 +2258,40 @@ function PageContent() {
                             <div className="mb-6">
                               <details className="group border border-gray-200 rounded-lg overflow-hidden">
                                 <summary className="flex items-center justify-between px-4 py-3 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                                  <p className="text-xs text-gray-600 italic">{t("infoDaftarBarang")}</p>
-                                  <svg className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                  <p className="text-xs text-gray-600 italic">
+                                    {t("infoDaftarBarang")}
+                                  </p>
+                                  <svg
+                                    className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M19 9l-7 7-7-7"
+                                    />
                                   </svg>
                                 </summary>
                                 <div className="px-4 py-3 text-xs text-gray-500 border-t border-gray-100 bg-white leading-relaxed">
-                                  <p className="font-medium text-gray-700 mb-2">Informasi Umum Barang Bawaan:</p>
+                                  <p className="font-medium text-gray-700 mb-2">
+                                    Informasi Umum Barang Bawaan:
+                                  </p>
                                   <ul className="list-disc list-inside space-y-1">
-                                    <li>Barang bawaan pribadi yang wajar sesuai kebutuhan perjalanan</li>
-                                    <li>Barang yang dibawa harus sesuai dengan ketentuan impor Indonesia</li>
-                                    <li>Batas nilai pembebasan bea masuk: USD 500 per orang</li>
+                                    <li>
+                                      Barang bawaan pribadi yang wajar sesuai
+                                      kebutuhan perjalanan
+                                    </li>
+                                    <li>
+                                      Barang yang dibawa harus sesuai dengan
+                                      ketentuan impor Indonesia
+                                    </li>
+                                    <li>
+                                      Batas nilai pembebasan bea masuk: USD 500
+                                      per orang
+                                    </li>
                                   </ul>
                                 </div>
                               </details>
@@ -1638,11 +2307,17 @@ function PageContent() {
                                     min="0"
                                     placeholder={t("phJumlahBagasi")}
                                     value={decl.baggageCount}
-                                    onChange={(e) => handleDeclarationChange(idx, "baggageCount", e.target.value)}
+                                    onChange={(e) =>
+                                      handleDeclarationChange(
+                                        idx,
+                                        "baggageCount",
+                                        e.target.value,
+                                      )
+                                    }
                                     className="flex-1 px-4 py-2.5 rounded-l-lg border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 hover:border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10"
                                   />
                                   <span className="inline-flex items-center px-4 py-2.5 rounded-r-lg border border-l-0 border-gray-200 bg-gray-50 text-sm text-gray-500 font-medium">
-                                    {t("pcsKoli")}
+                                    {t("pcsKg")}
                                   </span>
                                 </div>
                               </FormField>
@@ -1651,25 +2326,54 @@ function PageContent() {
                             {/* Prohibited Goods Question */}
                             <div className="mb-6">
                               <p className="text-xs font-semibold text-navy-800 mb-3">
-                                {t("barangWajib")} <span className="text-red-500 ml-0.5">*</span>
+                                {t("barangWajib")}{" "}
+                                <span className="text-red-500 ml-0.5">*</span>
                               </p>
 
                               {/* Info collapsible 2 */}
                               <div className="mb-4">
                                 <details className="group border border-gray-200 rounded-lg overflow-hidden">
                                   <summary className="flex items-center justify-between px-4 py-3 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                                    <p className="text-xs text-gray-600 italic">{t("infoDaftarBarangWajib")}</p>
-                                    <svg className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                    <p className="text-xs text-gray-600 italic">
+                                      {t("infoDaftarBarangWajib")}
+                                    </p>
+                                    <svg
+                                      className="w-4 h-4 text-gray-400 transition-transform duration-200 group-open:rotate-180"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 9l-7 7-7-7"
+                                      />
                                     </svg>
                                   </summary>
                                   <div className="px-4 py-3 text-xs text-gray-500 border-t border-gray-100 bg-white leading-relaxed">
-                                    <p className="font-medium text-gray-700 mb-2">Daftar barang yang wajib diberitahukan:</p>
+                                    <p className="font-medium text-gray-700 mb-2">
+                                      Daftar barang yang wajib diberitahukan:
+                                    </p>
                                     <ul className="list-disc list-inside space-y-1">
-                                      <li>Uang tunai dan/atau instrumen pembayaran lain senilai Rp100.000.000 atau lebih</li>
-                                      <li>Narkotika, psikotropika, prekursor, obat-obatan, senjata api/amunisi, bahan peledak, produk pornografi</li>
-                                      <li>Hewan, ikan, dan tumbuhan termasuk produk yang berasal dari hewan/tumbuhan yang dilindungi</li>
-                                      <li>Film sinematografi, pita video berisi rekaman, piringan video</li>
+                                      <li>
+                                        Uang tunai dan/atau instrumen pembayaran
+                                        lain senilai Rp100.000.000 atau lebih
+                                      </li>
+                                      <li>
+                                        Narkotika, psikotropika, prekursor,
+                                        obat-obatan, senjata api/amunisi, bahan
+                                        peledak, produk pornografi
+                                      </li>
+                                      <li>
+                                        Hewan, ikan, dan tumbuhan termasuk
+                                        produk yang berasal dari hewan/tumbuhan
+                                        yang dilindungi
+                                      </li>
+                                      <li>
+                                        Film sinematografi, pita video berisi
+                                        rekaman, piringan video
+                                      </li>
                                       <li>Barang dagangan komersial</li>
                                     </ul>
                                   </div>
@@ -1684,14 +2388,21 @@ function PageContent() {
                                   { value: "tidak", label: t("tidak") },
                                 ]}
                                 value={decl.hasProhibitedGoods}
-                                onChange={(value) => handleDeclarationChange(idx, "hasProhibitedGoods", value)}
+                                onChange={(value) =>
+                                  handleDeclarationChange(
+                                    idx,
+                                    "hasProhibitedGoods",
+                                    value,
+                                  )
+                                }
                               />
                             </div>
 
                             {/* IMEI Question */}
                             <div className="mb-6">
                               <p className="text-xs font-semibold text-navy-800 mb-1">
-                                {t("imeiQuestion")} <span className="text-red-500 ml-0.5">*</span>
+                                {t("imeiQuestion")}{" "}
+                                <span className="text-red-500 ml-0.5">*</span>
                               </p>
                               <p className="text-xs text-red-500 font-medium mb-3">
                                 {t("imeiNote")}
@@ -1704,7 +2415,9 @@ function PageContent() {
                                   { value: "tidak", label: t("tidak") },
                                 ]}
                                 value={decl.hasIMEI}
-                                onChange={(value) => handleDeclarationChange(idx, "hasIMEI", value)}
+                                onChange={(value) =>
+                                  handleDeclarationChange(idx, "hasIMEI", value)
+                                }
                               />
                             </div>
 
@@ -1714,12 +2427,23 @@ function PageContent() {
                                 <input
                                   type="checkbox"
                                   checked={decl.agreed}
-                                  onChange={(e) => handleDeclarationChange(idx, "agreed", e.target.checked)}
+                                  onChange={(e) =>
+                                    handleDeclarationChange(
+                                      idx,
+                                      "agreed",
+                                      e.target.checked,
+                                    )
+                                  }
                                   className="mt-0.5 w-4 h-4 rounded border-gray-300 text-teal-500 focus:ring-teal-500/20 accent-teal-500"
                                 />
                                 <span className="text-xs text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors">
                                   {t("persetujuanDeklarasi")}{" "}
-                                  <a href="#" className="text-teal-600 underline hover:text-teal-700 font-medium">{t("deklarasiLink")}</a>{" "}
+                                  <a
+                                    href="#"
+                                    className="text-teal-600 underline hover:text-teal-700 font-medium"
+                                  >
+                                    {t("deklarasiLink")}
+                                  </a>{" "}
                                   {t("dalamAplikasi")}
                                 </span>
                               </label>
@@ -1729,13 +2453,25 @@ function PageContent() {
                             <div className="mt-6 flex justify-end">
                               <button
                                 type="button"
-                                onClick={() => setDeclarationView({ mode: "list", index: 0 })}
+                                onClick={() =>
+                                  setDeclarationView({ mode: "list", index: 0 })
+                                }
                                 className="flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={!isDeclarationComplete(decl)}
                               >
                                 {t("kirim")}
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5 13l4 4L19 7"
+                                  />
                                 </svg>
                               </button>
                             </div>
