@@ -102,73 +102,60 @@ export const indonesianPorts: SelectOption[] = [
 // -----------------------------------------------------------------------------
 
 export const worldAirlines: SelectOption[] = [
-  // Indonesia
-  { value: "GA", label: "Garuda Indonesia (GA)" },
-  { value: "JT", label: "Lion Air (JT)" },
-  { value: "QG", label: "Citilink (QG)" },
-  { value: "ID", label: "Batik Air (ID)" },
-  { value: "SJ", label: "Sriwijaya Air (SJ)" },
-  { value: "IW", label: "Wings Air (IW)" },
-  { value: "QZ", label: "Indonesia AirAsia (QZ)" },
-  { value: "IU", label: "Super Air Jet (IU)" },
-  { value: "IP", label: "Pelita Air (IP)" },
-  { value: "8B", label: "TransNusa (8B)" },
-
-  // Southeast Asia
-  { value: "SQ", label: "Singapore Airlines (SQ)" },
-  { value: "MH", label: "Malaysia Airlines (MH)" },
-  { value: "TG", label: "Thai Airways (TG)" },
-  { value: "AK", label: "AirAsia (AK)" },
-  { value: "VN", label: "Vietnam Airlines (VN)" },
-  { value: "PR", label: "Philippine Airlines (PR)" },
-  { value: "5J", label: "Cebu Pacific (5J)" },
-  { value: "PG", label: "Bangkok Airways (PG)" },
-
-  // East Asia
-  { value: "NH", label: "All Nippon Airways (NH)" },
-  { value: "JL", label: "Japan Airlines (JL)" },
-  { value: "KE", label: "Korean Air (KE)" },
-  { value: "OZ", label: "Asiana Airlines (OZ)" },
-  { value: "CX", label: "Cathay Pacific (CX)" },
-  { value: "BR", label: "EVA Air (BR)" },
-  { value: "CI", label: "China Airlines (CI)" },
   { value: "CA", label: "Air China (CA)" },
+  { value: "AF", label: "Air France (AF)" },
+  { value: "NZ", label: "Air New Zealand (NZ)" },
+  { value: "AK", label: "AirAsia (AK)" },
+  { value: "NH", label: "All Nippon Airways (NH)" },
+  { value: "AA", label: "American Airlines (AA)" },
+  { value: "OZ", label: "Asiana Airlines (OZ)" },
+  { value: "OS", label: "Austrian Airlines (OS)" },
+  { value: "PG", label: "Bangkok Airways (PG)" },
+  { value: "ID", label: "Batik Air (ID)" },
+  { value: "BA", label: "British Airways (BA)" },
+  { value: "CX", label: "Cathay Pacific (CX)" },
+  { value: "5J", label: "Cebu Pacific (5J)" },
+  { value: "CI", label: "China Airlines (CI)" },
   { value: "MU", label: "China Eastern Airlines (MU)" },
   { value: "CZ", label: "China Southern Airlines (CZ)" },
-  { value: "9C", label: "Spring Airlines (9C)" },
-  { value: "MM", label: "Peach Aviation (MM)" },
-
-  // Middle East
-  { value: "EK", label: "Emirates (EK)" },
-  { value: "QR", label: "Qatar Airways (QR)" },
-  { value: "EY", label: "Etihad Airways (EY)" },
-  { value: "SV", label: "Saudia (SV)" },
-  { value: "TK", label: "Turkish Airlines (TK)" },
-  { value: "WY", label: "Oman Air (WY)" },
-  { value: "GF", label: "Gulf Air (GF)" },
-
-  // Europe
-  { value: "LH", label: "Lufthansa (LH)" },
-  { value: "BA", label: "British Airways (BA)" },
-  { value: "AF", label: "Air France (AF)" },
-  { value: "KL", label: "KLM Royal Dutch Airlines (KL)" },
-  { value: "LX", label: "Swiss International Air Lines (LX)" },
-  { value: "SK", label: "Scandinavian Airlines (SK)" },
-  { value: "AY", label: "Finnair (AY)" },
-  { value: "OS", label: "Austrian Airlines (OS)" },
-
-  // Americas
-  { value: "UA", label: "United Airlines (UA)" },
+  { value: "QG", label: "Citilink (QG)" },
   { value: "DL", label: "Delta Air Lines (DL)" },
-  { value: "AA", label: "American Airlines (AA)" },
+  { value: "EK", label: "Emirates (EK)" },
+  { value: "EY", label: "Etihad Airways (EY)" },
+  { value: "BR", label: "EVA Air (BR)" },
+  { value: "AY", label: "Finnair (AY)" },
+  { value: "GA", label: "Garuda Indonesia (GA)" },
+  { value: "GF", label: "Gulf Air (GF)" },
+  { value: "QZ", label: "Indonesia AirAsia (QZ)" },
+  { value: "JL", label: "Japan Airlines (JL)" },
   { value: "B6", label: "JetBlue Airways (B6)" },
-
-  // Oceania
-  { value: "QF", label: "Qantas (QF)" },
   { value: "JQ", label: "Jetstar Airways (JQ)" },
-  { value: "NZ", label: "Air New Zealand (NZ)" },
+  { value: "KL", label: "KLM Royal Dutch Airlines (KL)" },
+  { value: "KE", label: "Korean Air (KE)" },
+  { value: "JT", label: "Lion Air (JT)" },
+  { value: "LH", label: "Lufthansa (LH)" },
+  { value: "MH", label: "Malaysia Airlines (MH)" },
+  { value: "WY", label: "Oman Air (WY)" },
+  { value: "MM", label: "Peach Aviation (MM)" },
+  { value: "IP", label: "Pelita Air (IP)" },
+  { value: "PR", label: "Philippine Airlines (PR)" },
+  { value: "QF", label: "Qantas (QF)" },
+  { value: "QR", label: "Qatar Airways (QR)" },
+  { value: "SV", label: "Saudia (SV)" },
+  { value: "SK", label: "Scandinavian Airlines (SK)" },
+  { value: "SQ", label: "Singapore Airlines (SQ)" },
+  { value: "9C", label: "Spring Airlines (9C)" },
+  { value: "SJ", label: "Sriwijaya Air (SJ)" },
+  { value: "IU", label: "Super Air Jet (IU)" },
+  { value: "LX", label: "Swiss International Air Lines (LX)" },
+  { value: "TG", label: "Thai Airways (TG)" },
+  { value: "8B", label: "TransNusa (8B)" },
+  { value: "TK", label: "Turkish Airlines (TK)" },
+  { value: "UA", label: "United Airlines (UA)" },
+  { value: "VN", label: "Vietnam Airlines (VN)" },
   { value: "VA", label: "Virgin Australia (VA)" },
-];
+  { value: "IW", label: "Wings Air (IW)" },
+].sort((a, b) => a.label.localeCompare(b.label));
 
 // -----------------------------------------------------------------------------
 // 4. Indonesian Provinces
@@ -1148,7 +1135,38 @@ export const shipTypes: SelectOption[] = [
 export const accommodationTypes: SelectOption[] = [
   { value: "rumah", label: "Rumah" },
   { value: "hotel", label: "Hotel" },
-  { value: "lainnya", label: "Lainnya" },
+  { value: "transit", label: "Transit" },
+];
+
+// -----------------------------------------------------------------------------
+// 12. Currency Options
+// -----------------------------------------------------------------------------
+
+export const currencyOptions: SelectOption[] = [
+  { value: "IDR", label: "IDR - Rupiah Indonesia" },
+  { value: "USD", label: "USD - US Dollar" },
+  { value: "EUR", label: "EUR - Euro" },
+  { value: "GBP", label: "GBP - British Pound" },
+  { value: "JPY", label: "JPY - Japanese Yen" },
+  { value: "CNY", label: "CNY - Chinese Yuan" },
+  { value: "SGD", label: "SGD - Singapore Dollar" },
+  { value: "MYR", label: "MYR - Malaysian Ringgit" },
+  { value: "AUD", label: "AUD - Australian Dollar" },
+  { value: "KRW", label: "KRW - Korean Won" },
+  { value: "THB", label: "THB - Thai Baht" },
+  { value: "SAR", label: "SAR - Saudi Riyal" },
+  { value: "AED", label: "AED - UAE Dirham" },
+  { value: "INR", label: "INR - Indian Rupee" },
+  { value: "HKD", label: "HKD - Hong Kong Dollar" },
+  { value: "TWD", label: "TWD - Taiwan Dollar" },
+  { value: "PHP", label: "PHP - Philippine Peso" },
+  { value: "VND", label: "VND - Vietnamese Dong" },
+  { value: "BRL", label: "BRL - Brazilian Real" },
+  { value: "RUB", label: "RUB - Russian Ruble" },
+  { value: "CHF", label: "CHF - Swiss Franc" },
+  { value: "CAD", label: "CAD - Canadian Dollar" },
+  { value: "NZD", label: "NZD - New Zealand Dollar" },
+  { value: "TRY", label: "TRY - Turkish Lira" },
 ];
 
 // -----------------------------------------------------------------------------

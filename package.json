@@ -17,9 +17,12 @@
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
+    "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^19",
+    "date-fns": "^4.4.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "react-datepicker": "^9.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

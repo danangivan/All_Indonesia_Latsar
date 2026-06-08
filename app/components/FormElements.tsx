@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface FormSectionProps {
   title: string;
@@ -165,6 +167,8 @@ interface DateInputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   id?: string;
   className?: string;
+  min?: string;
+  max?: string;
 }
 
 export function DateInput({
@@ -173,15 +177,35 @@ export function DateInput({
   onChange,
   id,
   className = "",
+  min,
+  max,
 }: DateInputProps) {
   return (
     <div className="relative">
-      <input
+      <DatePicker
         id={id}
-        type="date"
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
+        selected={value ? new Date(value) : null}
+        onChange={(date: Date | null) => {
+          if (onChange && date) {
+            const pad = (n: number) => n.toString().padStart(2, "0");
+            const yyyy = date.getFullYear();
+            const mm = pad(date.getMonth() + 1);
+            const dd = pad(date.getDate());
+            const dateStr = `${yyyy}-${mm}-${dd}`;
+            
+            const event = {
+              target: { value: dateStr },
+            } as React.ChangeEvent<HTMLInputElement>;
+            onChange(event);
+          }
+        }}
+        minDate={min ? new Date(min) : undefined}
+        maxDate={max ? new Date(max) : undefined}
+        placeholderText={placeholder}
+        dateFormat="dd/MM/yyyy"
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
         className={`
           w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
           text-sm text-gray-900 placeholder:text-gray-400
@@ -195,36 +219,201 @@ export function DateInput({
 }
 
 const phoneCountryCodes = [
-  { code: "+62", flag: "🇮🇩", country: "Indonesia" },
-  { code: "+60", flag: "🇲🇾", country: "Malaysia" },
-  { code: "+65", flag: "🇸🇬", country: "Singapore" },
-  { code: "+66", flag: "🇹🇭", country: "Thailand" },
-  { code: "+63", flag: "🇵🇭", country: "Philippines" },
-  { code: "+84", flag: "🇻🇳", country: "Vietnam" },
-  { code: "+81", flag: "🇯🇵", country: "Japan" },
-  { code: "+82", flag: "🇰🇷", country: "South Korea" },
-  { code: "+86", flag: "🇨🇳", country: "China" },
-  { code: "+1", flag: "🇺🇸", country: "United States" },
-  { code: "+44", flag: "🇬🇧", country: "United Kingdom" },
-  { code: "+61", flag: "🇦🇺", country: "Australia" },
-  { code: "+49", flag: "🇩🇪", country: "Germany" },
-  { code: "+33", flag: "🇫🇷", country: "France" },
-  { code: "+966", flag: "🇸🇦", country: "Saudi Arabia" },
-  { code: "+91", flag: "🇮🇳", country: "India" },
-  { code: "+7", flag: "🇷🇺", country: "Russia" },
-  { code: "+55", flag: "🇧🇷", country: "Brazil" },
-  { code: "+52", flag: "🇲🇽", country: "Mexico" },
-  { code: "+234", flag: "🇳🇬", country: "Nigeria" },
-  { code: "+27", flag: "🇿🇦", country: "South Africa" },
-  { code: "+971", flag: "🇦🇪", country: "UAE" },
-  { code: "+90", flag: "🇹🇷", country: "Turkey" },
-  { code: "+48", flag: "🇵🇱", country: "Poland" },
-  { code: "+39", flag: "🇮🇹", country: "Italy" },
-  { code: "+34", flag: "🇪🇸", country: "Spain" },
-  { code: "+31", flag: "🇳🇱", country: "Netherlands" },
-  { code: "+46", flag: "🇸🇪", country: "Sweden" },
-  { code: "+47", flag: "🇳🇴", country: "Norway" },
-  { code: "+45", flag: "🇩🇰", country: "Denmark" },
+  { code: "+93", iso: "af", country: "Afghanistan" },
+  { code: "+355", iso: "al", country: "Albania" },
+  { code: "+213", iso: "dz", country: "Algeria" },
+  { code: "+376", iso: "ad", country: "Andorra" },
+  { code: "+244", iso: "ao", country: "Angola" },
+  { code: "+1", iso: "ag", country: "Antigua and Barbuda" },
+  { code: "+54", iso: "ar", country: "Argentina" },
+  { code: "+374", iso: "am", country: "Armenia" },
+  { code: "+61", iso: "au", country: "Australia" },
+  { code: "+43", iso: "at", country: "Austria" },
+  { code: "+994", iso: "az", country: "Azerbaijan" },
+  { code: "+1", iso: "bs", country: "Bahamas" },
+  { code: "+973", iso: "bh", country: "Bahrain" },
+  { code: "+880", iso: "bd", country: "Bangladesh" },
+  { code: "+1", iso: "bb", country: "Barbados" },
+  { code: "+375", iso: "by", country: "Belarus" },
+  { code: "+32", iso: "be", country: "Belgium" },
+  { code: "+501", iso: "bz", country: "Belize" },
+  { code: "+229", iso: "bj", country: "Benin" },
+  { code: "+975", iso: "bt", country: "Bhutan" },
+  { code: "+591", iso: "bo", country: "Bolivia" },
+  { code: "+387", iso: "ba", country: "Bosnia and Herzegovina" },
+  { code: "+267", iso: "bw", country: "Botswana" },
+  { code: "+55", iso: "br", country: "Brazil" },
+  { code: "+673", iso: "bn", country: "Brunei" },
+  { code: "+359", iso: "bg", country: "Bulgaria" },
+  { code: "+226", iso: "bf", country: "Burkina Faso" },
+  { code: "+257", iso: "bi", country: "Burundi" },
+  { code: "+855", iso: "kh", country: "Cambodia" },
+  { code: "+237", iso: "cm", country: "Cameroon" },
+  { code: "+1", iso: "ca", country: "Canada" },
+  { code: "+238", iso: "cv", country: "Cape Verde" },
+  { code: "+236", iso: "cf", country: "Central African Republic" },
+  { code: "+235", iso: "td", country: "Chad" },
+  { code: "+56", iso: "cl", country: "Chile" },
+  { code: "+86", iso: "cn", country: "China" },
+  { code: "+57", iso: "co", country: "Colombia" },
+  { code: "+269", iso: "km", country: "Comoros" },
+  { code: "+242", iso: "cg", country: "Congo" },
+  { code: "+243", iso: "cd", country: "Congo (DRC)" },
+  { code: "+506", iso: "cr", country: "Costa Rica" },
+  { code: "+385", iso: "hr", country: "Croatia" },
+  { code: "+53", iso: "cu", country: "Cuba" },
+  { code: "+357", iso: "cy", country: "Cyprus" },
+  { code: "+420", iso: "cz", country: "Czechia" },
+  { code: "+45", iso: "dk", country: "Denmark" },
+  { code: "+253", iso: "dj", country: "Djibouti" },
+  { code: "+1", iso: "dm", country: "Dominica" },
+  { code: "+1", iso: "do", country: "Dominican Republic" },
+  { code: "+593", iso: "ec", country: "Ecuador" },
+  { code: "+20", iso: "eg", country: "Egypt" },
+  { code: "+503", iso: "sv", country: "El Salvador" },
+  { code: "+240", iso: "gq", country: "Equatorial Guinea" },
+  { code: "+291", iso: "er", country: "Eritrea" },
+  { code: "+372", iso: "ee", country: "Estonia" },
+  { code: "+251", iso: "et", country: "Ethiopia" },
+  { code: "+679", iso: "fj", country: "Fiji" },
+  { code: "+358", iso: "fi", country: "Finland" },
+  { code: "+33", iso: "fr", country: "France" },
+  { code: "+241", iso: "ga", country: "Gabon" },
+  { code: "+220", iso: "gm", country: "Gambia" },
+  { code: "+995", iso: "ge", country: "Georgia" },
+  { code: "+49", iso: "de", country: "Germany" },
+  { code: "+233", iso: "gh", country: "Ghana" },
+  { code: "+30", iso: "gr", country: "Greece" },
+  { code: "+1", iso: "gd", country: "Grenada" },
+  { code: "+502", iso: "gt", country: "Guatemala" },
+  { code: "+224", iso: "gn", country: "Guinea" },
+  { code: "+245", iso: "gw", country: "Guinea-Bissau" },
+  { code: "+592", iso: "gy", country: "Guyana" },
+  { code: "+509", iso: "ht", country: "Haiti" },
+  { code: "+504", iso: "hn", country: "Honduras" },
+  { code: "+36", iso: "hu", country: "Hungary" },
+  { code: "+354", iso: "is", country: "Iceland" },
+  { code: "+91", iso: "in", country: "India" },
+  { code: "+62", iso: "id", country: "Indonesia" },
+  { code: "+98", iso: "ir", country: "Iran" },
+  { code: "+964", iso: "iq", country: "Iraq" },
+  { code: "+353", iso: "ie", country: "Ireland" },
+  { code: "+972", iso: "il", country: "Israel" },
+  { code: "+39", iso: "it", country: "Italy" },
+  { code: "+1", iso: "jm", country: "Jamaica" },
+  { code: "+81", iso: "jp", country: "Japan" },
+  { code: "+962", iso: "jo", country: "Jordan" },
+  { code: "+7", iso: "kz", country: "Kazakhstan" },
+  { code: "+254", iso: "ke", country: "Kenya" },
+  { code: "+686", iso: "ki", country: "Kiribati" },
+  { code: "+965", iso: "kw", country: "Kuwait" },
+  { code: "+996", iso: "kg", country: "Kyrgyzstan" },
+  { code: "+856", iso: "la", country: "Laos" },
+  { code: "+371", iso: "lv", country: "Latvia" },
+  { code: "+961", iso: "lb", country: "Lebanon" },
+  { code: "+266", iso: "ls", country: "Lesotho" },
+  { code: "+231", iso: "lr", country: "Liberia" },
+  { code: "+218", iso: "ly", country: "Libya" },
+  { code: "+423", iso: "li", country: "Liechtenstein" },
+  { code: "+370", iso: "lt", country: "Lithuania" },
+  { code: "+352", iso: "lu", country: "Luxembourg" },
+  { code: "+261", iso: "mg", country: "Madagascar" },
+  { code: "+265", iso: "mw", country: "Malawi" },
+  { code: "+60", iso: "my", country: "Malaysia" },
+  { code: "+960", iso: "mv", country: "Maldives" },
+  { code: "+223", iso: "ml", country: "Mali" },
+  { code: "+356", iso: "mt", country: "Malta" },
+  { code: "+692", iso: "mh", country: "Marshall Islands" },
+  { code: "+222", iso: "mr", country: "Mauritania" },
+  { code: "+230", iso: "mu", country: "Mauritius" },
+  { code: "+52", iso: "mx", country: "Mexico" },
+  { code: "+691", iso: "fm", country: "Micronesia" },
+  { code: "+373", iso: "md", country: "Moldova" },
+  { code: "+377", iso: "mc", country: "Monaco" },
+  { code: "+976", iso: "mn", country: "Mongolia" },
+  { code: "+382", iso: "me", country: "Montenegro" },
+  { code: "+212", iso: "ma", country: "Morocco" },
+  { code: "+258", iso: "mz", country: "Mozambique" },
+  { code: "+95", iso: "mm", country: "Myanmar" },
+  { code: "+264", iso: "na", country: "Namibia" },
+  { code: "+674", iso: "nr", country: "Nauru" },
+  { code: "+977", iso: "np", country: "Nepal" },
+  { code: "+31", iso: "nl", country: "Netherlands" },
+  { code: "+64", iso: "nz", country: "New Zealand" },
+  { code: "+505", iso: "ni", country: "Nicaragua" },
+  { code: "+227", iso: "ne", country: "Niger" },
+  { code: "+234", iso: "ng", country: "Nigeria" },
+  { code: "+850", iso: "kp", country: "North Korea" },
+  { code: "+389", iso: "mk", country: "North Macedonia" },
+  { code: "+47", iso: "no", country: "Norway" },
+  { code: "+968", iso: "om", country: "Oman" },
+  { code: "+92", iso: "pk", country: "Pakistan" },
+  { code: "+680", iso: "pw", country: "Palau" },
+  { code: "+970", iso: "ps", country: "Palestine" },
+  { code: "+507", iso: "pa", country: "Panama" },
+  { code: "+675", iso: "pg", country: "Papua New Guinea" },
+  { code: "+595", iso: "py", country: "Paraguay" },
+  { code: "+51", iso: "pe", country: "Peru" },
+  { code: "+63", iso: "ph", country: "Philippines" },
+  { code: "+48", iso: "pl", country: "Poland" },
+  { code: "+351", iso: "pt", country: "Portugal" },
+  { code: "+974", iso: "qa", country: "Qatar" },
+  { code: "+40", iso: "ro", country: "Romania" },
+  { code: "+7", iso: "ru", country: "Russia" },
+  { code: "+250", iso: "rw", country: "Rwanda" },
+  { code: "+1", iso: "kn", country: "Saint Kitts and Nevis" },
+  { code: "+1", iso: "lc", country: "Saint Lucia" },
+  { code: "+1", iso: "vc", country: "Saint Vincent" },
+  { code: "+685", iso: "ws", country: "Samoa" },
+  { code: "+378", iso: "sm", country: "San Marino" },
+  { code: "+239", iso: "st", country: "Sao Tome and Principe" },
+  { code: "+966", iso: "sa", country: "Saudi Arabia" },
+  { code: "+221", iso: "sn", country: "Senegal" },
+  { code: "+381", iso: "rs", country: "Serbia" },
+  { code: "+248", iso: "sc", country: "Seychelles" },
+  { code: "+232", iso: "sl", country: "Sierra Leone" },
+  { code: "+65", iso: "sg", country: "Singapore" },
+  { code: "+421", iso: "sk", country: "Slovakia" },
+  { code: "+386", iso: "si", country: "Slovenia" },
+  { code: "+677", iso: "sb", country: "Solomon Islands" },
+  { code: "+252", iso: "so", country: "Somalia" },
+  { code: "+27", iso: "za", country: "South Africa" },
+  { code: "+82", iso: "kr", country: "South Korea" },
+  { code: "+211", iso: "ss", country: "South Sudan" },
+  { code: "+34", iso: "es", country: "Spain" },
+  { code: "+94", iso: "lk", country: "Sri Lanka" },
+  { code: "+249", iso: "sd", country: "Sudan" },
+  { code: "+597", iso: "sr", country: "Suriname" },
+  { code: "+268", iso: "sz", country: "Eswatini" },
+  { code: "+46", iso: "se", country: "Sweden" },
+  { code: "+41", iso: "ch", country: "Switzerland" },
+  { code: "+963", iso: "sy", country: "Syria" },
+  { code: "+886", iso: "tw", country: "Taiwan" },
+  { code: "+992", iso: "tj", country: "Tajikistan" },
+  { code: "+255", iso: "tz", country: "Tanzania" },
+  { code: "+66", iso: "th", country: "Thailand" },
+  { code: "+670", iso: "tl", country: "Timor-Leste" },
+  { code: "+228", iso: "tg", country: "Togo" },
+  { code: "+676", iso: "to", country: "Tonga" },
+  { code: "+1", iso: "tt", country: "Trinidad and Tobago" },
+  { code: "+216", iso: "tn", country: "Tunisia" },
+  { code: "+90", iso: "tr", country: "Turkey" },
+  { code: "+993", iso: "tm", country: "Turkmenistan" },
+  { code: "+688", iso: "tv", country: "Tuvalu" },
+  { code: "+256", iso: "ug", country: "Uganda" },
+  { code: "+380", iso: "ua", country: "Ukraine" },
+  { code: "+971", iso: "ae", country: "United Arab Emirates" },
+  { code: "+44", iso: "gb", country: "United Kingdom" },
+  { code: "+1", iso: "us", country: "United States" },
+  { code: "+598", iso: "uy", country: "Uruguay" },
+  { code: "+998", iso: "uz", country: "Uzbekistan" },
+  { code: "+678", iso: "vu", country: "Vanuatu" },
+  { code: "+379", iso: "va", country: "Vatican City" },
+  { code: "+58", iso: "ve", country: "Venezuela" },
+  { code: "+84", iso: "vn", country: "Vietnam" },
+  { code: "+967", iso: "ye", country: "Yemen" },
+  { code: "+260", iso: "zm", country: "Zambia" },
+  { code: "+263", iso: "zw", country: "Zimbabwe" },
 ];
 
 interface PhoneInputProps {
@@ -258,9 +447,14 @@ export function PhoneInput({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-2.5 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-sm text-gray-700 font-medium hover:bg-gray-100 transition-colors min-w-[100px]"
+        className="flex items-center gap-2 px-3 py-2.5 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-sm text-gray-700 font-medium hover:bg-gray-100 transition-colors min-w-[100px]"
       >
-        <span className="text-base">{selectedCountry.flag}</span>
+        <img
+          src={`https://flagcdn.com/w20/${selectedCountry.iso}.png`}
+          srcSet={`https://flagcdn.com/w40/${selectedCountry.iso}.png 2x`}
+          alt={selectedCountry.country}
+          className="w-5 h-auto object-contain shadow-sm"
+        />
         <span>{selectedCountry.code}</span>
         <svg
           className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
@@ -301,11 +495,16 @@ export function PhoneInput({
                     setIsOpen(false);
                     setSearch("");
                   }}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-teal-50 transition-colors text-left ${
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-sm hover:bg-teal-50 transition-colors text-left ${
                     c.code === selectedCountryCode ? "bg-teal-50 text-teal-700 font-medium" : "text-gray-700"
                   }`}
                 >
-                  <span className="text-base">{c.flag}</span>
+                  <img
+                    src={`https://flagcdn.com/w20/${c.iso}.png`}
+                    srcSet={`https://flagcdn.com/w40/${c.iso}.png 2x`}
+                    alt={c.country}
+                    className="w-5 h-auto object-contain shadow-sm"
+                  />
                   <span className="flex-1">{c.country}</span>
                   <span className="text-gray-400 text-xs">{c.code}</span>
                 </button>
@@ -494,6 +693,98 @@ export function SearchableSelect({
             )}
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+interface SearchableSelectWithManualProps {
+  placeholder?: string;
+  options: SearchableSelectOption[];
+  value?: string;
+  onChange?: (value: string, option?: SearchableSelectOption) => void;
+  id?: string;
+  className?: string;
+  manualMode?: boolean;
+  onModeChange?: (manual: boolean) => void;
+  manualPlaceholder?: string;
+  searchLabel?: string;
+  manualLabel?: string;
+}
+
+export function SearchableSelectWithManual({
+  placeholder = "Search...",
+  options,
+  value,
+  onChange,
+  id,
+  className = "",
+  manualMode = false,
+  onModeChange,
+  manualPlaceholder = "Type here...",
+  searchLabel = "Search",
+  manualLabel = "Manual",
+}: SearchableSelectWithManualProps) {
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => onModeChange?.(false)}
+          className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
+            !manualMode
+              ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+              : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+          }`}
+        >
+          <span className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            {searchLabel}
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => onModeChange?.(true)}
+          className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
+            manualMode
+              ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+              : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+          }`}
+        >
+          <span className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+            {manualLabel}
+          </span>
+        </button>
+      </div>
+      {manualMode ? (
+        <input
+          id={id}
+          type="text"
+          placeholder={manualPlaceholder}
+          value={value}
+          onChange={(e) => onChange?.(e.target.value)}
+          className={`
+            w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
+            text-sm text-gray-900 placeholder:text-gray-400
+            hover:border-gray-300
+            focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+            ${className}
+          `}
+        />
+      ) : (
+        <SearchableSelect
+          id={id}
+          placeholder={placeholder}
+          options={options}
+          value={value}
+          onChange={onChange}
+          className={className}
+        />
       )}
     </div>
   );

@@ -15,6 +15,7 @@ import {
   SearchableSelect,
   ReadOnlyField,
 } from "./components/FormElements";
+import SummaryPage from "./components/SummaryPage";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 import {
   indonesianAirports,
@@ -102,10 +103,27 @@ function PageContent() {
   };
 
   // Step 4: Declaration
+
+  const [customsModalOpen, setCustomsModalOpen] = useState(false);
+  const [activePassengerIdx, setActivePassengerIdx] = useState<number | null>(
+    null,
+  );
+  const [editingCustomsItemIndex, setEditingCustomsItemIndex] = useState<
+    number | null
+  >(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [customsForm, setCustomsForm] = useState({
+    uraian: "",
+    jumlah: "",
+    mataUang: "IDR",
+    nilai: "",
+  });
+
   const [declarations, setDeclarations] = useState([
     {
       baggageCount: "",
       hasProhibitedGoods: "",
+      prohibitedGoods: [] as any[],
       hasIMEI: "",
       agreed: false,
     },
@@ -327,24 +345,7 @@ function PageContent() {
         </svg>
       ),
     },
-    {
-      label: t("step3"),
-      icon: (
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-          />
-        </svg>
-      ),
-    },
+
     {
       label: t("step4"),
       icon: (
@@ -551,6 +552,7 @@ function PageContent() {
       {
         baggageCount: "",
         hasProhibitedGoods: "",
+        prohibitedGoods: [] as any[],
         hasIMEI: "",
         agreed: false,
       },
@@ -587,6 +589,40 @@ function PageContent() {
       setQuarantineDecl((prev) => prev.filter((_, i) => i !== index));
     }
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+        <Header />
+        <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in zoom-in duration-500">
+          <SummaryPage
+            travelers={travelers}
+            travelDetails={travelDetails}
+            declarations={declarations}
+            onReset={() => {
+              setIsSubmitted(false);
+              setCurrentStep(0);
+              setTravelers([
+                {
+                  passportCountry: "",
+                  fullName: "",
+                  birthDate: "",
+                  birthCountry: "",
+                  gender: "",
+                  passportNo: "",
+                  passportExpiry: "",
+                  phoneCountryCode: "+62",
+                  phone: "",
+                  email: "",
+                },
+              ]);
+            }}
+          />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -864,168 +900,6 @@ function PageContent() {
                       {t("tambahPelaku")}
                     </button>
                   </div>
-                </>
-              )}
-
-              {/* PAGE 1: Detail Perjalanan */}
-              {currentStep === 1 && (
-                <>
-                  {travelers.map((traveler, idx) => {
-                    const detail = travelDetails[idx] || {
-                      arrivalDate: "",
-                      departureDate: "",
-                      hasVisa: "",
-                      visaNumber: "",
-                    };
-                    return (
-                      <FormSection
-                        key={idx}
-                        title={
-                          travelers.length > 1
-                            ? `${t("detailPerjalanan")} — ${traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}`
-                            : t("detailPerjalanan")
-                        }
-                        description={t("detailPerjalananDesc")}
-                      >
-                        {travelers.length > 1 && (
-                          <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-teal-50 border border-teal-100 rounded-lg">
-                            <svg
-                              className="w-4 h-4 text-teal-500 shrink-0"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                              />
-                            </svg>
-                            <p className="text-xs text-teal-700 font-medium">
-                              {traveler.fullName ||
-                                `${t("travelerLabel")} ${idx + 1}`}
-                              {traveler.passportCountry && (
-                                <span className="text-teal-500 font-normal ml-1">
-                                  —{" "}
-                                  {countryOptions.find(
-                                    (c) => c.value === traveler.passportCountry,
-                                  )?.label || traveler.passportCountry}
-                                </span>
-                              )}
-                            </p>
-                          </div>
-                        )}
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                          <FormField label={t("tglKedatangan")} required>
-                            <SelectInput
-                              id={`arrival-date-select-${idx}`}
-                              placeholder={t("phPilih")}
-                              options={[
-                                {
-                                  value: "today",
-                                  label: new Date().toLocaleDateString(
-                                    "id-ID",
-                                    {
-                                      day: "2-digit",
-                                      month: "long",
-                                      year: "numeric",
-                                    },
-                                  ),
-                                },
-                                {
-                                  value: "tomorrow",
-                                  label: new Date(
-                                    Date.now() + 86400000,
-                                  ).toLocaleDateString("id-ID", {
-                                    day: "2-digit",
-                                    month: "long",
-                                    year: "numeric",
-                                  }),
-                                },
-                                {
-                                  value: "custom",
-                                  label: "Tanggal Lainnya...",
-                                },
-                              ]}
-                              value={detail.arrivalDate}
-                              onChange={(e) =>
-                                handleTravelDetailChange(
-                                  idx,
-                                  "arrivalDate",
-                                  e.target.value,
-                                )
-                              }
-                            />
-                          </FormField>
-
-                          <FormField label={t("tglKeberangkatan")} required>
-                            <DateInput
-                              id={`departure-date-${idx}`}
-                              value={detail.departureDate}
-                              onChange={(e) =>
-                                handleTravelDetailChange(
-                                  idx,
-                                  "departureDate",
-                                  e.target.value,
-                                )
-                              }
-                            />
-                          </FormField>
-                        </div>
-
-                        <div className="mt-6">
-                          <FormField label={t("punyaVisa")} required>
-                            <RadioInput
-                              name={`has-visa-${idx}`}
-                              id={`has-visa-${idx}`}
-                              options={[
-                                { value: "ya", label: t("ya") },
-                                { value: "tidak", label: t("tidak") },
-                              ]}
-                              value={detail.hasVisa}
-                              onChange={(value) => {
-                                handleTravelDetailChange(idx, "hasVisa", value);
-                                if (value !== "ya") {
-                                  handleTravelDetailChange(
-                                    idx,
-                                    "visaNumber",
-                                    "",
-                                  );
-                                }
-                              }}
-                            />
-                          </FormField>
-                        </div>
-
-                        {detail.hasVisa === "ya" && (
-                          <div className="mt-5 animate-in">
-                            <FormField label={t("nomorVisa")} required>
-                              <TextInput
-                                id={`visa-number-${idx}`}
-                                placeholder={t("phNomorVisa")}
-                                value={detail.visaNumber}
-                                onChange={(e) =>
-                                  handleTravelDetailChange(
-                                    idx,
-                                    "visaNumber",
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </FormField>
-                          </div>
-                        )}
-                      </FormSection>
-                    );
-                  })}
-                </>
-              )}
-
-              {/* PAGE 2: Moda Transportasi & Alamat */}
-              {currentStep === 2 && (
-                <>
                   {/* Moda Transportasi Section */}
                   <FormSection
                     title={t("modaTransportasi")}
@@ -1456,8 +1330,164 @@ function PageContent() {
                 </>
               )}
 
-              {/* PAGE 3: Deklarasi */}
-              {currentStep === 3 && (
+              {/* PAGE 1: Detail Perjalanan */}
+              {currentStep === 1 && (
+                <>
+                  {travelers.map((traveler, idx) => {
+                    const detail = travelDetails[idx] || {
+                      arrivalDate: "",
+                      departureDate: "",
+                      hasVisa: "",
+                      visaNumber: "",
+                    };
+                    return (
+                      <FormSection
+                        key={idx}
+                        title={
+                          travelers.length > 1
+                            ? `${t("detailPerjalanan")} — ${traveler.fullName || `${t("travelerLabel")} ${idx + 1}`}`
+                            : t("detailPerjalanan")
+                        }
+                        description={t("detailPerjalananDesc")}
+                      >
+                        {travelers.length > 1 && (
+                          <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-teal-50 border border-teal-100 rounded-lg">
+                            <svg
+                              className="w-4 h-4 text-teal-500 shrink-0"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                              />
+                            </svg>
+                            <p className="text-xs text-teal-700 font-medium">
+                              {traveler.fullName ||
+                                `${t("travelerLabel")} ${idx + 1}`}
+                              {traveler.passportCountry && (
+                                <span className="text-teal-500 font-normal ml-1">
+                                  —{" "}
+                                  {countryOptions.find(
+                                    (c) => c.value === traveler.passportCountry,
+                                  )?.label || traveler.passportCountry}
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                          <FormField label={t("tglKedatangan")} required>
+                            <SelectInput
+                              id={`arrival-date-select-${idx}`}
+                              placeholder={t("phPilih")}
+                              options={[
+                                {
+                                  value: "today",
+                                  label: new Date().toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                      day: "2-digit",
+                                      month: "long",
+                                      year: "numeric",
+                                    },
+                                  ),
+                                },
+                                {
+                                  value: "tomorrow",
+                                  label: new Date(
+                                    Date.now() + 86400000,
+                                  ).toLocaleDateString("id-ID", {
+                                    day: "2-digit",
+                                    month: "long",
+                                    year: "numeric",
+                                  }),
+                                },
+                                {
+                                  value: "custom",
+                                  label: "Tanggal Lainnya...",
+                                },
+                              ]}
+                              value={detail.arrivalDate}
+                              onChange={(e) =>
+                                handleTravelDetailChange(
+                                  idx,
+                                  "arrivalDate",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+
+                          <FormField label={t("tglKeberangkatan")} required>
+                            <DateInput
+                              id={`departure-date-${idx}`}
+                              value={detail.departureDate}
+                              onChange={(e) =>
+                                handleTravelDetailChange(
+                                  idx,
+                                  "departureDate",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </FormField>
+                        </div>
+
+                        <div className="mt-6">
+                          <FormField label={t("punyaVisa")} required>
+                            <RadioInput
+                              name={`has-visa-${idx}`}
+                              id={`has-visa-${idx}`}
+                              options={[
+                                { value: "ya", label: t("ya") },
+                                { value: "tidak", label: t("tidak") },
+                              ]}
+                              value={detail.hasVisa}
+                              onChange={(value) => {
+                                handleTravelDetailChange(idx, "hasVisa", value);
+                                if (value !== "ya") {
+                                  handleTravelDetailChange(
+                                    idx,
+                                    "visaNumber",
+                                    "",
+                                  );
+                                }
+                              }}
+                            />
+                          </FormField>
+                        </div>
+
+                        {detail.hasVisa === "ya" && (
+                          <div className="mt-5 animate-in">
+                            <FormField label={t("nomorVisa")} required>
+                              <TextInput
+                                id={`visa-number-${idx}`}
+                                placeholder={t("phNomorVisa")}
+                                value={detail.visaNumber}
+                                onChange={(e) =>
+                                  handleTravelDetailChange(
+                                    idx,
+                                    "visaNumber",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </FormField>
+                          </div>
+                        )}
+                      </FormSection>
+                    );
+                  })}
+                </>
+              )}
+
+              {/* PAGE 2: Deklarasi */}
+              {currentStep === 2 && (
                 <>
                   {declarationView.mode === "list" ? (
                     /* --- Traveler List View --- */
@@ -1617,83 +1647,80 @@ function PageContent() {
                                 {t("dekKesehatanQ1")}{" "}
                                 <span className="text-red-500 ml-0.5">*</span>
                               </p>
-                              <div className="flex flex-wrap gap-2">
-                                {[
-                                  {
-                                    key: "TIDAK_ADA",
-                                    label: t("dekKesehatanTidakAda"),
-                                  },
-                                  {
-                                    key: "BATUK",
-                                    label: t("dekKesehatanBatuk"),
-                                  },
-                                  {
-                                    key: "DEMAM",
-                                    label: t("dekKesehatanDemam"),
-                                  },
-                                  { key: "LESI", label: t("dekKesehatanLesi") },
-                                  {
-                                    key: "PILEK",
-                                    label: t("dekKesehatanPilek"),
-                                  },
-                                  {
-                                    key: "TENGGOROKAN",
-                                    label: t("dekKesehatanTenggorokan"),
-                                  },
-                                  {
-                                    key: "SESAK",
-                                    label: t("dekKesehatanSesak"),
-                                  },
-                                ].map((symptom) => {
-                                  const checked =
-                                    symptom.key === "TIDAK_ADA"
-                                      ? (healthDecl[idx] || { hasSymptoms: "" })
-                                          .hasSymptoms === "tidak"
-                                      : (healthDecl[idx] || { hasSymptoms: "" })
-                                          .hasSymptoms === "ya" &&
-                                        (
-                                          healthDecl[idx]?.symptoms || []
-                                        ).includes(symptom.key);
-
-                                  return (
-                                    <button
-                                      key={symptom.key}
-                                      type="button"
-                                      onClick={() => {
-                                        if (symptom.key === "TIDAK_ADA") {
-                                          handleHealthDeclChange(
-                                            idx,
-                                            "hasSymptoms",
-                                            "tidak",
-                                          );
-                                          handleHealthDeclChange(
-                                            idx,
-                                            "symptoms",
-                                            [],
-                                          );
-                                        } else {
-                                          handleHealthDeclChange(
-                                            idx,
-                                            "hasSymptoms",
-                                            "ya",
-                                          );
-                                          handleSymptomToggle(idx, symptom.key);
-
-                                          // If unchecking the last symptom, maybe we don't automatically set "tidak"
-                                          // because the user might just be correcting a mistake.
-                                        }
-                                      }}
-                                      className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
-                                        checked
-                                          ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
-                                          : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                                      }`}
-                                    >
-                                      {symptom.label}
-                                    </button>
+                              <RadioInput
+                                name={`symptoms-${idx}`}
+                                id={`symptoms-${idx}`}
+                                options={[
+                                  { value: "ya", label: t("ya") },
+                                  { value: "tidak", label: t("tidak") },
+                                ]}
+                                value={
+                                  (healthDecl[idx] || { hasSymptoms: "" })
+                                    .hasSymptoms
+                                }
+                                onChange={(value) => {
+                                  handleHealthDeclChange(
+                                    idx,
+                                    "hasSymptoms",
+                                    value,
                                   );
-                                })}
-                              </div>
+                                  if (value === "tidak") {
+                                    handleHealthDeclChange(idx, "symptoms", []);
+                                  }
+                                }}
+                              />
+
+                              {healthDecl[idx]?.hasSymptoms === "ya" && (
+                                <div className="mt-4 flex flex-wrap gap-2 animate-in slide-in-from-top-2 fade-in duration-200">
+                                  {[
+                                    {
+                                      key: "BATUK",
+                                      label: t("dekKesehatanBatuk"),
+                                    },
+                                    {
+                                      key: "DEMAM",
+                                      label: t("dekKesehatanDemam"),
+                                    },
+                                    {
+                                      key: "LESI",
+                                      label: t("dekKesehatanLesi"),
+                                    },
+                                    {
+                                      key: "PILEK",
+                                      label: t("dekKesehatanPilek"),
+                                    },
+                                    {
+                                      key: "TENGGOROKAN",
+                                      label: t("dekKesehatanTenggorokan"),
+                                    },
+                                    {
+                                      key: "SESAK",
+                                      label: t("dekKesehatanSesak"),
+                                    },
+                                  ].map((symptom) => {
+                                    const checked = (
+                                      healthDecl[idx]?.symptoms || []
+                                    ).includes(symptom.key);
+
+                                    return (
+                                      <button
+                                        key={symptom.key}
+                                        type="button"
+                                        onClick={() => {
+                                          handleSymptomToggle(idx, symptom.key);
+                                        }}
+                                        className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
+                                          checked
+                                            ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+                                            : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                                        }`}
+                                      >
+                                        {symptom.label}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              )}
 
                               {/* Selected Symptoms Bar */}
                               {healthDecl[idx]?.hasSymptoms === "ya" &&
@@ -2396,6 +2423,135 @@ function PageContent() {
                                   )
                                 }
                               />
+
+                              {decl.hasProhibitedGoods === "ya" && (
+                                <div className="mt-4 border-t border-gray-100 pt-4">
+                                  <div className="flex justify-between items-center mb-3">
+                                    <h4 className="text-xs font-semibold text-gray-700">
+                                      Daftar Barang
+                                    </h4>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setCustomsForm({
+                                          uraian: "",
+                                          jumlah: "",
+                                          mataUang: "IDR",
+                                          nilai: "",
+                                        });
+                                        setEditingCustomsItemIndex(null);
+                                        setActivePassengerIdx(idx);
+                                        setCustomsModalOpen(true);
+                                      }}
+                                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors shadow-sm"
+                                    >
+                                      <svg
+                                        className="w-3.5 h-3.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2.5}
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M12 4.5v15m7.5-7.5h-15"
+                                        />
+                                      </svg>
+                                      Tambah Barang
+                                    </button>
+                                  </div>
+
+                                  {decl.prohibitedGoods &&
+                                  decl.prohibitedGoods.length > 0 ? (
+                                    <div className="space-y-3">
+                                      {decl.prohibitedGoods.map(
+                                        (item: any, i: number) => (
+                                          <div
+                                            key={i}
+                                            className="flex justify-between items-center p-3 bg-white border border-gray-200 rounded-lg shadow-sm"
+                                          >
+                                            <div>
+                                              <p className="text-sm font-medium text-gray-800">
+                                                {item.uraian}
+                                              </p>
+                                              <p className="text-xs text-gray-500 mt-0.5">
+                                                {item.jumlah} pcs •{" "}
+                                                {item.mataUang} {item.nilai}
+                                              </p>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  setCustomsForm(item);
+                                                  setEditingCustomsItemIndex(i);
+                                                  setActivePassengerIdx(idx);
+                                                  setCustomsModalOpen(true);
+                                                }}
+                                                className="p-1.5 text-gray-400 hover:text-teal-600 transition-colors"
+                                              >
+                                                <svg
+                                                  className="w-4 h-4"
+                                                  fill="none"
+                                                  viewBox="0 0 24 24"
+                                                  stroke="currentColor"
+                                                  strokeWidth={2}
+                                                >
+                                                  <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                                  />
+                                                </svg>
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  setDeclarations((prev) => {
+                                                    const newDecls = [...prev];
+                                                    const newGoods = [
+                                                      ...(newDecls[idx]
+                                                        .prohibitedGoods || []),
+                                                    ];
+                                                    newGoods.splice(i, 1);
+                                                    newDecls[
+                                                      idx
+                                                    ].prohibitedGoods =
+                                                      newGoods;
+                                                    return newDecls;
+                                                  });
+                                                }}
+                                                className="p-1.5 text-gray-400 hover:text-red-600 transition-colors"
+                                              >
+                                                <svg
+                                                  className="w-4 h-4"
+                                                  fill="none"
+                                                  viewBox="0 0 24 24"
+                                                  stroke="currentColor"
+                                                  strokeWidth={2}
+                                                >
+                                                  <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                  />
+                                                </svg>
+                                              </button>
+                                            </div>
+                                          </div>
+                                        ),
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="text-center py-4 bg-gray-50 rounded-lg border border-gray-100 border-dashed">
+                                      <p className="text-xs text-gray-500">
+                                        Belum ada barang yang ditambahkan
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
 
                             {/* IMEI Question */}
@@ -2459,7 +2615,7 @@ function PageContent() {
                                 className="flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={!isDeclarationComplete(decl)}
                               >
-                                {t("kirim")}
+                                {t("simpan") || "Simpan"}
                                 <svg
                                   className="w-4 h-4"
                                   fill="none"
@@ -2532,12 +2688,175 @@ function PageContent() {
                   />
                 </svg>
               </button>
+            ) : currentStep === steps.length - 1 ? (
+              <button
+                onClick={() => setIsSubmitted(true)}
+                className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-teal-500 rounded-lg hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
+              >
+                Kirim
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </button>
             ) : (
               <div />
             )}
           </div>
         </div>
       </main>
+
+      {/* Customs Modal */}
+      {customsModalOpen && activePassengerIdx !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-in zoom-in-95">
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-1 h-6 bg-teal-500 rounded-full"></div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Tambah Barang
+                  </h3>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mb-4 -mt-4 pl-4">
+                Masukkan detail barang yang Anda bawa ke Indonesia.
+              </p>
+              <div className="space-y-4">
+                <FormField label="Uraian Barang">
+                  <TextInput
+                    placeholder="Masukkan Uraian Barang"
+                    value={customsForm.uraian}
+                    onChange={(e) =>
+                      setCustomsForm((prev) => ({
+                        ...prev,
+                        uraian: e.target.value,
+                      }))
+                    }
+                  />
+                </FormField>
+                <FormField label="Jumlah">
+                  <TextInput
+                    type="number"
+                    placeholder="Masukkan Jumlah"
+                    value={customsForm.jumlah}
+                    onChange={(e) =>
+                      setCustomsForm((prev) => ({
+                        ...prev,
+                        jumlah: e.target.value,
+                      }))
+                    }
+                  />
+                </FormField>
+                <FormField label="Jenis Mata Uang">
+                  <SelectInput
+                    options={[
+                      { value: "IDR", label: "IDR - Indonesian Rupiah" },
+                      { value: "USD", label: "USD - US Dollar" },
+                      { value: "EUR", label: "EUR - Euro" },
+                      { value: "SGD", label: "SGD - Singapore Dollar" },
+                      { value: "AUD", label: "AUD - Australian Dollar" },
+                      { value: "JPY", label: "JPY - Japanese Yen" },
+                    ]}
+                    value={customsForm.mataUang}
+                    onChange={(e) =>
+                      setCustomsForm((prev) => ({
+                        ...prev,
+                        mataUang: e.target.value,
+                      }))
+                    }
+                    placeholder="Pilih Jenis Mata Uang"
+                  />
+                </FormField>
+                <FormField label="Nilai">
+                  <TextInput
+                    type="number"
+                    placeholder="Masukkan Nilai"
+                    value={customsForm.nilai}
+                    onChange={(e) =>
+                      setCustomsForm((prev) => ({
+                        ...prev,
+                        nilai: e.target.value,
+                      }))
+                    }
+                  />
+                </FormField>
+              </div>
+              <div className="flex justify-end gap-3 mt-8">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCustomsModalOpen(false);
+                    setCustomsForm({
+                      uraian: "",
+                      jumlah: "",
+                      mataUang: "IDR",
+                      nilai: "",
+                    });
+                    setEditingCustomsItemIndex(null);
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (
+                      customsForm.uraian &&
+                      customsForm.jumlah &&
+                      customsForm.nilai
+                    ) {
+                      setDeclarations((prev) => {
+                        const newDecls = [...prev];
+                        // Clone the object to prevent React Strict Mode double mutation
+                        newDecls[activePassengerIdx] = {
+                          ...newDecls[activePassengerIdx],
+                        };
+                        const currentGoods =
+                          newDecls[activePassengerIdx].prohibitedGoods || [];
+                        const newGoods = [...currentGoods];
+                        if (editingCustomsItemIndex !== null) {
+                          newGoods[editingCustomsItemIndex] = customsForm;
+                        } else {
+                          newGoods.push(customsForm);
+                        }
+                        newDecls[activePassengerIdx].prohibitedGoods = newGoods;
+                        return newDecls;
+                      });
+                      setCustomsModalOpen(false);
+                      setCustomsForm({
+                        uraian: "",
+                        jumlah: "",
+                        mataUang: "IDR",
+                        nilai: "",
+                      });
+                      setEditingCustomsItemIndex(null);
+                    }
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors"
+                  disabled={
+                    !customsForm.uraian ||
+                    !customsForm.jumlah ||
+                    !customsForm.nilai
+                  }
+                >
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
