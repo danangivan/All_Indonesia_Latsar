@@ -4,15 +4,24 @@ export default function SummaryPage({
   travelers,
   travelDetails,
   declarations,
+  healthDecl,
+  transport,
+  address,
   onReset,
 }: {
   travelers: any[];
   travelDetails: any[];
   declarations: any[];
+  healthDecl: any[];
+  transport: any;
+  address: any;
   onReset: () => void;
 }) {
+  const [openTransport, setOpenTransport] = React.useState(false);
+  const [openAddress, setOpenAddress] = React.useState(false);
   const mainTraveler = travelers[0] || {};
   const mainDetail = travelDetails[0] || {};
+  const hasAnySymptoms = healthDecl?.some((decl) => decl?.hasSymptoms === "ya") || false;
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -87,6 +96,7 @@ export default function SummaryPage({
             </div>
           </div>
 
+          {hasAnySymptoms && (
           <div className="bg-red-50 border border-red-100 p-4 rounded-xl flex items-start gap-3">
             <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -95,6 +105,7 @@ export default function SummaryPage({
               Terindikasi gejala (Harap lapor ke petugas kesehatan)
             </p>
           </div>
+          )}
 
           <div className="bg-red-50 border border-red-100 p-4 rounded-xl flex items-start gap-3">
             <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -117,23 +128,9 @@ export default function SummaryPage({
             </p>
           </div>
 
-          <div className="bg-green-50/50 border border-green-200 p-4 rounded-xl flex items-center justify-between gap-4">
-            <p className="text-xs text-green-800">
-              Ajukan dan unduh visa Anda berdasarkan kebutuhan perjalanan Anda.
-            </p>
-            <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded transition-colors whitespace-nowrap">
-              Ajukan Visa Saat Kedatangan (VOA)
-            </button>
-          </div>
+          
 
-          <div className="bg-white border border-gray-200 p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm">
-            <p className="text-xs text-gray-600">
-              Jika perlu, Anda dapat memperbarui informasi yang dikirimkan sebelum perjalanan.
-            </p>
-            <button className="px-4 py-2 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded transition-colors whitespace-nowrap">
-              Ubah Data
-            </button>
-          </div>
+          
 
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             <div className="p-5 border-b border-gray-100">
@@ -188,17 +185,71 @@ export default function SummaryPage({
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-             <div className="p-4 border-b border-gray-100 flex items-center justify-between cursor-pointer hover:bg-gray-50">
+             <div 
+                className="p-4 border-b border-gray-100 flex items-center justify-between cursor-pointer hover:bg-gray-50"
+                onClick={() => setOpenTransport(!openTransport)}
+             >
                <h3 className="font-bold text-sm text-gray-900">Moda Transportasi</h3>
-               <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+               <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${openTransport ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
              </div>
+             {openTransport && (
+               <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 bg-gray-50/30">
+                 <div>
+                   <p className="text-xs text-gray-400 font-medium mb-1">Moda Transportasi</p>
+                   <p className="text-sm text-gray-900 font-medium uppercase">{transport?.mode || "UDARA"}</p>
+                 </div>
+                 {transport?.airlineName && (
+                   <div>
+                     <p className="text-xs text-gray-400 font-medium mb-1">Maskapai Penerbangan</p>
+                     <p className="text-sm text-gray-900 font-medium uppercase">{transport.airlineName}</p>
+                   </div>
+                 )}
+                 {transport?.shipName && (
+                   <div>
+                     <p className="text-xs text-gray-400 font-medium mb-1">Nama Kapal</p>
+                     <p className="text-sm text-gray-900 font-medium uppercase">{transport.shipName}</p>
+                   </div>
+                 )}
+                 {(transport?.flightNumber || transport?.flightCode) && (
+                   <div>
+                     <p className="text-xs text-gray-400 font-medium mb-1">Nomor Penerbangan</p>
+                     <p className="text-sm text-gray-900 font-medium uppercase">{transport.flightCode} {transport.flightNumber}</p>
+                   </div>
+                 )}
+               </div>
+             )}
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-             <div className="p-4 border-b border-gray-100 flex items-center justify-between cursor-pointer hover:bg-gray-50">
+             <div 
+                className="p-4 border-b border-gray-100 flex items-center justify-between cursor-pointer hover:bg-gray-50"
+                onClick={() => setOpenAddress(!openAddress)}
+             >
                <h3 className="font-bold text-sm text-gray-900">Alamat di Indonesia</h3>
-               <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+               <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${openAddress ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
              </div>
+             {openAddress && (
+               <div className="p-5 grid grid-cols-1 gap-y-6 bg-gray-50/30">
+                 <div>
+                   <p className="text-xs text-gray-400 font-medium mb-1">Tipe Akomodasi</p>
+                   <p className="text-sm text-gray-900 font-medium uppercase">{address?.accommodationType || "-"}</p>
+                 </div>
+                 {address?.hotelLabel && (
+                   <div>
+                     <p className="text-xs text-gray-400 font-medium mb-1">Nama Hotel / Tempat Menginap</p>
+                     <p className="text-sm text-gray-900 font-medium uppercase">{address.hotelLabel}</p>
+                   </div>
+                 )}
+                 <div>
+                   <p className="text-xs text-gray-400 font-medium mb-1">Alamat Lengkap</p>
+                   <p className="text-sm text-gray-900 font-medium uppercase">
+                     {address?.fullAddress}
+                     {address?.city && `, ${address.city}`}
+                     {address?.province && `, ${address.province}`}
+                   </p>
+                 </div>
+               </div>
+             )}
           </div>
 
         </div>

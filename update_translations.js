@@ -1,179 +1,167 @@
 const fs = require('fs');
-let content = fs.readFileSync('app/lib/translations.ts', 'utf8');
+const path = require('path');
 
-const translations = {
-  ja: {
-    dekKesehatanTitle: '健康申告',
-    dekKesehatanDesc: 'インドネシアの国家保健プロトコルに従い、公衆衛生の監視と感染症の蔓延防止を支援するため、健康申告書に記入してください。',
-    dekKesehatanQ1: '以下の症状がありますか：発熱、咳、風邪、息切れ、喉の痛み、または皮膚の病変/発疹？',
-    dekKesehatanPilihGejala: '症状を選択してください（複数選択可）',
-    dekKesehatanBatuk: '咳',
-    dekKesehatanDemam: '発熱',
-    dekKesehatanLesi: '病変 / 発疹 / 皮膚の斑点',
-    dekKesehatanPilek: '風邪',
-    dekKesehatanTenggorokan: '喉の痛み',
-    dekKesehatanSesak: '息切れ',
-    dekKesehatanTidakAda: '症状なし',
-    dekKesehatanGejalaTerpilih: '選択された症状:',
-    dekKesehatanQ2: 'インドネシア出発前の21日間に訪問した出発国、経由地、その他の国（複数選択可）',
-    dekKarantinaTitle: '検疫申告',
-    dekKarantinaDesc: '現在の状況に応じて検疫申告書に記入してください。これは検疫官によって確認されます。',
-    dekKarantinaQ1: '動物、魚、植物、および/または加工品を携帯していますか？',
-    dekKarantinaDescKomoditas: '携帯している商品の説明',
-    dekKarantinaKategori: 'カテゴリー',
-    dekKarantinaSubKategori: 'サブカテゴリー',
-    dekKarantinaKomoditasTerpilih: '選択された商品:',
-    dekKarantinaBentukJenis: '商品の形態または種類を指定',
-    dekKarantinaJumlah: '携帯している商品の数量',
-    dekKarantinaQ2: '商品に検疫証明書（植物検疫証明書/動物健康証明書）が添付されていますか？',
-    dekKarantinaDariNegara: 'どの国から商品を入手しましたか？',
-    dekKarantinaPhDariNegara: '国を選択'
-  },
-  zh: {
-    dekKesehatanTitle: '健康申报',
-    dekKesehatanDesc: '根据印度尼西亚国家卫生协议，请填写健康申报表，以支持公共卫生监测并防止传染病传播。',
-    dekKesehatanQ1: '您是否有以下症状：发热、咳嗽、感冒、呼吸急促、喉咙痛或皮肤损伤/皮疹？',
-    dekKesehatanPilihGejala: '选择您的症状（可多选）',
-    dekKesehatanBatuk: '咳嗽',
-    dekKesehatanDemam: '发热',
-    dekKesehatanLesi: '损伤 / 皮疹 / 皮肤斑点',
-    dekKesehatanPilek: '感冒',
-    dekKesehatanTenggorokan: '喉咙痛',
-    dekKesehatanSesak: '呼吸急促',
-    dekKesehatanTidakAda: '无症状',
-    dekKesehatanGejalaTerpilih: '已选症状:',
-    dekKesehatanQ2: '前往印度尼西亚前21天内访问过的出发国、过境国及其他国家（可多选）',
-    dekKarantinaTitle: '检疫申报',
-    dekKarantinaDesc: '请根据您的当前情况填写检疫申报表，检疫人员将对此进行核实。',
-    dekKarantinaQ1: '您是否携带动物、鱼类、植物和/或加工产品？',
-    dekKarantinaDescKomoditas: '携带物品说明',
-    dekKarantinaKategori: '类别',
-    dekKarantinaSubKategori: '子类别',
-    dekKarantinaKomoditasTerpilih: '已选物品:',
-    dekKarantinaBentukJenis: '注明物品的形态或类型',
-    dekKarantinaJumlah: '携带物品数量',
-    dekKarantinaQ2: '该物品是否附有检疫证书（植物检疫证书/动物健康证书）？',
-    dekKarantinaDariNegara: '您从哪个国家获得该物品？',
-    dekKarantinaPhDariNegara: '选择国家'
-  },
-  ar: {
-    dekKesehatanTitle: 'الإقرار الصحي',
-    dekKesehatanDesc: 'وفقًا للبروتوكول الصحي الوطني في إندونيسيا، يرجى إكمال نموذج الإقرار الصحي لدعم مراقبة الصحة العامة ومنع انتشار الأمراض المعدية.',
-    dekKesehatanQ1: 'هل تعاني من الأعراض التالية: حمى، سعال، زكام، ضيق في التنفس، التهاب في الحلق، أو آفات جلدية/طفح جلدي؟',
-    dekKesehatanPilihGejala: 'اختر الأعراض (يمكنك اختيار أكثر من واحد)',
-    dekKesehatanBatuk: 'سعال',
-    dekKesehatanDemam: 'حمى',
-    dekKesehatanLesi: 'آفات / طفح جلدي / بقع جلدية',
-    dekKesehatanPilek: 'زكام',
-    dekKesehatanTenggorokan: 'التهاب الحلق',
-    dekKesehatanSesak: 'ضيق في التنفس',
-    dekKesehatanTidakAda: 'لا توجد أعراض',
-    dekKesehatanGejalaTerpilih: 'الأعراض المحددة:',
-    dekKesehatanQ2: 'بلد المغادرة، العبور، والدول الأخرى التي زرتها خلال 21 يومًا قبل المغادرة إلى إندونيسيا (يمكنك اختيار أكثر من واحد)',
-    dekKarantinaTitle: 'إقرار الحجر الصحي',
-    dekKarantinaDesc: 'يرجى ملء إقرار الحجر الصحي وفقًا لحالتك الحالية، والذي سيتم التحقق منه من قبل مسؤولي الحجر الصحي.',
-    dekKarantinaQ1: 'هل تحمل حيوانات، أسماك، نباتات، و/أو منتجات مصنعة؟',
-    dekKarantinaDescKomoditas: 'وصف السلع المحمولة',
-    dekKarantinaKategori: 'الفئة',
-    dekKarantinaSubKategori: 'الفئة الفرعية',
-    dekKarantinaKomoditasTerpilih: 'السلع المحددة:',
-    dekKarantinaBentukJenis: 'حدد شكل أو نوع السلعة',
-    dekKarantinaJumlah: 'كمية السلع المحمولة',
-    dekKarantinaQ2: 'هل السلعة مصحوبة بشهادة حجر صحي (شهادة صحة نباتية/شهادة صحة حيوانية)؟',
-    dekKarantinaDariNegara: 'من أي بلد حصلت على السلعة؟',
-    dekKarantinaPhDariNegara: 'اختر البلد'
-  },
-  ru: {
-    dekKesehatanTitle: 'Декларация о здоровье',
-    dekKesehatanDesc: 'В соответствии с национальным протоколом здравоохранения Индонезии, пожалуйста, заполните форму декларации о здоровье.',
-    dekKesehatanQ1: 'Есть ли у вас следующие симптомы: лихорадка, кашель, насморк, одышка, боль в горле или кожные поражения/сыпь?',
-    dekKesehatanPilihGejala: 'Выберите ваши симптомы (можно выбрать несколько)',
-    dekKesehatanBatuk: 'КАШЕЛЬ',
-    dekKesehatanDemam: 'ЛИХОРАДКА',
-    dekKesehatanLesi: 'ПОРАЖЕНИЕ / СЫПЬ / ПЯТНА НА КОЖЕ',
-    dekKesehatanPilek: 'НАСМОРК',
-    dekKesehatanTenggorokan: 'БОЛЬ В ГОРЛЕ',
-    dekKesehatanSesak: 'ОДЫШКА',
-    dekKesehatanTidakAda: 'БЕЗ СИМПТОМОВ',
-    dekKesehatanGejalaTerpilih: 'Выбранные симптомы:',
-    dekKesehatanQ2: 'Страна отправления, транзита и другие страны, которые вы посетили в течение 21 дня до вылета в Индонезию (можно выбрать несколько)',
-    dekKarantinaTitle: 'Карантинная декларация',
-    dekKarantinaDesc: 'Пожалуйста, заполните карантинную декларацию в соответствии с вашим текущим состоянием, которое будет проверено карантинными офицерами.',
-    dekKarantinaQ1: 'Везёте ли вы животных, рыб, растения и/или продукты их переработки?',
-    dekKarantinaDescKomoditas: 'Описание перевозимых товаров',
-    dekKarantinaKategori: 'Категория',
-    dekKarantinaSubKategori: 'Подкатегория',
-    dekKarantinaKomoditasTerpilih: 'Выбранные товары:',
-    dekKarantinaBentukJenis: 'Укажите форму или тип товара',
-    dekKarantinaJumlah: 'Количество перевозимых товаров',
-    dekKarantinaQ2: 'Сопровождается ли товар карантинным сертификатом (фитосанитарный сертификат/ветеринарный сертификат)?',
-    dekKarantinaDariNegara: 'Из какой страны вы получили товар?',
-    dekKarantinaPhDariNegara: 'Выберите страну'
-  },
-  ko: {
-    dekKesehatanTitle: '건강 상태 질문서',
-    dekKesehatanDesc: '인도네시아의 국가 보건 프로토콜에 따라, 공중 보건 모니터링을 지원하고 전염병 확산을 방지하기 위해 건강 상태 질문서를 작성해 주십시오.',
-    dekKesehatanQ1: '다음과 같은 증상이 있습니까: 발열, 기침, 감기, 호흡 곤란, 인후통 또는 피부 병변/발진?',
-    dekKesehatanPilihGejala: '증상을 선택하십시오 (복수 선택 가능)',
-    dekKesehatanBatuk: '기침',
-    dekKesehatanDemam: '발열',
-    dekKesehatanLesi: '병변 / 발진 / 피부 반점',
-    dekKesehatanPilek: '감기',
-    dekKesehatanTenggorokan: '인후통',
-    dekKesehatanSesak: '호흡 곤란',
-    dekKesehatanTidakAda: '증상 없음',
-    dekKesehatanGejalaTerpilih: '선택된 증상:',
-    dekKesehatanQ2: '인도네시아 출발 전 21일 이내에 방문한 출발국, 경유국 및 기타 국가 (복수 선택 가능)',
-    dekKarantinaTitle: '검역 신고서',
-    dekKarantinaDesc: '현재 상태에 따라 검역 신고서를 작성해 주십시오. 이는 검역관이 확인할 것입니다.',
-    dekKarantinaQ1: '동물, 물고기, 식물 및/또는 가공품을 소지하고 있습니까?',
-    dekKarantinaDescKomoditas: '휴대 물품 설명',
-    dekKarantinaKategori: '카테고리',
-    dekKarantinaSubKategori: '하위 카테고리',
-    dekKarantinaKomoditasTerpilih: '선택된 물품:',
-    dekKarantinaBentukJenis: '물품의 형태나 유형을 명시하십시오',
-    dekKarantinaJumlah: '휴대 물품 수량',
-    dekKarantinaQ2: '해당 물품에 검역 증명서(식물 검역 증명서/동물 위생 증명서)가 첨부되어 있습니까?',
-    dekKarantinaDariNegara: '어느 국가에서 해당 물품을 얻었습니까?',
-    dekKarantinaPhDariNegara: '국가 선택'
-  }
+const transPath = path.join(__dirname, 'app', 'lib', 'translations.ts');
+let transContent = fs.readFileSync(transPath, 'utf8');
+
+// Fix 'languages' in 'id'
+transContent = transContent.replace(/languages:\s*"Languages"/, 'languages: "Bahasa"');
+
+const newKeys = {
+  id: `    dokumenDimiliki: "Dokumen yang dimiliki",
+    visaOption: "Visa",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "Cek Visa Aktif",
+    visaAktifDitemukan: "Visa aktif ditemukan",
+    pengajuanVisaSelesai: "Pengajuan visa selesai",
+    nomorKitas: "Nomor KITAS/KITAP",
+    phNomorKitas: "Masukkan Nomor KITAS/KITAP",
+    dokumenValid: "Dokumen valid",
+    tidakAdaVisaAktif: "Tidak ada visa yang aktif",
+    visaTidakDitemukanDesc: "Visa tidak ditemukan untuk nomor paspor ini.",
+    ok: "OK",
+    pilihJenisPengajuanVisa: "Pilih Jenis Pengajuan Visa",
+    visaExemption: "Visa Exemption",
+    visaOnArrival: "Visa on Arrival (VoA)",
+    kitasTidakDitemukan: "Nomor tidak ditemukan. Gunakan dummy 159753",`,
+  en: `    dokumenDimiliki: "Owned Document",
+    visaOption: "Visa",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "Check Active Visa",
+    visaAktifDitemukan: "Active visa found",
+    pengajuanVisaSelesai: "Visa application completed",
+    nomorKitas: "KITAS/KITAP Number",
+    phNomorKitas: "Enter KITAS/KITAP Number",
+    dokumenValid: "Valid document",
+    tidakAdaVisaAktif: "No active visa found",
+    visaTidakDitemukanDesc: "No active visa found for this passport number.",
+    ok: "OK",
+    pilihJenisPengajuanVisa: "Select Visa Application Type",
+    visaExemption: "Visa Exemption",
+    visaOnArrival: "Visa on Arrival (VoA)",
+    kitasTidakDitemukan: "Number not found. Use dummy 159753",`,
+  ja: `    dokumenDimiliki: "所持している書類",
+    visaOption: "ビザ",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "有効なビザを確認",
+    visaAktifDitemukan: "有効なビザが見つかりました",
+    pengajuanVisaSelesai: "ビザ申請が完了しました",
+    nomorKitas: "KITAS/KITAP番号",
+    phNomorKitas: "KITAS/KITAP番号を入力",
+    dokumenValid: "有効な書類",
+    tidakAdaVisaAktif: "有効なビザがありません",
+    visaTidakDitemukanDesc: "このパスポート番号のビザは見つかりませんでした。",
+    ok: "OK",
+    pilihJenisPengajuanVisa: "ビザ申請の種類を選択",
+    visaExemption: "ビザ免除",
+    visaOnArrival: "到着ビザ (VoA)",
+    kitasTidakDitemukan: "番号が見つかりません。ダミーの159753を使用してください",`,
+  zh: `    dokumenDimiliki: "持有的文件",
+    visaOption: "签证",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "检查有效签证",
+    visaAktifDitemukan: "找到有效签证",
+    pengajuanVisaSelesai: "签证申请完成",
+    nomorKitas: "KITAS/KITAP号码",
+    phNomorKitas: "输入KITAS/KITAP号码",
+    dokumenValid: "有效文件",
+    tidakAdaVisaAktif: "未找到有效签证",
+    visaTidakDitemukanDesc: "未找到该护照号码的签证。",
+    ok: "确定",
+    pilihJenisPengajuanVisa: "选择签证申请类型",
+    visaExemption: "免签证",
+    visaOnArrival: "落地签证 (VoA)",
+    kitasTidakDitemukan: "找不到号码。请使用测试号码159753",`,
+  ar: `    dokumenDimiliki: "المستند المملوك",
+    visaOption: "تأشيرة",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "التحقق من التأشيرة النشطة",
+    visaAktifDitemukan: "تم العثور على تأشيرة نشطة",
+    pengajuanVisaSelesai: "اكتمل طلب التأشيرة",
+    nomorKitas: "رقم KITAS/KITAP",
+    phNomorKitas: "أدخل رقم KITAS/KITAP",
+    dokumenValid: "مستند صالح",
+    tidakAdaVisaAktif: "لم يتم العثور على تأشيرة نشطة",
+    visaTidakDitemukanDesc: "لم يتم العثور على تأشيرة لرقم الجواز هذا.",
+    ok: "موافق",
+    pilihJenisPengajuanVisa: "اختر نوع طلب التأشيرة",
+    visaExemption: "إعفاء من التأشيرة",
+    visaOnArrival: "تأشيرة عند الوصول (VoA)",
+    kitasTidakDitemukan: "الرقم غير موجود. استخدم الرقم الوهمي 159753",`,
+  ru: `    dokumenDimiliki: "Имеющийся документ",
+    visaOption: "Виза",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "Проверить активную визу",
+    visaAktifDitemukan: "Найдена активная виза",
+    pengajuanVisaSelesai: "Подача заявления на визу завершена",
+    nomorKitas: "Номер KITAS/KITAP",
+    phNomorKitas: "Введите номер KITAS/KITAP",
+    dokumenValid: "Действительный документ",
+    tidakAdaVisaAktif: "Нет активной визы",
+    visaTidakDitemukanDesc: "Виза для этого номера паспорта не найдена.",
+    ok: "ОК",
+    pilihJenisPengajuanVisa: "Выберите тип заявления на визу",
+    visaExemption: "Безвизовый въезд",
+    visaOnArrival: "Виза по прибытии (VoA)",
+    kitasTidakDitemukan: "Номер не найден. Используйте тестовый 159753",`,
+  ko: `    dokumenDimiliki: "소지한 문서",
+    visaOption: "비자",
+    kitasOption: "KITAS/KITAP",
+    cekVisaAktif: "유효한 비자 확인",
+    visaAktifDitemukan: "유효한 비자 발견",
+    pengajuanVisaSelesai: "비자 신청 완료",
+    nomorKitas: "KITAS/KITAP 번호",
+    phNomorKitas: "KITAS/KITAP 번호 입력",
+    dokumenValid: "유효한 문서",
+    tidakAdaVisaAktif: "유효한 비자 없음",
+    visaTidakDitemukanDesc: "이 여권 번호에 대한 비자를 찾을 수 없습니다.",
+    ok: "확인",
+    pilihJenisPengajuanVisa: "비자 신청 유형 선택",
+    visaExemption: "비자 면제",
+    visaOnArrival: "도착 비자 (VoA)",
+    kitasTidakDitemukan: "번호를 찾을 수 없습니다. 더미 159753을 사용하세요",`
 };
 
-let lines = content.split('\n');
-
-for (const lang of Object.keys(translations)) {
-  const langObj = translations[lang];
-  let inLangBlock = false;
-  
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith('  ' + lang + ': {')) {
-      inLangBlock = true;
-    } else if (inLangBlock && lines[i].startsWith('  },')) {
-      inLangBlock = false;
-    }
-    
-    if (inLangBlock) {
-      for (const key of Object.keys(langObj)) {
-        if (lines[i].includes('    ' + key + ':')) {
-          let j = i;
-          let foundComma = false;
-          while (j < lines.length && !foundComma) {
-            if (lines[j].trim().endsWith(',')) {
-              foundComma = true;
-            }
-            j++;
-          }
-          lines[i] = '    ' + key + ': \"' + langObj[key] + '\",';
-          for (let k = i + 1; k < j; k++) {
-            lines[k] = ''; // clear it
-          }
-          break; // break the inner loop so we don't double process
-        }
-      }
-    }
+for (const lang of Object.keys(newKeys)) {
+  const marker = new RegExp("(" + lang + ": \\{)");
+  if (transContent.match(marker)) {
+    transContent = transContent.replace(marker, "$1\\n" + newKeys[lang]);
   }
 }
 
-lines = lines.filter(line => line !== '');
-fs.writeFileSync('app/lib/translations.ts', lines.join('\n'), 'utf8');
-console.log('Translations updated.');
+fs.writeFileSync(transPath, transContent, 'utf8');
+
+const pagePath = path.join(__dirname, 'app', 'page.tsx');
+let pageContent = fs.readFileSync(pagePath, 'utf8');
+
+// Replace in page.tsx
+pageContent = pageContent.replace(/label=\{t\("dokumenDimiliki"\) \|\| "Dokumen yang dimiliki"\}/g, 'label={t("dokumenDimiliki")}');
+pageContent = pageContent.replace(/label="Dokumen yang dimiliki"/g, 'label={t("dokumenDimiliki")}');
+
+pageContent = pageContent.replace(/\{ value: "visa", label: "Visa" \}/g, '{ value: "visa", label: t("visaOption") }');
+pageContent = pageContent.replace(/\{ value: "kitas", label: "KITAS\/KITAP" \}/g, '{ value: "kitas", label: t("kitasOption") }');
+
+pageContent = pageContent.replace(/label="Nomor Paspor"/g, 'label={t("nomorPaspor")}');
+pageContent = pageContent.replace(/placeholder="Masukkan Nomor Paspor"/g, 'placeholder={t("phNomorPaspor")}');
+
+pageContent = pageContent.replace(/>\s*Cek Visa Aktif\s*<\/button>/g, '>{t("cekVisaAktif")}</button>');
+pageContent = pageContent.replace(/Visa aktif ditemukan/g, '{t("visaAktifDitemukan")}');
+pageContent = pageContent.replace(/Pengajuan visa selesai/g, '{t("pengajuanVisaSelesai")}');
+
+pageContent = pageContent.replace(/label="Nomor KITAS\/KITAP"/g, 'label={t("nomorKitas")}');
+pageContent = pageContent.replace(/placeholder="Masukkan Nomor KITAS\/KITAP"/g, 'placeholder={t("phNomorKitas")}');
+
+pageContent = pageContent.replace(/>\s*Kirim\s*<\/button>/g, '>{t("kirim")}</button>');
+pageContent = pageContent.replace(/Dokumen valid/g, '{t("dokumenValid")}');
+
+pageContent = pageContent.replace(/Tidak ada visa yang aktif/g, '{t("tidakAdaVisaAktif")}');
+pageContent = pageContent.replace(/Visa tidak ditemukan untuk nomor paspor ini\./g, '{t("visaTidakDitemukanDesc")}');
+pageContent = pageContent.replace(/>\s*OK\s*<\/button>/g, '>{t("ok")}</button>');
+pageContent = pageContent.replace(/Pilih Jenis Pengajuan Visa/g, '{t("pilihJenisPengajuanVisa")}');
+pageContent = pageContent.replace(/Visa Exemption/g, '{t("visaExemption")}');
+pageContent = pageContent.replace(/Visa on Arrival \(VoA\)/g, '{t("visaOnArrival")}');
+
+pageContent = pageContent.replace(/alert\("Nomor tidak ditemukan\. Gunakan dummy 159753"\)/g, 'alert(t("kitasTidakDitemukan"))');
+
+fs.writeFileSync(pagePath, pageContent, 'utf8');
+console.log("Translations added and page.tsx updated.");
