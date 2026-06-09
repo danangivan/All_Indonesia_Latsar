@@ -20,7 +20,7 @@ export function FormSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-l-4 border-teal-500 bg-white rounded-r-lg">
+    <div className="border-l-4 border-blue-500 bg-white rounded-r-lg">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50/50 transition-colors"
@@ -107,7 +107,7 @@ export function TextInput({
         w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
         text-sm text-gray-900 placeholder:text-gray-400
         hover:border-gray-300
-        focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10
         disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed
         ${className}
       `}
@@ -141,7 +141,7 @@ export function SelectInput({
         w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
         text-sm text-gray-900
         hover:border-gray-300
-        focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+        focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10
         appearance-none
         bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%208L10%2013L15%208%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')]
         bg-[position:right_12px_center]
@@ -210,7 +210,7 @@ export function DateInput({
           w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
           text-sm text-gray-900 placeholder:text-gray-400
           hover:border-gray-300
-          focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10
           ${className}
         `}
       />
@@ -481,7 +481,7 @@ export function PhoneInput({
                 placeholder="Search country..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 outline-none"
+                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
                 autoFocus
               />
             </div>
@@ -495,8 +495,8 @@ export function PhoneInput({
                     setIsOpen(false);
                     setSearch("");
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-sm hover:bg-teal-50 transition-colors text-left ${
-                    c.code === selectedCountryCode ? "bg-teal-50 text-teal-700 font-medium" : "text-gray-700"
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-sm hover:bg-blue-50 transition-colors text-left ${
+                    c.code === selectedCountryCode ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-700"
                   }`}
                 >
                   <img
@@ -520,7 +520,7 @@ export function PhoneInput({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="flex-1 px-4 py-2.5 rounded-r-lg border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 hover:border-gray-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10"
+        className="flex-1 px-4 py-2.5 rounded-r-lg border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
       />
     </div>
   );
@@ -555,7 +555,7 @@ export function RadioInput({
             flex items-center gap-2.5 px-5 py-2.5 rounded-lg border cursor-pointer transition-all duration-200
             ${
               value === opt.value
-                ? "border-teal-500 bg-teal-50/60 ring-2 ring-teal-500/10"
+                ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500/10"
                 : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50/50"
             }
           `}
@@ -566,7 +566,7 @@ export function RadioInput({
             value={opt.value}
             checked={value === opt.value}
             onChange={() => onChange?.(opt.value)}
-            className="w-4 h-4 text-teal-500 border-gray-300 focus:ring-teal-500/20 accent-teal-500"
+            className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500/20 accent-blue-500"
           />
           <span className="text-sm text-gray-700 font-medium">{opt.label}</span>
         </label>
@@ -588,6 +588,9 @@ interface SearchableSelectProps {
   onChange?: (value: string, option?: SearchableSelectOption) => void;
   id?: string;
   className?: string;
+  allowCustom?: boolean;
+  customLabel?: string;
+  onCustomClick?: () => void;
 }
 
 export function SearchableSelect({
@@ -597,6 +600,9 @@ export function SearchableSelect({
   onChange,
   id,
   className = "",
+  allowCustom = false,
+  customLabel = "Ketik Manual",
+  onCustomClick,
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -633,7 +639,7 @@ export function SearchableSelect({
           w-full flex items-center justify-between px-4 py-2.5 rounded-lg border border-gray-200 bg-white
           text-sm text-left
           hover:border-gray-300
-          focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+          focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10
           ${className}
         `}
       >
@@ -659,14 +665,34 @@ export function SearchableSelect({
               placeholder={placeholder}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 outline-none"
+              className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
               autoFocus
             />
           </div>
           <div className="overflow-y-auto max-h-52">
             {filteredOptions.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-gray-400 text-center">
-                Tidak ditemukan
+              <div className="px-4 py-4 flex flex-col items-center justify-center text-center">
+                <span className="text-sm text-gray-400 mb-3">Tidak ditemukan</span>
+                {allowCustom && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onCustomClick) {
+                        onCustomClick();
+                      } else {
+                        onChange?.("other_hotel", { value: "other_hotel", label: customLabel });
+                      }
+                      setIsOpen(false);
+                      setSearch("");
+                    }}
+                    className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-md transition-colors hover:bg-blue-100"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    {customLabel}
+                  </button>
+                )}
               </div>
             ) : (
               filteredOptions.map((opt) => (
@@ -678,9 +704,9 @@ export function SearchableSelect({
                     setIsOpen(false);
                     setSearch("");
                   }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-teal-50 transition-colors ${
+                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 transition-colors ${
                     opt.value === value
-                      ? "bg-teal-50 text-teal-700 font-medium"
+                      ? "bg-blue-50 text-blue-700 font-medium"
                       : "text-gray-700"
                   }`}
                 >
@@ -733,7 +759,7 @@ export function SearchableSelectWithManual({
           onClick={() => onModeChange?.(false)}
           className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
             !manualMode
-              ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+              ? "bg-blue-50 border-blue-300 text-blue-700 shadow-sm"
               : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
           }`}
         >
@@ -749,7 +775,7 @@ export function SearchableSelectWithManual({
           onClick={() => onModeChange?.(true)}
           className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
             manualMode
-              ? "bg-teal-50 border-teal-300 text-teal-700 shadow-sm"
+              ? "bg-blue-50 border-blue-300 text-blue-700 shadow-sm"
               : "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
           }`}
         >
@@ -772,7 +798,7 @@ export function SearchableSelectWithManual({
             w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white
             text-sm text-gray-900 placeholder:text-gray-400
             hover:border-gray-300
-            focus:border-teal-500 focus:ring-2 focus:ring-teal-500/10
+            focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10
             ${className}
           `}
         />
@@ -802,7 +828,7 @@ export function ReadOnlyField({ value, id, icon }: ReadOnlyFieldProps) {
       id={id}
       className="w-full flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-100 bg-gray-50 text-sm text-gray-600"
     >
-      {icon && <span className="text-teal-500">{icon}</span>}
+      {icon && <span className="text-blue-500">{icon}</span>}
       <span>{value || "—"}</span>
     </div>
   );

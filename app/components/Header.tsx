@@ -92,7 +92,7 @@ export default function Header() {
                         onClick={() => handleSelectLanguage(lang)}
                         className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
                           language === lang
-                            ? "font-medium text-teal-600"
+                            ? "font-medium text-blue-600"
                             : ""
                         }`}
                       >

@@ -82,16 +82,31 @@ export default function SummaryPage({
                 Diajukan
               </div>
 
-              <div className="w-full flex gap-2">
-                <button className="flex-1 bg-navy-800 text-white text-xs font-semibold py-2.5 rounded hover:bg-navy-700 transition-colors">
-                  Unduh Kartu Kedatangan
-                </button>
-                <button className="px-3 py-2.5 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                  </svg>
-                  Cetak
-                </button>
+              <div className="w-full flex flex-col gap-2">
+                <div className="w-full flex gap-2">
+                  <button className="flex-1 bg-navy-800 text-white text-xs font-semibold py-2.5 rounded hover:bg-navy-700 transition-colors">
+                    Unduh Kartu Kedatangan
+                  </button>
+                  <button className="px-3 py-2.5 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Cetak
+                  </button>
+                </div>
+                {(mainDetail?.documentStatus === "applied" || mainDetail?.documentStatus === "active") && (
+                  <div className="w-full flex gap-2">
+                    <button className="flex-1 bg-blue-600 text-white text-xs font-semibold py-2.5 rounded hover:bg-blue-700 transition-colors">
+                      Unduh Visa yang Telah Diajukan
+                    </button>
+                    <button className="px-3 py-2.5 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                      </svg>
+                      Cetak
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

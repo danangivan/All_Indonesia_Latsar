@@ -22,9 +22,9 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                     transition-all duration-300
                     ${
                       isActive
-                        ? "bg-teal-500 text-white shadow-md shadow-teal-500/30"
+                        ? "bg-blue-500 text-white shadow-md shadow-blue-500/30"
                         : isCompleted
-                          ? "bg-teal-500 text-white"
+                          ? "bg-blue-500 text-white"
                           : "bg-gray-100 text-gray-400 border border-gray-200"
                     }
                   `}
@@ -52,7 +52,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                     text-sm font-medium whitespace-nowrap
                     ${
                       isActive
-                        ? "text-teal-600"
+                        ? "text-blue-600"
                         : isCompleted
                           ? "text-gray-700"
                           : "text-gray-400"
@@ -67,7 +67,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                 <div className="flex-1 mx-4">
                   <div className="h-[2px] w-full bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className={`h-full bg-teal-500 transition-all duration-500 ${
+                      className={`h-full bg-blue-500 transition-all duration-500 ${
                         isCompleted ? "w-full" : "w-0"
                       }`}
                     />
@@ -96,9 +96,9 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                     transition-all duration-300
                     ${
                       isActive
-                        ? "bg-teal-500 text-white shadow-md shadow-teal-500/30"
+                        ? "bg-blue-500 text-white shadow-md shadow-blue-500/30"
                         : isCompleted
-                          ? "bg-teal-500 text-white"
+                          ? "bg-blue-500 text-white"
                           : "bg-gray-100 text-gray-400 border border-gray-200"
                     }
                   `}
@@ -124,7 +124,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                 {!isLast && (
                   <div className="w-[2px] h-4 bg-gray-200 rounded-full overflow-hidden mt-1">
                     <div
-                      className={`w-full bg-teal-500 transition-all duration-500 ${
+                      className={`w-full bg-blue-500 transition-all duration-500 ${
                         isCompleted ? "h-full" : "h-0"
                       }`}
                     />
@@ -138,7 +138,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                   text-sm font-medium pt-1.5
                   ${
                     isActive
-                      ? "text-teal-600"
+                      ? "text-blue-600"
                       : isCompleted
                         ? "text-gray-700"
                         : "text-gray-400"
