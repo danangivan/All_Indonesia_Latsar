@@ -31,6 +31,32 @@
   --foreground: #0f172a;
 }
 
+html {
+  /* Default for very small screens (mobile): keeping it standard to avoid breaking layouts */
+  font-size: 100%; 
+}
+
+/* For small tablets and large phones */
+@media (min-width: 640px) {
+  html {
+    font-size: 110%;
+  }
+}
+
+/* For tablets and small laptops */
+@media (min-width: 768px) {
+  html {
+    font-size: 120%;
+  }
+}
+
+/* For desktops (as previously requested, 30% larger) */
+@media (min-width: 1024px) {
+  html {
+    font-size: 130%; 
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
