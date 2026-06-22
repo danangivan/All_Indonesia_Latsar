@@ -1,9 +1,10 @@
 interface StepperProps {
   currentStep: number;
   steps: { label: string; icon: React.ReactNode }[];
+  onStepClick?: (index: number) => void;
 }
 
-export default function Stepper({ currentStep, steps }: StepperProps) {
+export default function Stepper({ currentStep, steps, onStepClick }: StepperProps) {
   return (
     <div className="w-full bg-white rounded-xl border border-gray-200 px-6 py-4 shadow-sm">
       {/* Desktop: horizontal */}
@@ -15,7 +16,10 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
 
           return (
             <div key={index} className="flex items-center flex-1">
-              <div className="flex items-center gap-3">
+              <div 
+                className={`flex items-center gap-3 ${onStepClick ? 'cursor-pointer hover:opacity-80' : ''}`}
+                onClick={() => onStepClick?.(index)}
+              >
                 <div
                   className={`
                     w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold shrink-0
@@ -93,7 +97,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                 <div
                   className={`
                     w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold shrink-0
-                    transition-all duration-300
+                    transition-all duration-300 ${onStepClick ? 'cursor-pointer hover:opacity-80' : ''}
                     ${
                       isActive
                         ? "bg-blue-500 text-white shadow-md shadow-blue-500/30"
@@ -102,6 +106,7 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
                           : "bg-gray-100 text-gray-400 border border-gray-200"
                     }
                   `}
+                  onClick={() => onStepClick?.(index)}
                 >
                   {isCompleted ? (
                     <svg
@@ -134,8 +139,9 @@ export default function Stepper({ currentStep, steps }: StepperProps) {
 
               {/* Label */}
               <span
+                onClick={() => onStepClick?.(index)}
                 className={`
-                  text-sm font-medium pt-1.5
+                  text-sm font-medium pt-1.5 ${onStepClick ? 'cursor-pointer hover:opacity-80' : ''}
                   ${
                     isActive
                       ? "text-blue-600"

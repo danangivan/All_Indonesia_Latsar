@@ -685,7 +685,14 @@ function PageContent() {
 
           {/* Stepper */}
           <div className="mb-8">
-            <Stepper currentStep={currentStep} steps={steps} />
+            <Stepper
+              currentStep={currentStep}
+              steps={steps}
+              onStepClick={(index) => {
+                // Optional: add validation if you only want to allow going back or forward under certain conditions
+                setCurrentStep(index);
+              }}
+            />
           </div>
 
           {/* Form Card */}
@@ -3064,30 +3071,137 @@ function PageContent() {
       {/* Submit Confirm Modal */}
       {submitConfirmModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 p-6 text-center border border-gray-100">
-            <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-5 border border-blue-100 shadow-sm shadow-blue-100">
-              <svg
-                className="w-7 h-7 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 border border-gray-100">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100 flex flex-col items-center text-center">
+              <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mb-4 border border-blue-100 shadow-sm shadow-blue-100">
+                <svg
+                  className="w-7 h-7 text-blue-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Periksa Kembali Data Anda
+              </h3>
+              <p className="text-sm text-gray-500 mt-2">
+                Pastikan semua data pribadi Anda di bawah ini sudah benar
+                sebelum mengirimkan formulir untuk mendapatkan barcode.
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              {t("konfirmasiKirimTittle") || "Konfirmasi Pengiriman"}
-            </h3>
-            <p className="text-sm text-gray-500 mb-6">
-              {t("konfirmasiKirimDesc") ||
-                "Pastikan semua data yang Anda isi sudah benar. Anda tidak dapat mengubah data setelah dikirim."}
-            </p>
-            <div className="flex flex-col gap-3">
+
+            {/* Content (Scrollable) */}
+            <div className="p-6 overflow-y-auto flex-1 bg-gray-50/50">
+              <div className="space-y-4">
+                {travelers.map((traveler, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm"
+                  >
+                    <h4 className="font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">
+                      Penumpang {idx + 1}
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Nama Lengkap
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.fullName || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Nomor Paspor
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.passportNo || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Kewarganegaraan Paspor
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.passportCountry || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Tanggal Lahir
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.birthDate || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Jenis Kelamin
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.gender === "M"
+                            ? "Laki-laki"
+                            : traveler.gender === "F"
+                              ? "Perempuan"
+                              : "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">Email</p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.email || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs mb-1">
+                          Nomor Telepon
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {traveler.phone
+                            ? `${traveler.phoneCountryCode || ""} ${traveler.phone}`
+                            : "-"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="p-6 border-t border-gray-100 bg-white grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setSubmitConfirmModalOpen(false);
+                  setCurrentStep(0);
+                }}
+                className="w-full py-3 px-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-semibold shadow-sm transition-colors flex items-center justify-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                Edit Data
+              </button>
+
               <button
                 type="button"
                 onClick={() => {
@@ -3096,9 +3210,9 @@ function PageContent() {
                 }}
                 className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm transition-colors flex items-center justify-center gap-2"
               >
-                {t("kirimSekarang") || "Kirim Sekarang"}
+                Kirim Sekarang
                 <svg
-                  className="w-4 h-4"
+                  className="w-5 h-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -3110,13 +3224,6 @@ function PageContent() {
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSubmitConfirmModalOpen(false)}
-                className="w-full py-3 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 rounded-xl font-medium transition-colors"
-              >
-                {t("cekKembali") || "Cek Kembali"}
               </button>
             </div>
           </div>
