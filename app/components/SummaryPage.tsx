@@ -8,6 +8,7 @@ export default function SummaryPage({
   transport,
   address,
   onReset,
+  onEdit,
 }: {
   travelers: any[];
   travelDetails: any[];
@@ -16,6 +17,7 @@ export default function SummaryPage({
   transport: any;
   address: any;
   onReset: () => void;
+  onEdit?: () => void;
 }) {
   const [openTransport, setOpenTransport] = React.useState(false);
   const [openAddress, setOpenAddress] = React.useState(false);
@@ -197,6 +199,14 @@ export default function SummaryPage({
                   <p className="text-sm text-gray-900 font-medium uppercase">{mainTraveler.passportCountry || "CHINA"}</p>
                </div>
              </div>
+             {onEdit && (
+               <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
+                 <button onClick={onEdit} className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-colors">
+                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                   Edit Data Semua Penumpang
+                 </button>
+               </div>
+             )}
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -267,6 +277,34 @@ export default function SummaryPage({
              )}
           </div>
 
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="mt-8 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Pertanyaan yang Sering Diajukan (FAQ)
+        </h3>
+        <div className="space-y-4">
+          <div className="border-b border-gray-100 pb-4">
+            <h4 className="font-semibold text-sm text-gray-900 mb-1">Apakah saya perlu mencetak QR Code ini?</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">Tidak wajib. Anda dapat menyimpan QR Code ini di ponsel Anda dan menunjukkannya kepada petugas imigrasi saat kedatangan.</p>
+          </div>
+          <div className="border-b border-gray-100 pb-4">
+            <h4 className="font-semibold text-sm text-gray-900 mb-1">Bagaimana jika saya salah mengisi data?</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">Anda dapat menekan tombol "Edit Data Semua Penumpang" pada bagian Detail Profil di atas untuk memperbaiki data sebelum Anda tiba di bandara/pelabuhan kedatangan.</p>
+          </div>
+          <div className="border-b border-gray-100 pb-4">
+            <h4 className="font-semibold text-sm text-gray-900 mb-1">Berapa lama masa berlaku QR Code ini?</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">QR Code ini berlaku sesuai dengan tanggal kedatangan yang Anda jadwalkan, hingga Anda melewati pos pemeriksaan imigrasi dan karantina.</p>
+          </div>
+          <div>
+            <h4 className="font-semibold text-sm text-gray-900 mb-1">Apakah data saya aman?</h4>
+            <p className="text-sm text-gray-600 leading-relaxed">Ya, seluruh data Anda dienkripsi secara aman dan hanya digunakan untuk keperluan resmi Imigrasi dan Badan Karantina Republik Indonesia.</p>
+          </div>
         </div>
       </div>
 

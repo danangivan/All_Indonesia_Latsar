@@ -638,6 +638,10 @@ function PageContent() {
             healthDecl={healthDecl}
             transport={transport}
             address={address}
+            onEdit={() => {
+              setIsSubmitted(false);
+              setCurrentStep(0);
+            }}
             onReset={() => {
               setIsSubmitted(false);
               setCurrentStep(0);
