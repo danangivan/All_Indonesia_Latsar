@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { Language, languageNames } from "../lib/translations";
 
@@ -11,15 +12,29 @@ export default function Header() {
   const [langOpen, setLangOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
+  const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const isHome = pathname === "/";
+  const isTransparent = isHome && !isScrolled;
+
   const handleSelectLanguage = (lang: Language) => {
     setLanguage(lang);
     setLangOpen(false);
   };
 
   return (
-    <header className="w-full">
+    <>
       {/* Row 1 - Top thin bar with government badge */}
-      <div className="bg-navy-900 border-b border-navy-700">
+      <div className="bg-navy-900 border-b border-navy-700 w-full relative z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center h-14 gap-3">
             <Image
@@ -44,17 +59,17 @@ export default function Header() {
       </div>
 
       {/* Row 2 - Main navbar */}
-      <div className="bg-white text-gray-800 border-b border-gray-200">
+      <header className={`${isTransparent ? 'bg-transparent text-white border-transparent' : 'bg-white text-gray-800 border-b border-gray-200 shadow-sm'} sticky top-0 z-50 w-full transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-24">
             {/* Logo - left */}
             <div className="flex items-center">
               <Image
-                src="/logoallindo.png"
+                src="/indo.png"
                 alt="All Indonesia"
                 width={300}
                 height={120}
-                className="h-28 w-auto mix-blend-multiply"
+                className={`h-20 w-auto object-contain transition-all duration-300 ${isTransparent ? 'drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]' : 'mix-blend-multiply'}`}
                 priority
               />
             </div>
@@ -65,13 +80,13 @@ export default function Header() {
               <div className="relative">
                 <button
                   onClick={() => setLangOpen(!langOpen)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full border border-gray-200 hover:bg-gray-50 transition-colors"
+                  className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-colors ${isTransparent ? 'bg-transparent text-white border border-white/40 hover:bg-white/10' : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'}`}
                 >
                   <span>{t("languages")}</span>
                   <svg
-                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+                    className={`w-4 h-4 transition-transform duration-200 ${
                       langOpen ? "rotate-180" : ""
-                    }`}
+                    } ${isTransparent ? 'text-white' : 'text-gray-500'}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -104,9 +119,9 @@ export default function Header() {
               </div>
 
               {/* Bantuan button */}
-              <button className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
+              <button className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-colors ${isTransparent ? 'bg-transparent text-white border border-white/40 hover:bg-white/10' : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'}`}>
                 <svg
-                  className="w-4 h-4 text-gray-600"
+                  className={`w-4 h-4 ${isTransparent ? 'text-white' : 'text-gray-600'}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -123,7 +138,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
