@@ -27,7 +27,7 @@ function HomeContent() {
       <Header />
 
       {/* Hero Section */}
-      <section 
+      <section
         className="relative bg-[#1a2b4c] text-white overflow-hidden pb-12 lg:pb-16 pt-32 lg:pt-36 -mt-24"
         style={{ opacity: scrollOpacity }}
       >
@@ -41,7 +41,7 @@ function HomeContent() {
         >
           <source src="/Bhinneka.mp4" type="video/mp4" />
         </video>
-        
+
         {/* Dark overlay to make text visible */}
         <div className="absolute inset-0 bg-slate-900/40 z-0 pointer-events-none"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-0 pointer-events-none"></div>
@@ -63,59 +63,117 @@ function HomeContent() {
             {/* Service Cards Grid */}
             <div className="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pr-12 mt-8 lg:mt-6">
               <div className="grid grid-cols-2 gap-3 md:gap-4 w-full max-w-lg origin-center lg:origin-right scale-[0.66]">
-                
                 {/* Card 1 */}
                 <div className="bg-black/10 backdrop-blur-[4px] rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col items-center justify-center text-center gap-3 hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:border-white/30 hover:shadow-2xl">
                   <div className="h-14 md:h-16 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-auto text-blue-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-full w-auto text-blue-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12"
+                      />
                     </svg>
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xs md:text-sm text-slate-300">e-VOA/Visa Service</h3>
-                    <p className="text-sm md:text-base font-semibold text-white">Layanan Visa Cepat</p>
+                    <h3 className="text-xs md:text-sm text-slate-300">
+                      e-VOA/Visa Service
+                    </h3>
+                    <p className="text-sm md:text-base font-semibold text-white">
+                      Layanan Visa Cepat
+                    </p>
                   </div>
                 </div>
 
                 {/* Card 2 */}
                 <div className="bg-black/10 backdrop-blur-[4px] rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col items-center justify-center text-center gap-3 hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:border-white/30 hover:shadow-2xl">
                   <div className="h-14 md:h-16 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-auto text-emerald-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-full w-auto text-emerald-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
+                      />
                     </svg>
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xs md:text-sm text-slate-300">Immigration Guide</h3>
-                    <p className="text-sm md:text-base font-semibold text-white">Panduan Imigrasi Digital</p>
+                    <h3 className="text-xs md:text-sm text-slate-300">
+                      Immigration Guide
+                    </h3>
+                    <p className="text-sm md:text-base font-semibold text-white">
+                      Panduan Imigrasi Digital
+                    </p>
                   </div>
                 </div>
 
                 {/* Card 3 */}
                 <div className="bg-black/10 backdrop-blur-[4px] rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col items-center justify-center text-center gap-3 hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:border-white/30 hover:shadow-2xl">
                   <div className="h-14 md:h-16 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-auto text-orange-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-full w-auto text-orange-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"
+                      />
                     </svg>
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xs md:text-sm text-slate-300">Pariwisata Kita</h3>
-                    <p className="text-sm md:text-base font-semibold text-white">E-Book Panduan Wisata</p>
+                    <h3 className="text-xs md:text-sm text-slate-300">
+                      Pariwisata Kita
+                    </h3>
+                    <p className="text-sm md:text-base font-semibold text-white">
+                      E-Book Panduan Wisata
+                    </p>
                   </div>
                 </div>
 
                 {/* Card 4 */}
                 <div className="bg-black/10 backdrop-blur-[4px] rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col items-center justify-center text-center gap-3 hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:border-white/30 hover:shadow-2xl">
                   <div className="h-14 md:h-16 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-auto text-purple-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-full w-auto text-purple-400 drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                      />
                     </svg>
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xs md:text-sm text-slate-300">Layanan Bantuan 24/7</h3>
-                    <p className="text-sm md:text-base font-semibold text-white">Dukungan Setiap Saat</p>
+                    <h3 className="text-xs md:text-sm text-slate-300">
+                      Layanan Bantuan 24/7
+                    </h3>
+                    <p className="text-sm md:text-base font-semibold text-white">
+                      Dukungan Setiap Saat
+                    </p>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -274,3 +332,4 @@ export default function HomePage() {
     </LanguageProvider>
   );
 }
+)
