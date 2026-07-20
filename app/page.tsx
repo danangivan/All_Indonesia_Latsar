@@ -53,11 +53,7 @@ function HomeContent() {
                 Halo, Penjelajah! <br />
                 <span className="text-blue-300">Siap Jelajahi Indonesia?</span>
               </h1>
-              <p className="text-base text-slate-200 max-w-lg leading-relaxed drop-shadow">
-                Perjalanan Anda ke Indonesia dimulai di sini. Kami menyediakan
-                layanan daring untuk mempercepat proses kedatangan, dengan
-                panduan yang jelas dan dukungan setiap saat.
-              </p>
+              <p className="text-base text-slate-200 max-w-lg leading-relaxed drop-shadow"></p>
             </div>
 
             {/* Service Cards Grid */}
